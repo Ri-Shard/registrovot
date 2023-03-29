@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../controller/mainController.dart';
 
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? uid;
   String? userEmail;
   String? message;
+  MainController mainController = Get.find();
 
   Future<User?> registerWithEmailPassword(String email, String password) async {
     await Firebase.initializeApp();
@@ -50,6 +54,7 @@ class Authentication {
         uid = user.uid;
         userEmail = user.email;
         // return user.email;
+        mainController.defineViews(user.email!);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
