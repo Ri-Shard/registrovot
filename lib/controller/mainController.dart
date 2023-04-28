@@ -292,13 +292,14 @@ class MainController extends GetxController {
       return response;
     } else {
       colection = FirebaseFirestore.instance.collection('location');
-      colection.doc('puntos').set(
+      colection.doc('puestos').set(
         {
           puesto.id: {
-            'name': puesto.name,
-            'lat': puesto.latitud,
-            'lang': puesto.longitud,
+            'nombre': puesto.nombre,
+            'latitud': puesto.latitud,
+            'longitud': puesto.longitud,
             'municipio': puesto.municipio,
+            'direccion': puesto.direccion,
           }
         },
         SetOptions(merge: true),
@@ -319,15 +320,16 @@ class MainController extends GetxController {
     User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection('location');
-    final puntosdata = await colection.doc('puntos').get();
+    final puntosdata = await colection.doc('puestos').get();
     Map<dynamic, dynamic> dataid = puntosdata.data() as Map<dynamic, dynamic>;
     dataid.forEach((key, value) {
       Puesto puesto = Puesto(
-          name: value['name'],
+          nombre: value['nombre'],
           id: key.toString(),
-          latitud: value['lat'],
-          longitud: value[['long']],
-          municipio: value[['municipio']]);
+          latitud: value?['latitud'],
+          longitud: value['longitud'],
+          direccion: value['direccion'],
+          municipio: value['municipio']);
       aux.add(puesto);
     });
 
@@ -339,20 +341,35 @@ class MainController extends GetxController {
     User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection('location');
-    final puestosdata = await colection.doc('puntos').get();
+    final puestosdata = await colection.doc('puestos').get();
     Map<dynamic, dynamic> dataid = puestosdata.data() as Map<dynamic, dynamic>;
     dataid.forEach((key, value) {
       if (key == idPuesto) {
         Puesto puestoaux = Puesto(
-            name: value['name'],
+            nombre: value['nombre'],
             id: key.toString(),
-            latitud: value['lat'],
-            longitud: value[['long']],
+            latitud: value['latitud'],
+            longitud: value[['longitud']],
+            direccion: value[['direccion']],
             municipio: value[['municipio']]);
         puesto = puestoaux;
       }
     });
 
     return puesto;
+  }
+
+  void anotheraddpuesto(int index, Map puesto) async {
+    CollectionReference colection;
+
+    colection = FirebaseFirestore.instance.collection('location');
+    colection
+        .doc('puestos')
+        .set(
+          {index.toString(): puesto},
+          SetOptions(merge: true),
+        )
+        .then((value) {})
+        .catchError((error) {});
   }
 }

@@ -1,7 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
+
+import '../../../controller/mainController.dart';
 
 class PlacesRegister extends StatelessWidget {
   PlacesRegister({Key? key}) : super(key: key);
@@ -10,7 +13,9 @@ class PlacesRegister extends StatelessWidget {
   TextEditingController latitud = TextEditingController();
   TextEditingController longitud = TextEditingController();
   TextEditingController textEditingController = TextEditingController();
-  StaticFields municipios = StaticFields();
+  StaticFields staticfields = StaticFields();
+  MainController mainController = Get.find();
+
   String? dropdownvalue;
 
   final formkey = GlobalKey<FormState>();
@@ -77,7 +82,7 @@ class PlacesRegister extends StatelessWidget {
                           ),
                         ],
                       ),
-                      items: municipios
+                      items: staticfields
                           .getMunicipios()
                           .map((item) => DropdownMenuItem<String>(
                                 value: item.nombre,
@@ -181,7 +186,14 @@ class PlacesRegister extends StatelessWidget {
                   width: 516,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () async{
+                    // for (var i = 0; i < staticfields.listapuestos.length; i++) {
+                    //   mainController.anotheraddpuesto(i,
+                    //       staticfields.listapuestos[i] as Map<String, String>);
+                    // }
+                    final result = await mainController.getPuestos();
+                    print(result);
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xffff004e),
                     padding: const EdgeInsets.symmetric(

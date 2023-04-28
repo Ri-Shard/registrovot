@@ -25,12 +25,17 @@ class _UserRegisterState extends State<UserRegister> {
   TextEditingController direccion = TextEditingController();
   TextEditingController edad = TextEditingController();
   TextEditingController telefono = TextEditingController();
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController municipioTextEditingController =
+      TextEditingController();
+  TextEditingController barrioTextEditingController = TextEditingController();
+  TextEditingController liderTextEditingController = TextEditingController();
+  TextEditingController puestoTextEditingController = TextEditingController();
 
   final formkey = GlobalKey<FormState>();
 
   List<Leader> aux = [];
   List<String> leadersname = [];
+  List<String> puestoname = [];
   MainController mainController = Get.find();
   StaticFields staticfields = StaticFields();
 
@@ -223,7 +228,8 @@ class _UserRegisterState extends State<UserRegister> {
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_outlined,
                                 ),
-                                searchController: textEditingController,
+                                searchController:
+                                    municipioTextEditingController,
                                 searchInnerWidgetHeight: 50,
                                 searchInnerWidget: Container(
                                   height: 50,
@@ -236,7 +242,7 @@ class _UserRegisterState extends State<UserRegister> {
                                   child: TextFormField(
                                     expands: true,
                                     maxLines: null,
-                                    controller: textEditingController,
+                                    controller: municipioTextEditingController,
                                     decoration: InputDecoration(
                                       isDense: true,
                                       contentPadding:
@@ -255,13 +261,14 @@ class _UserRegisterState extends State<UserRegister> {
                                 searchMatchFn: (item, searchValue) {
                                   return (item.value
                                       .toString()
-                                      .contains(searchValue));
+                                      .toLowerCase()
+                                      .contains(searchValue.toLowerCase()));
                                 },
 
                                 //This to clear the search value when you close the menu
                                 onMenuStateChange: (isOpen) {
                                   if (!isOpen) {
-                                    textEditingController.clear();
+                                    municipioTextEditingController.clear();
                                   }
                                 },
                                 iconSize: 14,
@@ -364,7 +371,8 @@ class _UserRegisterState extends State<UserRegister> {
                                     icon: const Icon(
                                       Icons.arrow_forward_ios_outlined,
                                     ),
-                                    searchController: textEditingController,
+                                    searchController:
+                                        barrioTextEditingController,
                                     searchInnerWidgetHeight: 50,
                                     searchInnerWidget: Container(
                                       height: 50,
@@ -377,7 +385,7 @@ class _UserRegisterState extends State<UserRegister> {
                                       child: TextFormField(
                                         expands: true,
                                         maxLines: null,
-                                        controller: textEditingController,
+                                        controller: barrioTextEditingController,
                                         decoration: InputDecoration(
                                           isDense: true,
                                           contentPadding:
@@ -398,13 +406,14 @@ class _UserRegisterState extends State<UserRegister> {
                                     searchMatchFn: (item, searchValue) {
                                       return (item.value
                                           .toString()
-                                          .contains(searchValue));
+                                          .toLowerCase()
+                                          .contains(searchValue.toLowerCase()));
                                     },
 
                                     //This to clear the search value when you close the menu
                                     onMenuStateChange: (isOpen) {
                                       if (!isOpen) {
-                                        textEditingController.clear();
+                                        barrioTextEditingController.clear();
                                       }
                                     },
                                     iconSize: 14,
@@ -503,7 +512,7 @@ class _UserRegisterState extends State<UserRegister> {
                               ),
                               items: snapshot.data!
                                   .map((item) => DropdownMenuItem<String>(
-                                        value: item.id,
+                                        value: item.name,
                                         child: Text(
                                           item.name,
                                           style: const TextStyle(
@@ -524,7 +533,7 @@ class _UserRegisterState extends State<UserRegister> {
                               icon: const Icon(
                                 Icons.arrow_forward_ios_outlined,
                               ),
-                              searchController: textEditingController,
+                              searchController: liderTextEditingController,
                               searchInnerWidgetHeight: 50,
                               searchInnerWidget: Container(
                                 height: 50,
@@ -537,7 +546,7 @@ class _UserRegisterState extends State<UserRegister> {
                                 child: TextFormField(
                                   expands: true,
                                   maxLines: null,
-                                  controller: textEditingController,
+                                  controller: liderTextEditingController,
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: const EdgeInsets.symmetric(
@@ -555,13 +564,14 @@ class _UserRegisterState extends State<UserRegister> {
                               searchMatchFn: (item, searchValue) {
                                 return (item.value
                                     .toString()
-                                    .contains(searchValue));
+                                    .toLowerCase()
+                                    .contains(searchValue.toLowerCase()));
                               },
 
                               //This to clear the search value when you close the menu
                               onMenuStateChange: (isOpen) {
                                 if (!isOpen) {
-                                  textEditingController.clear();
+                                  liderTextEditingController.clear();
                                 }
                               },
                               iconSize: 14,
@@ -602,8 +612,11 @@ class _UserRegisterState extends State<UserRegister> {
                         height: 40,
                       ),
                       FutureBuilder<List<Puesto>>(
-                          future: null,
+                          future: mainController.getPuestos(),
                           builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const CircularProgressIndicator();
+                            }
                             return Row(
                               children: [
                                 const Text(
@@ -641,11 +654,11 @@ class _UserRegisterState extends State<UserRegister> {
                                         ),
                                       ],
                                     ),
-                                    items: leadersname
+                                    items: snapshot.data!
                                         .map((item) => DropdownMenuItem<String>(
-                                              value: item,
+                                              value: item.nombre,
                                               child: Text(
-                                                item,
+                                                item.nombre,
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
@@ -664,7 +677,8 @@ class _UserRegisterState extends State<UserRegister> {
                                     icon: const Icon(
                                       Icons.arrow_forward_ios_outlined,
                                     ),
-                                    searchController: textEditingController,
+                                    searchController:
+                                        puestoTextEditingController,
                                     searchInnerWidgetHeight: 50,
                                     searchInnerWidget: Container(
                                       height: 50,
@@ -677,7 +691,7 @@ class _UserRegisterState extends State<UserRegister> {
                                       child: TextFormField(
                                         expands: true,
                                         maxLines: null,
-                                        controller: textEditingController,
+                                        controller: puestoTextEditingController,
                                         decoration: InputDecoration(
                                           isDense: true,
                                           contentPadding:
@@ -695,16 +709,18 @@ class _UserRegisterState extends State<UserRegister> {
                                         ),
                                       ),
                                     ),
-                                    searchMatchFn: (item, searchValue) {
+                                    searchMatchFn: (item, searchValue2) {
                                       return (item.value
                                           .toString()
-                                          .contains(searchValue));
+                                          .toLowerCase()
+                                          .contains(
+                                              searchValue2.toLowerCase()));
                                     },
 
                                     //This to clear the search value when you close the menu
                                     onMenuStateChange: (isOpen) {
                                       if (!isOpen) {
-                                        textEditingController.clear();
+                                        puestoTextEditingController.clear();
                                       }
                                     },
                                     iconSize: 14,
@@ -759,7 +775,7 @@ class _UserRegisterState extends State<UserRegister> {
                                     id: cedula.text,
                                     leaderID: valueleader!,
                                     phone: telefono.text,
-                                    puestoID: 'valuepuesto!',
+                                    puestoID: valuepuesto!,
                                     direccion: direccion.text,
                                     municipio: valuemunicipio!,
                                     barrio: valuebarrio,
