@@ -3423,7 +3423,7 @@ class StaticFields {
       },
       {
         "departamento": "Cesar",
-        "nombre": "Manaure",
+        "nombre": "Manaure Balcon Del Cesar",
         "latitud": "",
         "longitud": "",
         "ubicacion": "Norte",
@@ -3451,7 +3451,7 @@ class StaticFields {
       },
       {
         "departamento": "Cesar",
-        "nombre": "La Jagua de Ibirico",
+        "nombre": "La Jagua De Ibirico",
         "latitud": "",
         "longitud": "",
         "ubicacion": "Norte",

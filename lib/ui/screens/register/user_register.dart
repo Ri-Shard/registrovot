@@ -36,6 +36,7 @@ class _UserRegisterState extends State<UserRegister> {
   List<Leader> aux = [];
   List<String> leadersname = [];
   List<String> puestoname = [];
+  List<Puesto> filter = [];
   MainController mainController = Get.find();
   StaticFields staticfields = StaticFields();
 
@@ -70,7 +71,7 @@ class _UserRegisterState extends State<UserRegister> {
                           SizedBox(
                               width: 500,
                               child: _textFormField('Cedula',
-                                  TextInputType.number, cedula, !enable)),
+                                  TextInputType.number, cedula, true)),
                           const SizedBox(
                             width: 40,
                           ),
@@ -290,7 +291,7 @@ class _UserRegisterState extends State<UserRegister> {
                                 itemPadding:
                                     const EdgeInsets.only(left: 14, right: 14),
                                 dropdownMaxHeight: 200,
-                                dropdownWidth: 200,
+                                dropdownWidth: 400,
                                 dropdownPadding: null,
                                 dropdownDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(14),
@@ -435,7 +436,7 @@ class _UserRegisterState extends State<UserRegister> {
                                     itemPadding: const EdgeInsets.only(
                                         left: 14, right: 14),
                                     dropdownMaxHeight: 200,
-                                    dropdownWidth: 200,
+                                    dropdownWidth: 400,
                                     dropdownPadding: null,
                                     dropdownDecoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(14),
@@ -473,140 +474,144 @@ class _UserRegisterState extends State<UserRegister> {
                       Container(
                         height: 40,
                       ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Lider',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 55,
-                          ),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              isExpanded: true,
-                              hint: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Seleccione',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
+                      Visibility(
+                        visible: enable,
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Lider',
+                              style: TextStyle(
+                                fontSize: 15,
                               ),
-                              items: snapshot.data!
-                                  .map((item) => DropdownMenuItem<String>(
-                                        value: item.name,
-                                        child: Text(
-                                          item.name,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(
+                              width: 55,
+                            ),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.list,
+                                      size: 16,
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Seleccione',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
                                         ),
-                                      ))
-                                  .toList(),
-                              value: valueleader,
-                              onChanged: (value) {
-                                setState(() {
-                                  valueleader = value as String;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              searchController: liderTextEditingController,
-                              searchInnerWidgetHeight: 50,
-                              searchInnerWidget: Container(
-                                height: 50,
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 4,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  expands: true,
-                                  maxLines: null,
-                                  controller: liderTextEditingController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 8,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                    hintText: 'Busca un Lider',
-                                    hintStyle: const TextStyle(fontSize: 12),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                  ],
+                                ),
+                                items: snapshot.data!
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item.name,
+                                          child: Text(
+                                            item.name,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: valueleader,
+                                onChanged: (value) {
+                                  setState(() {
+                                    valueleader = value as String;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                searchController: liderTextEditingController,
+                                searchInnerWidgetHeight: 50,
+                                searchInnerWidget: Container(
+                                  height: 50,
+                                  padding: const EdgeInsets.only(
+                                    top: 8,
+                                    bottom: 4,
+                                    right: 8,
+                                    left: 8,
+                                  ),
+                                  child: TextFormField(
+                                    expands: true,
+                                    maxLines: null,
+                                    controller: liderTextEditingController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 8,
+                                      ),
+                                      hintText: 'Busca un Lider',
+                                      hintStyle: const TextStyle(fontSize: 12),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              searchMatchFn: (item, searchValue) {
-                                return (item.value
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchValue.toLowerCase()));
-                              },
+                                searchMatchFn: (item, searchValue) {
+                                  return (item.value
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(searchValue.toLowerCase()));
+                                },
 
-                              //This to clear the search value when you close the menu
-                              onMenuStateChange: (isOpen) {
-                                if (!isOpen) {
-                                  liderTextEditingController.clear();
-                                }
-                              },
-                              iconSize: 14,
-                              iconEnabledColor: Colors.grey,
-                              iconDisabledColor: Colors.grey,
-                              buttonHeight: 50,
-                              buttonWidth: 300,
-                              buttonPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.black26,
+                                //This to clear the search value when you close the menu
+                                onMenuStateChange: (isOpen) {
+                                  if (!isOpen) {
+                                    liderTextEditingController.clear();
+                                  }
+                                },
+                                iconSize: 14,
+                                iconEnabledColor: Colors.grey,
+                                iconDisabledColor: Colors.grey,
+                                buttonHeight: 50,
+                                buttonWidth: 300,
+                                buttonPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.black26,
+                                  ),
+                                  color: Colors.white,
                                 ),
-                                color: Colors.white,
+                                buttonElevation: 2,
+                                itemHeight: 40,
+                                itemPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                dropdownMaxHeight: 200,
+                                dropdownWidth: 400,
+                                dropdownPadding: null,
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                dropdownElevation: 8,
+                                scrollbarRadius: const Radius.circular(40),
+                                scrollbarThickness: 6,
+                                scrollbarAlwaysShow: true,
+                                offset: const Offset(-20, 0),
                               ),
-                              buttonElevation: 2,
-                              itemHeight: 40,
-                              itemPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              dropdownMaxHeight: 200,
-                              dropdownWidth: 200,
-                              dropdownPadding: null,
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.white,
-                              ),
-                              dropdownElevation: 8,
-                              scrollbarRadius: const Radius.circular(40),
-                              scrollbarThickness: 6,
-                              scrollbarAlwaysShow: true,
-                              offset: const Offset(-20, 0),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Container(
                         height: 40,
@@ -617,145 +622,162 @@ class _UserRegisterState extends State<UserRegister> {
                             if (!snapshot.hasData) {
                               return const CircularProgressIndicator();
                             }
-                            return Row(
-                              children: [
-                                const Text(
-                                  'Puesto',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 40,
-                                ),
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    isExpanded: true,
-                                    hint: Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.list,
-                                          size: 16,
-                                          color: Colors.grey,
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            'Seleccione',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    items: snapshot.data!
-                                        .map((item) => DropdownMenuItem<String>(
-                                              value: item.nombre,
-                                              child: Text(
-                                                item.nombre,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ))
-                                        .toList(),
-                                    value: valuepuesto,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        valuepuesto = value as String;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                    ),
-                                    searchController:
-                                        puestoTextEditingController,
-                                    searchInnerWidgetHeight: 50,
-                                    searchInnerWidget: Container(
-                                      height: 50,
-                                      padding: const EdgeInsets.only(
-                                        top: 8,
-                                        bottom: 4,
-                                        right: 8,
-                                        left: 8,
-                                      ),
-                                      child: TextFormField(
-                                        expands: true,
-                                        maxLines: null,
-                                        controller: puestoTextEditingController,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 8,
-                                          ),
-                                          hintText: 'Busca un puesto',
-                                          hintStyle:
-                                              const TextStyle(fontSize: 12),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    searchMatchFn: (item, searchValue2) {
-                                      return (item.value
-                                          .toString()
-                                          .toLowerCase()
-                                          .contains(
-                                              searchValue2.toLowerCase()));
-                                    },
 
-                                    //This to clear the search value when you close the menu
-                                    onMenuStateChange: (isOpen) {
-                                      if (!isOpen) {
-                                        puestoTextEditingController.clear();
-                                      }
-                                    },
-                                    iconSize: 14,
-                                    iconEnabledColor: Colors.grey,
-                                    iconDisabledColor: Colors.grey,
-                                    buttonHeight: 50,
-                                    buttonWidth: 300,
-                                    buttonPadding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    buttonDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: Border.all(
-                                        color: Colors.black26,
-                                      ),
-                                      color: Colors.white,
+                            for (var i = 0; i < snapshot.data!.length; i++) {
+                              if (snapshot.data![i].municipio.toLowerCase() ==
+                                  valuemunicipio?.toLowerCase()) {
+                                filter.add(snapshot.data![i]);
+                              }
+                            }
+
+                            return Visibility(
+                              visible: enable,
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    'Puesto',
+                                    style: TextStyle(
+                                      fontSize: 15,
                                     ),
-                                    buttonElevation: 2,
-                                    itemHeight: 40,
-                                    itemPadding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    dropdownMaxHeight: 200,
-                                    dropdownWidth: 200,
-                                    dropdownPadding: null,
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: Colors.white,
-                                    ),
-                                    dropdownElevation: 8,
-                                    scrollbarRadius: const Radius.circular(40),
-                                    scrollbarThickness: 6,
-                                    scrollbarAlwaysShow: true,
-                                    offset: const Offset(-20, 0),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 40,
+                                  ),
+                                  DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      isExpanded: true,
+                                      hint: Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.list,
+                                            size: 16,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'Seleccione',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // items: snapshot.data!
+                                      items: filter
+                                          .map((item) =>
+                                              DropdownMenuItem<String>(
+                                                value: item.nombre,
+                                                child: Text(
+                                                  item.nombre,
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                      value: valuepuesto,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          valuepuesto = value as String;
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios_outlined,
+                                      ),
+                                      searchController:
+                                          puestoTextEditingController,
+                                      searchInnerWidgetHeight: 50,
+                                      searchInnerWidget: Container(
+                                        height: 50,
+                                        padding: const EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 4,
+                                          right: 8,
+                                          left: 8,
+                                        ),
+                                        child: TextFormField(
+                                          expands: true,
+                                          maxLines: null,
+                                          controller:
+                                              puestoTextEditingController,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                              vertical: 8,
+                                            ),
+                                            hintText: 'Busca un puesto',
+                                            hintStyle:
+                                                const TextStyle(fontSize: 12),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      searchMatchFn: (item, searchValue2) {
+                                        return (item.value
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(
+                                                searchValue2.toLowerCase()));
+                                      },
+
+                                      //This to clear the search value when you close the menu
+                                      onMenuStateChange: (isOpen) {
+                                        if (!isOpen) {
+                                          puestoTextEditingController.clear();
+                                          filter = [];
+                                        }
+                                      },
+                                      iconSize: 14,
+                                      iconEnabledColor: Colors.grey,
+                                      iconDisabledColor: Colors.grey,
+                                      buttonHeight: 50,
+                                      buttonWidth: 300,
+                                      buttonPadding: const EdgeInsets.only(
+                                          left: 14, right: 14),
+                                      buttonDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(14),
+                                        border: Border.all(
+                                          color: Colors.black26,
+                                        ),
+                                        color: Colors.white,
+                                      ),
+                                      buttonElevation: 2,
+                                      itemHeight: 40,
+                                      itemPadding: const EdgeInsets.only(
+                                          left: 14, right: 14),
+                                      dropdownMaxHeight: 200,
+                                      dropdownWidth: 400,
+                                      dropdownPadding: null,
+                                      dropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(14),
+                                        color: Colors.white,
+                                      ),
+                                      dropdownElevation: 8,
+                                      scrollbarRadius:
+                                          const Radius.circular(40),
+                                      scrollbarThickness: 6,
+                                      scrollbarAlwaysShow: true,
+                                      offset: const Offset(-20, 0),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           }),
                       const SizedBox(
