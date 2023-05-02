@@ -42,8 +42,9 @@ class _UserRegisterState extends State<UserRegister> {
 
   bool enable = false;
   bool update = false;
-  String? valueleader;
-  String? valuepuesto;
+  Leader? valueleader;
+  String? valueIDleader;
+  Puesto? valuepuesto;
   String? valuemunicipio;
   String? valuebarrio;
   @override
@@ -110,8 +111,8 @@ class _UserRegisterState extends State<UserRegister> {
                                         .show();
                                     nombre.text = response.name;
                                     cedula.text = response.id;
-                                    valueleader = response.leaderID;
-                                    valuepuesto = response.puestoID;
+                                    valueleader!.id = response.leaderID;
+                                    valuepuesto!.id = response.puestoID;
                                     telefono.text = response.phone;
                                     direccion.text = response.direccion;
                                     edad.text = response.edad;
@@ -488,7 +489,7 @@ class _UserRegisterState extends State<UserRegister> {
                               width: 55,
                             ),
                             DropdownButtonHideUnderline(
-                              child: DropdownButton2(
+                              child: DropdownButton2<Leader?>(
                                 isExpanded: true,
                                 hint: Row(
                                   children: const [
@@ -514,8 +515,8 @@ class _UserRegisterState extends State<UserRegister> {
                                   ],
                                 ),
                                 items: snapshot.data!
-                                    .map((item) => DropdownMenuItem<String>(
-                                          value: item.name,
+                                    .map((item) => DropdownMenuItem<Leader?>(
+                                          value: item,
                                           child: Text(
                                             item.name,
                                             style: const TextStyle(
@@ -530,7 +531,7 @@ class _UserRegisterState extends State<UserRegister> {
                                 value: valueleader,
                                 onChanged: (value) {
                                   setState(() {
-                                    valueleader = value as String;
+                                    valueleader = value!;
                                   });
                                 },
                                 icon: const Icon(
@@ -650,7 +651,7 @@ class _UserRegisterState extends State<UserRegister> {
                                     width: 40,
                                   ),
                                   DropdownButtonHideUnderline(
-                                    child: DropdownButton2(
+                                    child: DropdownButton2<Puesto?>(
                                       isExpanded: true,
                                       hint: Row(
                                         children: const [
@@ -678,8 +679,8 @@ class _UserRegisterState extends State<UserRegister> {
                                       // items: snapshot.data!
                                       items: filter
                                           .map((item) =>
-                                              DropdownMenuItem<String>(
-                                                value: item.nombre,
+                                              DropdownMenuItem<Puesto?>(
+                                                value: item,
                                                 child: Text(
                                                   item.nombre,
                                                   style: const TextStyle(
@@ -695,7 +696,7 @@ class _UserRegisterState extends State<UserRegister> {
                                       value: valuepuesto,
                                       onChanged: (value) {
                                         setState(() {
-                                          valuepuesto = value as String;
+                                          valuepuesto = value!;
                                         });
                                       },
                                       icon: const Icon(
@@ -801,9 +802,9 @@ class _UserRegisterState extends State<UserRegister> {
                                 Votante votante = Votante(
                                     name: nombre.text,
                                     id: cedula.text,
-                                    leaderID: valueleader!,
+                                    leaderID: valueleader!.id,
                                     phone: telefono.text,
-                                    puestoID: valuepuesto!,
+                                    puestoID: valuepuesto!.id,
                                     direccion: direccion.text,
                                     municipio: valuemunicipio!,
                                     barrio: valuebarrio,

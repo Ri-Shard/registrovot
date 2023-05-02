@@ -1,4 +1,6 @@
-class Puesto {
+import 'package:equatable/equatable.dart';
+
+class Puesto extends Equatable {
   Puesto({
     required this.nombre,
     required this.id,
@@ -33,4 +35,8 @@ class Puesto {
     _data['direccion'] = direccion;
     return _data;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, nombre, direccion];
 }

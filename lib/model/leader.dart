@@ -1,4 +1,6 @@
-class Leader {
+import 'package:equatable/equatable.dart';
+
+class Leader extends Equatable {
   Leader({
     required this.name,
     required this.id,
@@ -25,4 +27,8 @@ class Leader {
     _data['municipio'] = municipio;
     return _data;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name, id, phone];
 }
