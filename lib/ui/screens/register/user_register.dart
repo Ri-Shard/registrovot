@@ -626,7 +626,13 @@ class _UserRegisterState extends State<UserRegister> {
                             for (var i = 0; i < snapshot.data!.length; i++) {
                               if (snapshot.data![i].municipio.toLowerCase() ==
                                   valuemunicipio?.toLowerCase()) {
-                                filter.add(snapshot.data![i]);
+                                if (filter
+                                    .where((element) =>
+                                        element.id == snapshot.data![i].id)
+                                    .toList()
+                                    .isEmpty) {
+                                  filter.add(snapshot.data![i]);
+                                }
                               }
                             }
 
