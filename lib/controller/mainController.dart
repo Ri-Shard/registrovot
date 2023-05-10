@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:registrovot/model/agenda.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
@@ -15,6 +16,7 @@ import 'package:registrovot/ui/screens/register/favores_register.dart';
 import 'package:registrovot/ui/screens/register/leaders_register.dart';
 import 'package:registrovot/ui/screens/register/places_register.dart';
 import 'package:registrovot/ui/screens/register/user_register.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MainController extends GetxController {
   final _auth = FirebaseAuth.instance;
@@ -371,5 +373,34 @@ class MainController extends GetxController {
         )
         .then((value) {})
         .catchError((error) {});
+  }
+
+  //Agenda Methods
+  Future<String?> addAgenda(Appointment appointment) async {
+    String response = '';
+    // User? firebaseUser = _auth.currentUser;
+    CollectionReference colection;
+    String now = DateTime.now().toString();
+    colection = FirebaseFirestore.instance.collection(collection!);
+    colection.doc('agenda').set(
+      {
+        now: {
+          'id': now,
+          'titulo': appointment.subject,
+          'descripcion': appointment.notes,
+          'horainicio': appointment.startTime,
+          'horafinal': appointment.endTime,
+        }
+      },
+      SetOptions(merge: true),
+    ).then((value) {
+      response = "Agenda registrada";
+      return response;
+    }).catchError((error) {
+      response = "Error al agregar la agenda: $error";
+      return response;
+    });
+
+    return response;
   }
 }
