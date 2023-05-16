@@ -388,8 +388,8 @@ class MainController extends GetxController {
           'id': now,
           'titulo': appointment.subject,
           'descripcion': appointment.notes,
-          'horainicio': appointment.startTime,
-          'horafinal': appointment.endTime,
+          'horainicio': appointment.startTime.toString(),
+          'horafinal': appointment.endTime.toString(),
         }
       },
       SetOptions(merge: true),
@@ -402,5 +402,26 @@ class MainController extends GetxController {
     });
 
     return response;
+  }
+
+  Future<List<Appointment>> getAgendas() async {
+    List<Appointment> aux = [];
+    User? firebaseUser = _auth.currentUser;
+    CollectionReference colection;
+    colection = FirebaseFirestore.instance.collection(collection!);
+    final agendadata = await colection.doc('agenda').get();
+    Map<dynamic, dynamic> dataid = agendadata.data() as Map<dynamic, dynamic>;
+    dataid.forEach((key, value) {
+      Appointment appointment = Appointment(
+        id: value['id'],
+        subject: value['titulo'],
+        notes: value['descripcion'],
+        startTime: DateTime.parse(value['horainicio']),
+        endTime: DateTime.parse(value['horafinal']),
+      );
+      aux.add(appointment);
+    });
+
+    return aux;
   }
 }
