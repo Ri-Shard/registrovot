@@ -1,21 +1,10 @@
+// ignore: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:registrovot/model/agenda.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
-import 'package:registrovot/ui/screens/Map/map_screen.dart';
-import 'package:registrovot/ui/screens/Map/routes_screen.dart';
-import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
-import 'package:registrovot/ui/screens/getdata/consultarPuestos_screen.dart';
-import 'package:registrovot/ui/screens/getdata/downloadDB_screen.dart';
-import 'package:registrovot/ui/screens/register/agenda_register.dart';
-import 'package:registrovot/ui/screens/register/favores_register.dart';
-import 'package:registrovot/ui/screens/register/leaders_register.dart';
-import 'package:registrovot/ui/screens/register/places_register.dart';
-import 'package:registrovot/ui/screens/register/user_register.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MainController extends GetxController {
@@ -87,7 +76,6 @@ class MainController extends GetxController {
 //LEADER METHODS
   Future<String?> addLeader(Leader leader) async {
     String response = '';
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     final exist = await getoneLeader(leader.id);
     if (exist != null) {
@@ -119,7 +107,6 @@ class MainController extends GetxController {
 
   Future<List<Leader>> getLeaders() async {
     List<Leader> prueba = [];
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     final lideresdata = await colection.doc('lideres').get();
@@ -137,7 +124,6 @@ class MainController extends GetxController {
 
   Future<Leader?> getoneLeader(String idLeader) async {
     Leader? leader;
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     final lideresdata = await colection.doc('lideres').get();
@@ -156,7 +142,6 @@ class MainController extends GetxController {
   }
 
   String? deleteLeaders(String id) {
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     colection.doc('lideres').update({id: FieldValue.delete()}).then((value) {
@@ -170,7 +155,6 @@ class MainController extends GetxController {
   //USER METHODS
   Future<String?> addVotante(Votante votante) async {
     String response = '';
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     final exist = await getoneVotante(votante.id);
     if (exist != null) {
@@ -207,7 +191,6 @@ class MainController extends GetxController {
 
   Future<String?> updateVotante(Votante votante) async {
     String response = '';
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     colection.doc('usuarios').set(
@@ -238,7 +221,6 @@ class MainController extends GetxController {
 
   Future<List<Votante>> getVotantes() async {
     List<Votante> aux = [];
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     final votantesdata = await colection.doc('usuarios').get();
@@ -261,7 +243,6 @@ class MainController extends GetxController {
 
   Future<Votante?> getoneVotante(String idVotante) async {
     Votante? votanteaux;
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     final votantesdata = await colection.doc('usuarios').get();
@@ -319,7 +300,6 @@ class MainController extends GetxController {
 
   Future<List<Puesto>> getPuestos() async {
     List<Puesto> aux = [];
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection('location');
     final puntosdata = await colection.doc('puestos').get();
@@ -340,7 +320,6 @@ class MainController extends GetxController {
 
   Future<Puesto?> getonePuesto(String idPuesto) async {
     Puesto? puesto;
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection('location');
     final puestosdata = await colection.doc('puestos').get();
@@ -406,7 +385,6 @@ class MainController extends GetxController {
 
   Future<List<Appointment>> getAgendas() async {
     List<Appointment> aux = [];
-    User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
     final agendadata = await colection.doc('agenda').get();

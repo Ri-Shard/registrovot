@@ -52,8 +52,8 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                           subject: e.subject,
                           notes: e.notes,
                           color: Color.fromARGB(255, r, g, b),
-                          startTimeZone: '',
-                          endTimeZone: '',
+                          startTimeZone: 'SA Pacific Standard Time',
+                          endTimeZone: 'SA Pacific Standard Time',
                         ));
                       }
                       return SfCalendar(
@@ -98,8 +98,8 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                                                 appointmentslist
                                                     .add(Appointment(
                                                   startTime: date,
-                                                  endTime: date
-                                                      .add(Duration(hours: 1)),
+                                                  endTime: date.add(
+                                                      const Duration(hours: 1)),
                                                   subject: titulo.text,
                                                   notes: descripcion.text,
                                                   color: Color.fromARGB(
