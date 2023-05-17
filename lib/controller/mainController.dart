@@ -359,12 +359,11 @@ class MainController extends GetxController {
     String response = '';
     // User? firebaseUser = _auth.currentUser;
     CollectionReference colection;
-    String now = DateTime.now().toString();
     colection = FirebaseFirestore.instance.collection(collection!);
     colection.doc('agenda').set(
       {
-        now: {
-          'id': now,
+        appointment.id.toString(): {
+          'id': appointment.id.toString(),
           'titulo': appointment.subject,
           'descripcion': appointment.notes,
           'horainicio': appointment.startTime.toString(),

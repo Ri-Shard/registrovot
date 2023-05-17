@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:get/get.dart';
 import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -45,16 +46,20 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                         int r = 0 + Random().nextInt((255 + 1) - 0);
                         int g = 0 + Random().nextInt((255 + 1) - 0);
                         int b = 0 + Random().nextInt((255 + 1) - 0);
-
-                        appointmentslist.add(Appointment(
-                          startTime: e.startTime,
-                          endTime: e.endTime,
-                          subject: e.subject,
-                          notes: e.notes,
-                          color: Color.fromARGB(255, r, g, b),
-                          startTimeZone: 'SA Pacific Standard Time',
-                          endTimeZone: 'SA Pacific Standard Time',
-                        ));
+                        if (appointmentslist.firstWhereOrNull(
+                                (element) => element.id == e.id) ==
+                            null) {
+                          appointmentslist.add(Appointment(
+                            id: e.id,
+                            startTime: e.startTime,
+                            endTime: e.endTime,
+                            subject: e.subject,
+                            notes: e.notes,
+                            color: Color.fromARGB(255, r, g, b),
+                            startTimeZone: 'SA Pacific Standard Time',
+                            endTimeZone: 'SA Pacific Standard Time',
+                          ));
+                        }
                       }
                       return SfCalendar(
                         onTap: (CalendarTapDetails details) {
@@ -84,6 +89,9 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                                           ),
                                           TextButton(
                                             onPressed: () {
+                                              String now =
+                                                  DateTime.now().toString();
+
                                               int r = 0 +
                                                   Random()
                                                       .nextInt((255 + 1) - 0);
@@ -97,6 +105,7 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                                               setState(() {
                                                 appointmentslist
                                                     .add(Appointment(
+                                                  id: now,
                                                   startTime: date,
                                                   endTime: date.add(
                                                       const Duration(hours: 1)),
