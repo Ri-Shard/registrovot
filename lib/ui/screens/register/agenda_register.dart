@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -40,7 +42,8 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                     future: mainController.getAgendas(),
                     builder: (context, snapshot) {
                       if (snapshot.data == null) {
-                        return CircularProgressIndicator();
+                        return LoadingAnimationWidget.newtonCradle(
+                            color: Colors.pink, size: 100);
                       }
                       for (Appointment e in snapshot.data!) {
                         int r = 0 + Random().nextInt((255 + 1) - 0);
@@ -155,9 +158,23 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                     })),
             TextButton(
               onPressed: () {
+                _showloading();
+                Timer(const Duration(seconds: 1), () => _stoploading());
                 for (var e in appointmentslist) {
                   mainController.addAgenda(e);
                 }
+                AwesomeDialog(
+                        width: 566,
+                        context: context,
+                        dialogType: DialogType.success,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: 'Correcto',
+                        desc: 'La agenda fue registrada correctamente',
+                        btnOkOnPress: () {},
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: const Color(0xff01b9ff))
+                    .show();
               },
               style: TextButton.styleFrom(
                 backgroundColor: const Color(0xffff004e),
@@ -195,6 +212,20 @@ class _AgendaRegisterState extends State<AgendaRegister> {
       },
       onChanged: (_) {},
     );
+  }
+
+  void _showloading() {
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            content: LoadingAnimationWidget.newtonCradle(
+                color: Colors.pink, size: 100)));
+  }
+
+  void _stoploading() {
+    Navigator.pop(context);
   }
 
   DataSource _getCalendarDataSource() {
