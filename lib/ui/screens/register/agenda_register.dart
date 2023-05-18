@@ -77,13 +77,18 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                                       height: 200,
                                       child: Column(
                                         children: [
-                                          _textFormField('Titulo',
-                                              TextInputType.text, titulo, 1),
+                                          _textFormField(
+                                              'Titulo',
+                                              TextInputType.text,
+                                              titulo,
+                                              1,
+                                              true),
                                           _textFormField(
                                               'Descripcion',
                                               TextInputType.number,
                                               descripcion,
-                                              3),
+                                              3,
+                                              false),
                                           const SizedBox(
                                             height: 20,
                                           ),
@@ -182,8 +187,9 @@ class _AgendaRegisterState extends State<AgendaRegister> {
   }
 
   Widget _textFormField(String labelText, TextInputType input,
-      TextEditingController controller, int maxlines) {
+      TextEditingController controller, int maxlines, bool autofocus) {
     return TextFormField(
+      autofocus: autofocus,
       decoration: InputDecoration(labelText: labelText),
       maxLines: maxlines,
       keyboardType: input,
