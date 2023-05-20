@@ -77,7 +77,7 @@ class MainController extends GetxController {
   Future<String?> addLeader(Leader leader) async {
     String response = '';
     CollectionReference colection;
-    final exist = await getoneLeader(leader.id);
+    final exist = await getoneLeader(leader.id!);
     if (exist != null) {
       response = 'Ya Existe';
       return response;
@@ -269,7 +269,7 @@ class MainController extends GetxController {
   Future<String?> addPuesto(Puesto puesto) async {
     String response = '';
     CollectionReference colection;
-    final exist = await getonePuesto(puesto.id);
+    final exist = await getonePuesto(puesto.id!);
     if (exist != null) {
       response = 'Ya Existe';
       return response;

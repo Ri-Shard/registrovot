@@ -9,12 +9,12 @@ class Puesto extends Equatable {
     required this.municipio,
     required this.direccion,
   });
-  late final String nombre;
-  late final String id;
-  late final String latitud;
-  late final String longitud;
-  late final String municipio;
-  late final String direccion;
+  String? nombre;
+  String? id;
+  String? latitud;
+  String? longitud;
+  String? municipio;
+  String? direccion;
 
   Puesto.fromJson(Map<String, dynamic> json) {
     nombre = json['nombre'];

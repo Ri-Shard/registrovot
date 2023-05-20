@@ -58,6 +58,7 @@ class _UserRegisterState extends State<UserRegister> {
         future: mainController.getLeaders(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            valueleader = snapshot.data!.first;
             return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 200),
@@ -95,20 +96,23 @@ class _UserRegisterState extends State<UserRegister> {
                                 final response = await mainController
                                     .getoneVotante(cedula.text);
                                 if (response != null) {
+                                  // AwesomeDialog(
+                                  //         width: 566,
+                                  //         context: context,
+                                  //         dialogType: DialogType.success,
+                                  //         animType: AnimType.rightSlide,
+                                  //         headerAnimationLoop: false,
+                                  //         title: 'Ya esta registrado',
+                                  //         desc:
+                                  //             'El votante fue registrado anteriormente',
+                                  //         btnOkOnPress: () {},
+                                  //         btnOkIcon: Icons.cancel,
+                                  //         btnOkColor: const Color(0xff01b9ff))
+                                  //     .show();
                                   setState(() {
-                                    AwesomeDialog(
-                                            width: 566,
-                                            context: context,
-                                            dialogType: DialogType.success,
-                                            animType: AnimType.rightSlide,
-                                            headerAnimationLoop: false,
-                                            title: 'Ya esta registrado',
-                                            desc:
-                                                'El votante fue registrado anteriormente',
-                                            btnOkOnPress: () {},
-                                            btnOkIcon: Icons.cancel,
-                                            btnOkColor: const Color(0xff01b9ff))
-                                        .show();
+                                    enable = true;
+                                    update = true;
+
                                     nombre.text = response.name;
                                     cedula.text = response.id;
                                     valueleader!.id = response.leaderID;
@@ -122,8 +126,6 @@ class _UserRegisterState extends State<UserRegister> {
                                     } else {
                                       valuebarrio = response.barrio;
                                     }
-                                    enable = true;
-                                    update = true;
                                   });
                                 } else {
                                   setState(() {
@@ -518,7 +520,7 @@ class _UserRegisterState extends State<UserRegister> {
                                     .map((item) => DropdownMenuItem<Leader?>(
                                           value: item,
                                           child: Text(
-                                            item.name,
+                                            item.name!,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
@@ -620,12 +622,13 @@ class _UserRegisterState extends State<UserRegister> {
                       FutureBuilder<List<Puesto>>(
                           future: mainController.getPuestos(),
                           builder: (context, snapshot) {
+                            valuepuesto = snapshot.data!.first;
                             if (!snapshot.hasData) {
                               return const CircularProgressIndicator();
                             }
 
                             for (var i = 0; i < snapshot.data!.length; i++) {
-                              if (snapshot.data![i].municipio.toLowerCase() ==
+                              if (snapshot.data![i].municipio!.toLowerCase() ==
                                   valuemunicipio?.toLowerCase()) {
                                 if (filter
                                     .where((element) =>
@@ -682,7 +685,7 @@ class _UserRegisterState extends State<UserRegister> {
                                               DropdownMenuItem<Puesto?>(
                                                 value: item,
                                                 child: Text(
-                                                  item.nombre,
+                                                  item.nombre!,
                                                   style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
@@ -802,9 +805,9 @@ class _UserRegisterState extends State<UserRegister> {
                                 Votante votante = Votante(
                                     name: nombre.text,
                                     id: cedula.text,
-                                    leaderID: valueleader!.id,
+                                    leaderID: valueleader!.id!,
                                     phone: telefono.text,
-                                    puestoID: valuepuesto!.id,
+                                    puestoID: valuepuesto!.id!,
                                     direccion: direccion.text,
                                     municipio: valuemunicipio!,
                                     barrio: valuebarrio,

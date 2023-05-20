@@ -7,10 +7,10 @@ class Leader extends Equatable {
     required this.phone,
     required this.municipio,
   });
-  late final String name;
-  late final String id;
-  late final String phone;
-  late final String municipio;
+  String? name;
+  String? id;
+  String? phone;
+  String? municipio;
 
   Leader.fromJson(Map<String, dynamic> json) {
     name = json['name'];

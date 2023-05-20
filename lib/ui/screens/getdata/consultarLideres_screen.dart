@@ -30,7 +30,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                       return ListTile(
                         leading: const Icon(Icons.rocket),
                         trailing: Text(
-                          snapshot.data![index].name,
+                          snapshot.data![index].name!,
                         ),
                       );
                     }),
