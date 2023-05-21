@@ -622,10 +622,10 @@ class _UserRegisterState extends State<UserRegister> {
                       FutureBuilder<List<Puesto>>(
                           future: mainController.getPuestos(),
                           builder: (context, snapshot) {
-                            valuepuesto = snapshot.data!.first;
                             if (!snapshot.hasData) {
                               return const CircularProgressIndicator();
                             }
+                            valuepuesto = snapshot.data!.first;
 
                             for (var i = 0; i < snapshot.data!.length; i++) {
                               if (snapshot.data![i].municipio!.toLowerCase() ==

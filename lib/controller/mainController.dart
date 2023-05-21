@@ -85,8 +85,8 @@ class MainController extends GetxController {
       colection = FirebaseFirestore.instance.collection(collection!);
       colection.doc('lideres').set(
         {
-          leader.id: {
-            'id': leader.id,
+          leader.id.toString(): {
+            'id': leader.id.toString(),
             'name': leader.name,
             'phone': leader.phone,
             'municipio': leader.municipio

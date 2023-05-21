@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
 
 import '../../../controller/mainController.dart';
@@ -186,13 +187,9 @@ class PlacesRegister extends StatelessWidget {
                   width: 516,
                 ),
                 TextButton(
-                  onPressed: () async{
-                    // for (var i = 0; i < staticfields.listapuestos.length; i++) {
-                    //   mainController.anotheraddpuesto(i,
-                    //       staticfields.listapuestos[i] as Map<String, String>);
-                    // }
-                    final result = await mainController.getPuestos();
-                    print(result);
+                  onPressed: () async {
+//                     Puesto puesto = Puesto(nombre: nombre.text, id: , latitud: latitud, longitud: longitud, municipio: municipio, direccion: direccion)
+// mainController.addPuesto()
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xffff004e),
