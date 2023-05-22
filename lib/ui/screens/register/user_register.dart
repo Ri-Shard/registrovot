@@ -464,20 +464,186 @@ class _UserRegisterState extends State<UserRegister> {
               Container(
                 height: 40,
               ),
+              // FutureBuilder<List<Leader>>(
+              //     future: mainController.getLeaders(),
+              //     builder: (context, snapshot) {
+              //       if (!snapshot.hasData) {
+              //         return const CircularProgressIndicator();
+              //       }
+              //       // if (valueleader.hashCode !=
+              //       //         snapshot.data!.first.hashCode ||
+              //       //     valueleader == null) {
+              //       //   valueleader = snapshot.data!.first;
+              //       // }
+              //       if (valueleader == null) {
+              //         valueleader = snapshot.data!.first;
+              //       }
+              //       return Visibility(
+              //         visible: enable,
+              //         child: Row(
+              //           children: [
+              //             const Text(
+              //               'Lider',
+              //               style: TextStyle(
+              //                 fontSize: 15,
+              //               ),
+              //             ),
+              //             const SizedBox(
+              //               width: 55,
+              //             ),
+              //             DropdownButtonHideUnderline(
+              //               child: DropdownButton2<Leader?>(
+              //                 isExpanded: true,
+              //                 hint: Row(
+              //                   children: const [
+              //                     Icon(
+              //                       Icons.list,
+              //                       size: 16,
+              //                       color: Colors.grey,
+              //                     ),
+              //                     SizedBox(
+              //                       width: 4,
+              //                     ),
+              //                     Expanded(
+              //                       child: Text(
+              //                         'Seleccione',
+              //                         style: TextStyle(
+              //                           fontSize: 14,
+              //                           fontWeight: FontWeight.bold,
+              //                           color: Colors.grey,
+              //                         ),
+              //                         overflow: TextOverflow.ellipsis,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //                 items: snapshot.data!
+              //                     .map((item) => DropdownMenuItem<Leader?>(
+              //                           value: item,
+              //                           child: Text(
+              //                             item.name!,
+              //                             style: const TextStyle(
+              //                               fontSize: 14,
+              //                               fontWeight: FontWeight.bold,
+              //                               color: Colors.grey,
+              //                             ),
+              //                             overflow: TextOverflow.ellipsis,
+              //                           ),
+              //                         ))
+              //                     .toList(),
+              //                 value: valueleader,
+              //                 onChanged: (value) {
+              //                   setState(() {
+              //                     valueleader = value!;
+              //                     print(valueleader);
+              //                     print('asdasd');
+              //                   });
+              //                 },
+              //                 icon: const Icon(
+              //                   Icons.arrow_forward_ios_outlined,
+              //                 ),
+              //                 searchController: liderTextEditingController,
+              //                 searchInnerWidgetHeight: 50,
+              //                 searchInnerWidget: Container(
+              //                   height: 50,
+              //                   padding: const EdgeInsets.only(
+              //                     top: 8,
+              //                     bottom: 4,
+              //                     right: 8,
+              //                     left: 8,
+              //                   ),
+              //                   child: TextFormField(
+              //                     expands: true,
+              //                     maxLines: null,
+              //                     controller: liderTextEditingController,
+              //                     decoration: InputDecoration(
+              //                       isDense: true,
+              //                       contentPadding: const EdgeInsets.symmetric(
+              //                         horizontal: 10,
+              //                         vertical: 8,
+              //                       ),
+              //                       hintText: 'Busca un Lider',
+              //                       hintStyle: const TextStyle(fontSize: 12),
+              //                       border: OutlineInputBorder(
+              //                         borderRadius: BorderRadius.circular(8),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 searchMatchFn: (item, searchValue) {
+              //                   return (item.value
+              //                       .toString()
+              //                       .toLowerCase()
+              //                       .contains(searchValue.toLowerCase()));
+              //                 },
+
+              //                 //This to clear the search value when you close the menu
+              //                 onMenuStateChange: (isOpen) {
+              //                   if (!isOpen) {
+              //                     liderTextEditingController.clear();
+              //                   }
+              //                 },
+              //                 iconSize: 14,
+              //                 iconEnabledColor: Colors.grey,
+              //                 iconDisabledColor: Colors.grey,
+              //                 buttonHeight: 50,
+              //                 buttonWidth: 300,
+              //                 buttonPadding:
+              //                     const EdgeInsets.only(left: 14, right: 14),
+              //                 buttonDecoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(14),
+              //                   border: Border.all(
+              //                     color: Colors.black26,
+              //                   ),
+              //                   color: Colors.white,
+              //                 ),
+              //                 buttonElevation: 2,
+              //                 itemHeight: 40,
+              //                 itemPadding:
+              //                     const EdgeInsets.only(left: 14, right: 14),
+              //                 dropdownMaxHeight: 200,
+              //                 dropdownWidth: 400,
+              //                 dropdownPadding: null,
+              //                 dropdownDecoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(14),
+              //                   color: Colors.white,
+              //                 ),
+              //                 dropdownElevation: 8,
+              //                 scrollbarRadius: const Radius.circular(40),
+              //                 scrollbarThickness: 6,
+              //                 scrollbarAlwaysShow: true,
+              //                 offset: const Offset(-20, 0),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     }),
               FutureBuilder<List<Leader>>(
                   future: mainController.getLeaders(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const CircularProgressIndicator();
                     }
-                    // if (valueleader.hashCode !=
-                    //         snapshot.data!.first.hashCode ||
-                    //     valueleader == null) {
-                    //   valueleader = snapshot.data!.first;
-                    // }
-                    if (valueleader == null) {
+
+                    if (valueleader.hashCode != snapshot.data!.first.hashCode ||
+                        valueleader == null) {
                       valueleader = snapshot.data!.first;
                     }
+
+                    // for (var i = 0; i < snapshot.data!.length; i++) {
+                    //   if (snapshot.data![i].municipio!.toLowerCase() ==
+                    //       valuemunicipio?.toLowerCase()) {
+                    //     if (filter
+                    //         .where(
+                    //             (element) => element.id == snapshot.data![i].id)
+                    //         .toList()
+                    //         .isEmpty) {
+                    //       filter.add(snapshot.data![i]);
+                    //     }
+                    //   }
+                    // }
+
                     return Visibility(
                       visible: enable,
                       child: Row(
@@ -489,7 +655,7 @@ class _UserRegisterState extends State<UserRegister> {
                             ),
                           ),
                           const SizedBox(
-                            width: 55,
+                            width: 40,
                           ),
                           DropdownButtonHideUnderline(
                             child: DropdownButton2<Leader?>(
@@ -517,6 +683,7 @@ class _UserRegisterState extends State<UserRegister> {
                                   ),
                                 ],
                               ),
+                              // items: snapshot.data!
                               items: snapshot.data!
                                   .map((item) => DropdownMenuItem<Leader?>(
                                         value: item,
@@ -535,14 +702,12 @@ class _UserRegisterState extends State<UserRegister> {
                               onChanged: (value) {
                                 setState(() {
                                   valueleader = value!;
-                                  print(valueleader);
-                                  print('asdasd');
                                 });
                               },
                               icon: const Icon(
                                 Icons.arrow_forward_ios_outlined,
                               ),
-                              searchController: liderTextEditingController,
+                              searchController: puestoTextEditingController,
                               searchInnerWidgetHeight: 50,
                               searchInnerWidget: Container(
                                 height: 50,
@@ -555,14 +720,14 @@ class _UserRegisterState extends State<UserRegister> {
                                 child: TextFormField(
                                   expands: true,
                                   maxLines: null,
-                                  controller: liderTextEditingController,
+                                  controller: puestoTextEditingController,
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                       vertical: 8,
                                     ),
-                                    hintText: 'Busca un Lider',
+                                    hintText: 'Busca un puesto',
                                     hintStyle: const TextStyle(fontSize: 12),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -570,17 +735,18 @@ class _UserRegisterState extends State<UserRegister> {
                                   ),
                                 ),
                               ),
-                              searchMatchFn: (item, searchValue) {
+                              searchMatchFn: (item, searchValue2) {
                                 return (item.value
                                     .toString()
                                     .toLowerCase()
-                                    .contains(searchValue.toLowerCase()));
+                                    .contains(searchValue2.toLowerCase()));
                               },
 
                               //This to clear the search value when you close the menu
                               onMenuStateChange: (isOpen) {
                                 if (!isOpen) {
-                                  liderTextEditingController.clear();
+                                  puestoTextEditingController.clear();
+                                  filter = [];
                                 }
                               },
                               iconSize: 14,
