@@ -11,6 +11,7 @@ import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
+import 'package:searchfield/searchfield.dart';
 
 class UserRegister extends StatefulWidget {
   UserRegister({Key? key}) : super(key: key);
@@ -37,6 +38,8 @@ class _UserRegisterState extends State<UserRegister> {
   List<String> leadersname = [];
   List<String> puestoname = [];
   List<Puesto> filter = [];
+  List<Leader> filterLeader = [];
+
   MainController mainController = Get.find();
   StaticFields staticfields = StaticFields();
 
@@ -110,8 +113,10 @@ class _UserRegisterState extends State<UserRegister> {
 
                             nombre.text = response.name;
                             cedula.text = response.id;
-                            valueleader!.id = response.leaderID;
-                            valuepuesto!.id = response.puestoID;
+                            valueleader = filterLeader.firstWhere(
+                                (element) => element.id == response.leaderID);
+                            // valueleader!.id = response.leaderID;
+                            // valuepuesto!.id = response.puestoID;
                             telefono.text = response.phone;
                             direccion.text = response.direccion;
                             edad.text = response.edad;
@@ -176,128 +181,44 @@ class _UserRegisterState extends State<UserRegister> {
                     const SizedBox(
                       width: 15,
                     ),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        hint: Row(
-                          children: const [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Seleccione',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: staticfields
+                    Container(
+                      color: Colors.amber,
+                      width: 500,
+                      height: 100,
+                      child: Form(
+                          child: SearchField<Municipio>(
+                        suggestions: staticfields
                             .getMunicipios()
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item.nombre,
-                                  child: Text(
-                                    item.nombre!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                            .map((e) =>
+                                SearchFieldListItem<Municipio>(e.nombre!))
                             .toList(),
-                        value: valuemunicipio,
-                        onChanged: (value) {
-                          setState(() {
-                            valuemunicipio = value as String;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.arrow_forward_ios_outlined,
+                        suggestionState: Suggestion.expand,
+                        textInputAction: TextInputAction.next,
+                        hint: 'SearchField Example 2',
+                        searchStyle: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black.withOpacity(0.8),
                         ),
-                        searchController: municipioTextEditingController,
-                        searchInnerWidgetHeight: 50,
-                        searchInnerWidget: Container(
-                          height: 50,
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 4,
-                            right: 8,
-                            left: 8,
-                          ),
-                          child: TextFormField(
-                            expands: true,
-                            maxLines: null,
-                            controller: municipioTextEditingController,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              hintText: 'Busca un municipio',
-                              hintStyle: const TextStyle(fontSize: 12),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                        // validator: (x) {
+                        //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
+                        //     return 'Please Enter a valid State';
+                        //   }
+                        //   return null;
+                        // },
+                        searchInputDecoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black.withOpacity(0.8),
                             ),
                           ),
-                        ),
-                        searchMatchFn: (item, searchValue) {
-                          return (item.value
-                              .toString()
-                              .toLowerCase()
-                              .contains(searchValue.toLowerCase()));
-                        },
-
-                        //This to clear the search value when you close the menu
-                        onMenuStateChange: (isOpen) {
-                          if (!isOpen) {
-                            municipioTextEditingController.clear();
-                          }
-                        },
-                        iconSize: 14,
-                        iconEnabledColor: Colors.grey,
-                        iconDisabledColor: Colors.grey,
-                        buttonHeight: 50,
-                        buttonWidth: 300,
-                        buttonPadding:
-                            const EdgeInsets.only(left: 14, right: 14),
-                        buttonDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: Colors.black26,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
                           ),
-                          color: Colors.white,
                         ),
-                        buttonElevation: 2,
-                        itemHeight: 40,
-                        itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                        dropdownMaxHeight: 200,
-                        dropdownWidth: 400,
-                        dropdownPadding: null,
-                        dropdownDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          color: Colors.white,
-                        ),
-                        dropdownElevation: 8,
-                        scrollbarRadius: const Radius.circular(40),
-                        scrollbarThickness: 6,
-                        scrollbarAlwaysShow: true,
-                        offset: const Offset(-20, 0),
-                      ),
-                    ),
+                        maxSuggestionsInViewPort: 6,
+                        itemHeight: 50,
+                      )),
+                    )
                   ],
                 ),
               ),
@@ -316,129 +237,44 @@ class _UserRegisterState extends State<UserRegister> {
                         const SizedBox(
                           width: 45,
                         ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Row(
-                              children: const [
-                                Icon(
-                                  Icons.list,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Seleccione',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: staticfields
-                                .getBarrios()
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item.barrio,
-                                      child: Text(
-                                        item.barrio!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
+                        Container(
+                          color: Colors.blue,
+                          width: 500,
+                          height: 100,
+                          child: Form(
+                              child: SearchField<Municipio>(
+                            suggestions: staticfields
+                                .getMunicipios()
+                                .map((e) =>
+                                    SearchFieldListItem<Municipio>(e.nombre!))
                                 .toList(),
-                            value: valuebarrio,
-                            onChanged: (value) {
-                              setState(() {
-                                valuebarrio = value as String;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.arrow_forward_ios_outlined,
+                            suggestionState: Suggestion.expand,
+                            textInputAction: TextInputAction.next,
+                            hint: 'SearchField Example 2',
+                            searchStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black.withOpacity(0.8),
                             ),
-                            searchController: barrioTextEditingController,
-                            searchInnerWidgetHeight: 50,
-                            searchInnerWidget: Container(
-                              height: 50,
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                bottom: 4,
-                                right: 8,
-                                left: 8,
-                              ),
-                              child: TextFormField(
-                                expands: true,
-                                maxLines: null,
-                                controller: barrioTextEditingController,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 8,
-                                  ),
-                                  hintText: 'Busca un Barrio',
-                                  hintStyle: const TextStyle(fontSize: 12),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                            // validator: (x) {
+                            //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
+                            //     return 'Please Enter a valid State';
+                            //   }
+                            //   return null;
+                            // },
+                            searchInputDecoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.8),
                                 ),
                               ),
-                            ),
-                            searchMatchFn: (item, searchValue) {
-                              return (item.value
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(searchValue.toLowerCase()));
-                            },
-
-                            //This to clear the search value when you close the menu
-                            onMenuStateChange: (isOpen) {
-                              if (!isOpen) {
-                                barrioTextEditingController.clear();
-                              }
-                            },
-                            iconSize: 14,
-                            iconEnabledColor: Colors.grey,
-                            iconDisabledColor: Colors.grey,
-                            buttonHeight: 50,
-                            buttonWidth: 300,
-                            buttonPadding:
-                                const EdgeInsets.only(left: 14, right: 14),
-                            buttonDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: Colors.black26,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
                               ),
-                              color: Colors.white,
                             ),
-                            buttonElevation: 2,
-                            itemHeight: 40,
-                            itemPadding:
-                                const EdgeInsets.only(left: 14, right: 14),
-                            dropdownMaxHeight: 200,
-                            dropdownWidth: 400,
-                            dropdownPadding: null,
-                            dropdownDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              color: Colors.white,
-                            ),
-                            dropdownElevation: 8,
-                            scrollbarRadius: const Radius.circular(40),
-                            scrollbarThickness: 6,
-                            scrollbarAlwaysShow: true,
-                            offset: const Offset(-20, 0),
-                          ),
-                        ),
+                            maxSuggestionsInViewPort: 6,
+                            itemHeight: 50,
+                          )),
+                        )
                       ],
                     )
                   : const SizedBox(),
@@ -625,10 +461,18 @@ class _UserRegisterState extends State<UserRegister> {
                     if (!snapshot.hasData) {
                       return const CircularProgressIndicator();
                     }
+                    // if (valueleader == null) {
+                    // }
 
-                    if (valueleader.hashCode != snapshot.data!.first.hashCode ||
-                        valueleader == null) {
-                      valueleader = snapshot.data!.first;
+                    for (var i = 0; i < snapshot.data!.length; i++) {
+                      filterLeader.add(snapshot.data![i]);
+                    }
+                    if (valueleader != null) {
+                      if (valueleader.hashCode !=
+                          snapshot.data!.first.hashCode) {
+                        valueleader = snapshot.data!.firstWhere(
+                            (element) => valueleader!.id == element.id);
+                      }
                     }
 
                     // for (var i = 0; i < snapshot.data!.length; i++) {
@@ -657,130 +501,44 @@ class _UserRegisterState extends State<UserRegister> {
                           const SizedBox(
                             width: 40,
                           ),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton2<Leader?>(
-                              isExpanded: true,
-                              hint: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Seleccione',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // items: snapshot.data!
-                              items: snapshot.data!
-                                  .map((item) => DropdownMenuItem<Leader?>(
-                                        value: item,
-                                        child: Text(
-                                          item.name!,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ))
+                          Container(
+                            color: Colors.lime,
+                            width: 500,
+                            height: 100,
+                            child: Form(
+                                child: SearchField<Municipio>(
+                              suggestions: staticfields
+                                  .getMunicipios()
+                                  .map((e) =>
+                                      SearchFieldListItem<Municipio>(e.nombre!))
                                   .toList(),
-                              value: valueleader,
-                              onChanged: (value) {
-                                setState(() {
-                                  valueleader = value!;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_outlined,
+                              suggestionState: Suggestion.expand,
+                              textInputAction: TextInputAction.next,
+                              hint: 'SearchField Example 2',
+                              searchStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black.withOpacity(0.8),
                               ),
-                              searchController: puestoTextEditingController,
-                              searchInnerWidgetHeight: 50,
-                              searchInnerWidget: Container(
-                                height: 50,
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 4,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  expands: true,
-                                  maxLines: null,
-                                  controller: puestoTextEditingController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 8,
-                                    ),
-                                    hintText: 'Busca un puesto',
-                                    hintStyle: const TextStyle(fontSize: 12),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                              // validator: (x) {
+                              //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
+                              //     return 'Please Enter a valid State';
+                              //   }
+                              //   return null;
+                              // },
+                              searchInputDecoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
                                   ),
                                 ),
-                              ),
-                              searchMatchFn: (item, searchValue2) {
-                                return (item.value
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchValue2.toLowerCase()));
-                              },
-
-                              //This to clear the search value when you close the menu
-                              onMenuStateChange: (isOpen) {
-                                if (!isOpen) {
-                                  puestoTextEditingController.clear();
-                                  filter = [];
-                                }
-                              },
-                              iconSize: 14,
-                              iconEnabledColor: Colors.grey,
-                              iconDisabledColor: Colors.grey,
-                              buttonHeight: 50,
-                              buttonWidth: 300,
-                              buttonPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.black26,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red),
                                 ),
-                                color: Colors.white,
                               ),
-                              buttonElevation: 2,
-                              itemHeight: 40,
-                              itemPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              dropdownMaxHeight: 200,
-                              dropdownWidth: 400,
-                              dropdownPadding: null,
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.white,
-                              ),
-                              dropdownElevation: 8,
-                              scrollbarRadius: const Radius.circular(40),
-                              scrollbarThickness: 6,
-                              scrollbarAlwaysShow: true,
-                              offset: const Offset(-20, 0),
-                            ),
-                          ),
+                              maxSuggestionsInViewPort: 6,
+                              itemHeight: 50,
+                            )),
+                          )
                         ],
                       ),
                     );
@@ -823,130 +581,44 @@ class _UserRegisterState extends State<UserRegister> {
                           const SizedBox(
                             width: 40,
                           ),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton2<Puesto?>(
-                              isExpanded: true,
-                              hint: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Seleccione',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // items: snapshot.data!
-                              items: filter
-                                  .map((item) => DropdownMenuItem<Puesto?>(
-                                        value: item,
-                                        child: Text(
-                                          item.nombre!,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ))
+                          Container(
+                            color: Colors.green,
+                            width: 500,
+                            height: 100,
+                            child: Form(
+                                child: SearchField<Municipio>(
+                              suggestions: staticfields
+                                  .getMunicipios()
+                                  .map((e) =>
+                                      SearchFieldListItem<Municipio>(e.nombre!))
                                   .toList(),
-                              value: valuepuesto,
-                              onChanged: (value) {
-                                setState(() {
-                                  valuepuesto = value!;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_outlined,
+                              suggestionState: Suggestion.expand,
+                              textInputAction: TextInputAction.next,
+                              hint: 'SearchField Example 2',
+                              searchStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black.withOpacity(0.8),
                               ),
-                              searchController: puestoTextEditingController,
-                              searchInnerWidgetHeight: 50,
-                              searchInnerWidget: Container(
-                                height: 50,
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 4,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  expands: true,
-                                  maxLines: null,
-                                  controller: puestoTextEditingController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 8,
-                                    ),
-                                    hintText: 'Busca un puesto',
-                                    hintStyle: const TextStyle(fontSize: 12),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                              // validator: (x) {
+                              //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
+                              //     return 'Please Enter a valid State';
+                              //   }
+                              //   return null;
+                              // },
+                              searchInputDecoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
                                   ),
                                 ),
-                              ),
-                              searchMatchFn: (item, searchValue2) {
-                                return (item.value
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchValue2.toLowerCase()));
-                              },
-
-                              //This to clear the search value when you close the menu
-                              onMenuStateChange: (isOpen) {
-                                if (!isOpen) {
-                                  puestoTextEditingController.clear();
-                                  filter = [];
-                                }
-                              },
-                              iconSize: 14,
-                              iconEnabledColor: Colors.grey,
-                              iconDisabledColor: Colors.grey,
-                              buttonHeight: 50,
-                              buttonWidth: 300,
-                              buttonPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.black26,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red),
                                 ),
-                                color: Colors.white,
                               ),
-                              buttonElevation: 2,
-                              itemHeight: 40,
-                              itemPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              dropdownMaxHeight: 200,
-                              dropdownWidth: 400,
-                              dropdownPadding: null,
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.white,
-                              ),
-                              dropdownElevation: 8,
-                              scrollbarRadius: const Radius.circular(40),
-                              scrollbarThickness: 6,
-                              scrollbarAlwaysShow: true,
-                              offset: const Offset(-20, 0),
-                            ),
-                          ),
+                              maxSuggestionsInViewPort: 6,
+                              itemHeight: 50,
+                            )),
+                          )
                         ],
                       ),
                     );

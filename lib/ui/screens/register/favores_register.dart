@@ -1,8 +1,7 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
 
+// ignore: must_be_immutable
 class FavoresRegister extends StatelessWidget {
   FavoresRegister({Key? key}) : super(key: key);
 
@@ -202,6 +201,7 @@ class FavoresRegister extends StatelessWidget {
         if (_ == null || _.isEmpty) {
           return "Debe llenar este campo";
         }
+        return null;
       },
       onChanged: (_) {},
     );
