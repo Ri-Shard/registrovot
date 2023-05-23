@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -45,11 +47,11 @@ class _UserRegisterState extends State<UserRegister> {
 
   bool enable = false;
   bool update = false;
-  Leader? valueleader;
   String? valueIDleader;
-  Puesto? valuepuesto;
-  String? valuemunicipio;
-  String? valuebarrio;
+  TextEditingController valuemunicipio = TextEditingController();
+  TextEditingController valuebarrio = TextEditingController();
+  TextEditingController valueleader = TextEditingController();
+  TextEditingController valuepuesto = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -94,37 +96,32 @@ class _UserRegisterState extends State<UserRegister> {
                         final response =
                             await mainController.getoneVotante(cedula.text);
                         if (response != null) {
-                          // AwesomeDialog(
-                          //         width: 566,
-                          //         context: context,
-                          //         dialogType: DialogType.success,
-                          //         animType: AnimType.rightSlide,
-                          //         headerAnimationLoop: false,
-                          //         title: 'Ya esta registrado',
-                          //         desc:
-                          //             'El votante fue registrado anteriormente',
-                          //         btnOkOnPress: () {},
-                          //         btnOkIcon: Icons.cancel,
-                          //         btnOkColor: const Color(0xff01b9ff))
-                          //     .show();
                           setState(() {
                             enable = true;
                             update = true;
 
                             nombre.text = response.name;
                             cedula.text = response.id;
-                            valueleader = filterLeader.firstWhere(
-                                (element) => element.id == response.leaderID);
-                            // valueleader!.id = response.leaderID;
-                            // valuepuesto!.id = response.puestoID;
+                            valuemunicipio.text = response.municipio;
+
+                            valueleader.text = filterLeader
+                                .firstWhere((element) =>
+                                    element.id == response.leaderID)
+                                .name
+                                .toString();
+                            valuepuesto.text = filter
+                                .firstWhere((element) =>
+                                    element.nombre == response.puestoID)
+                                .nombre
+                                .toString();
+
                             telefono.text = response.phone;
                             direccion.text = response.direccion;
                             edad.text = response.edad;
-                            valuemunicipio = response.municipio;
                             if (response.municipio != 'Valledupar') {
-                              valuebarrio = null;
+                              valuebarrio.clear();
                             } else {
-                              valuebarrio = response.barrio;
+                              valuebarrio.text = response.barrio!;
                             }
                           });
                         } else {
@@ -181,10 +178,9 @@ class _UserRegisterState extends State<UserRegister> {
                     const SizedBox(
                       width: 15,
                     ),
-                    Container(
-                      color: Colors.amber,
+                    SizedBox(
                       width: 500,
-                      height: 100,
+                      height: 50,
                       child: Form(
                           child: SearchField<Municipio>(
                         suggestions: staticfields
@@ -194,17 +190,12 @@ class _UserRegisterState extends State<UserRegister> {
                             .toList(),
                         suggestionState: Suggestion.expand,
                         textInputAction: TextInputAction.next,
-                        hint: 'SearchField Example 2',
+                        hint: 'Seleccione',
                         searchStyle: TextStyle(
                           fontSize: 18,
                           color: Colors.black.withOpacity(0.8),
                         ),
-                        // validator: (x) {
-                        //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
-                        //     return 'Please Enter a valid State';
-                        //   }
-                        //   return null;
-                        // },
+                        controller: valuemunicipio,
                         searchInputDecoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -225,7 +216,7 @@ class _UserRegisterState extends State<UserRegister> {
               const SizedBox(
                 height: 20,
               ),
-              valuemunicipio == 'Valledupar'
+              valuemunicipio.text == 'Valledupar'
                   ? Row(
                       children: [
                         const Text(
@@ -237,20 +228,20 @@ class _UserRegisterState extends State<UserRegister> {
                         const SizedBox(
                           width: 45,
                         ),
-                        Container(
-                          color: Colors.blue,
+                        SizedBox(
                           width: 500,
-                          height: 100,
+                          height: 50,
                           child: Form(
-                              child: SearchField<Municipio>(
+                              child: SearchField<Barrio>(
+                            controller: valuebarrio,
                             suggestions: staticfields
-                                .getMunicipios()
+                                .getBarrios()
                                 .map((e) =>
-                                    SearchFieldListItem<Municipio>(e.nombre!))
+                                    SearchFieldListItem<Barrio>(e.barrio!))
                                 .toList(),
                             suggestionState: Suggestion.expand,
                             textInputAction: TextInputAction.next,
-                            hint: 'SearchField Example 2',
+                            hint: 'Seleccione',
                             searchStyle: TextStyle(
                               fontSize: 18,
                               color: Colors.black.withOpacity(0.8),
@@ -300,161 +291,6 @@ class _UserRegisterState extends State<UserRegister> {
               Container(
                 height: 40,
               ),
-              // FutureBuilder<List<Leader>>(
-              //     future: mainController.getLeaders(),
-              //     builder: (context, snapshot) {
-              //       if (!snapshot.hasData) {
-              //         return const CircularProgressIndicator();
-              //       }
-              //       // if (valueleader.hashCode !=
-              //       //         snapshot.data!.first.hashCode ||
-              //       //     valueleader == null) {
-              //       //   valueleader = snapshot.data!.first;
-              //       // }
-              //       if (valueleader == null) {
-              //         valueleader = snapshot.data!.first;
-              //       }
-              //       return Visibility(
-              //         visible: enable,
-              //         child: Row(
-              //           children: [
-              //             const Text(
-              //               'Lider',
-              //               style: TextStyle(
-              //                 fontSize: 15,
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               width: 55,
-              //             ),
-              //             DropdownButtonHideUnderline(
-              //               child: DropdownButton2<Leader?>(
-              //                 isExpanded: true,
-              //                 hint: Row(
-              //                   children: const [
-              //                     Icon(
-              //                       Icons.list,
-              //                       size: 16,
-              //                       color: Colors.grey,
-              //                     ),
-              //                     SizedBox(
-              //                       width: 4,
-              //                     ),
-              //                     Expanded(
-              //                       child: Text(
-              //                         'Seleccione',
-              //                         style: TextStyle(
-              //                           fontSize: 14,
-              //                           fontWeight: FontWeight.bold,
-              //                           color: Colors.grey,
-              //                         ),
-              //                         overflow: TextOverflow.ellipsis,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //                 items: snapshot.data!
-              //                     .map((item) => DropdownMenuItem<Leader?>(
-              //                           value: item,
-              //                           child: Text(
-              //                             item.name!,
-              //                             style: const TextStyle(
-              //                               fontSize: 14,
-              //                               fontWeight: FontWeight.bold,
-              //                               color: Colors.grey,
-              //                             ),
-              //                             overflow: TextOverflow.ellipsis,
-              //                           ),
-              //                         ))
-              //                     .toList(),
-              //                 value: valueleader,
-              //                 onChanged: (value) {
-              //                   setState(() {
-              //                     valueleader = value!;
-              //                     print(valueleader);
-              //                     print('asdasd');
-              //                   });
-              //                 },
-              //                 icon: const Icon(
-              //                   Icons.arrow_forward_ios_outlined,
-              //                 ),
-              //                 searchController: liderTextEditingController,
-              //                 searchInnerWidgetHeight: 50,
-              //                 searchInnerWidget: Container(
-              //                   height: 50,
-              //                   padding: const EdgeInsets.only(
-              //                     top: 8,
-              //                     bottom: 4,
-              //                     right: 8,
-              //                     left: 8,
-              //                   ),
-              //                   child: TextFormField(
-              //                     expands: true,
-              //                     maxLines: null,
-              //                     controller: liderTextEditingController,
-              //                     decoration: InputDecoration(
-              //                       isDense: true,
-              //                       contentPadding: const EdgeInsets.symmetric(
-              //                         horizontal: 10,
-              //                         vertical: 8,
-              //                       ),
-              //                       hintText: 'Busca un Lider',
-              //                       hintStyle: const TextStyle(fontSize: 12),
-              //                       border: OutlineInputBorder(
-              //                         borderRadius: BorderRadius.circular(8),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 searchMatchFn: (item, searchValue) {
-              //                   return (item.value
-              //                       .toString()
-              //                       .toLowerCase()
-              //                       .contains(searchValue.toLowerCase()));
-              //                 },
-
-              //                 //This to clear the search value when you close the menu
-              //                 onMenuStateChange: (isOpen) {
-              //                   if (!isOpen) {
-              //                     liderTextEditingController.clear();
-              //                   }
-              //                 },
-              //                 iconSize: 14,
-              //                 iconEnabledColor: Colors.grey,
-              //                 iconDisabledColor: Colors.grey,
-              //                 buttonHeight: 50,
-              //                 buttonWidth: 300,
-              //                 buttonPadding:
-              //                     const EdgeInsets.only(left: 14, right: 14),
-              //                 buttonDecoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(14),
-              //                   border: Border.all(
-              //                     color: Colors.black26,
-              //                   ),
-              //                   color: Colors.white,
-              //                 ),
-              //                 buttonElevation: 2,
-              //                 itemHeight: 40,
-              //                 itemPadding:
-              //                     const EdgeInsets.only(left: 14, right: 14),
-              //                 dropdownMaxHeight: 200,
-              //                 dropdownWidth: 400,
-              //                 dropdownPadding: null,
-              //                 dropdownDecoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(14),
-              //                   color: Colors.white,
-              //                 ),
-              //                 dropdownElevation: 8,
-              //                 scrollbarRadius: const Radius.circular(40),
-              //                 scrollbarThickness: 6,
-              //                 scrollbarAlwaysShow: true,
-              //                 offset: const Offset(-20, 0),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       );
-              //     }),
               FutureBuilder<List<Leader>>(
                   future: mainController.getLeaders(),
                   builder: (context, snapshot) {
@@ -467,27 +303,6 @@ class _UserRegisterState extends State<UserRegister> {
                     for (var i = 0; i < snapshot.data!.length; i++) {
                       filterLeader.add(snapshot.data![i]);
                     }
-                    if (valueleader != null) {
-                      if (valueleader.hashCode !=
-                          snapshot.data!.first.hashCode) {
-                        valueleader = snapshot.data!.firstWhere(
-                            (element) => valueleader!.id == element.id);
-                      }
-                    }
-
-                    // for (var i = 0; i < snapshot.data!.length; i++) {
-                    //   if (snapshot.data![i].municipio!.toLowerCase() ==
-                    //       valuemunicipio?.toLowerCase()) {
-                    //     if (filter
-                    //         .where(
-                    //             (element) => element.id == snapshot.data![i].id)
-                    //         .toList()
-                    //         .isEmpty) {
-                    //       filter.add(snapshot.data![i]);
-                    //     }
-                    //   }
-                    // }
-
                     return Visibility(
                       visible: enable,
                       child: Row(
@@ -502,29 +317,25 @@ class _UserRegisterState extends State<UserRegister> {
                             width: 40,
                           ),
                           Container(
-                            color: Colors.lime,
                             width: 500,
-                            height: 100,
+                            height: 50,
                             child: Form(
-                                child: SearchField<Municipio>(
-                              suggestions: staticfields
-                                  .getMunicipios()
+                                child: SearchField<Leader>(
+                              onSuggestionTap: (p0) {
+                                valueleader.text = p0.item!.id!;
+                              },
+                              controller: valueleader,
+                              suggestions: snapshot.data!
                                   .map((e) =>
-                                      SearchFieldListItem<Municipio>(e.nombre!))
+                                      SearchFieldListItem<Leader>(e.name!))
                                   .toList(),
                               suggestionState: Suggestion.expand,
                               textInputAction: TextInputAction.next,
-                              hint: 'SearchField Example 2',
+                              hint: 'Seleccione',
                               searchStyle: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black.withOpacity(0.8),
                               ),
-                              // validator: (x) {
-                              //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
-                              //     return 'Please Enter a valid State';
-                              //   }
-                              //   return null;
-                              // },
                               searchInputDecoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -552,22 +363,15 @@ class _UserRegisterState extends State<UserRegister> {
                     if (!snapshot.hasData) {
                       return const CircularProgressIndicator();
                     }
-                    if (valuepuesto == null) {
-                      valuepuesto = snapshot.data!.first;
-                    }
+                    // for (var i = 0; i < snapshot.data!.length; i++) {
+                    //   if (snapshot.data![i].municipio!.toLowerCase() ==
+                    //       valuemunicipio.text.toLowerCase()) {
+                    //     filter.add(snapshot.data![i]);
+                    //   }
+                    // }
                     for (var i = 0; i < snapshot.data!.length; i++) {
-                      if (snapshot.data![i].municipio!.toLowerCase() ==
-                          valuemunicipio?.toLowerCase()) {
-                        if (filter
-                            .where(
-                                (element) => element.id == snapshot.data![i].id)
-                            .toList()
-                            .isEmpty) {
-                          filter.add(snapshot.data![i]);
-                        }
-                      }
+                      filter.add(snapshot.data![i]);
                     }
-
                     return Visibility(
                       visible: enable,
                       child: Row(
@@ -582,29 +386,22 @@ class _UserRegisterState extends State<UserRegister> {
                             width: 40,
                           ),
                           Container(
-                            color: Colors.green,
                             width: 500,
-                            height: 100,
+                            height: 50,
                             child: Form(
-                                child: SearchField<Municipio>(
-                              suggestions: staticfields
-                                  .getMunicipios()
+                                child: SearchField<Puesto>(
+                              controller: valuepuesto,
+                              suggestions: filter
                                   .map((e) =>
-                                      SearchFieldListItem<Municipio>(e.nombre!))
+                                      SearchFieldListItem<Puesto>(e.nombre!))
                                   .toList(),
                               suggestionState: Suggestion.expand,
                               textInputAction: TextInputAction.next,
-                              hint: 'SearchField Example 2',
+                              hint: 'Seleccione',
                               searchStyle: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black.withOpacity(0.8),
                               ),
-                              // validator: (x) {
-                              //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
-                              //     return 'Please Enter a valid State';
-                              //   }
-                              //   return null;
-                              // },
                               searchInputDecoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -638,15 +435,15 @@ class _UserRegisterState extends State<UserRegister> {
                         Votante votante = Votante(
                             name: nombre.text,
                             id: cedula.text,
-                            leaderID: valueleader!.id!,
+                            leaderID: valueleader.text,
                             phone: telefono.text,
-                            puestoID: valuepuesto!.id!,
+                            puestoID: valuepuesto.text,
                             direccion: direccion.text,
-                            municipio: valuemunicipio!,
-                            barrio: valuebarrio,
+                            municipio: valuemunicipio.text,
+                            barrio: valuebarrio.text,
                             edad: edad.text);
                         if (update) {
-                          if (valuemunicipio != 'Valledupar') {
+                          if (valuemunicipio.text != 'Valledupar') {
                             votante.barrio = null;
                           }
                           final response =
@@ -669,10 +466,10 @@ class _UserRegisterState extends State<UserRegister> {
                           telefono.clear();
                           direccion.clear();
                           edad.clear();
-                          valuebarrio = null;
-                          valueleader = null;
-                          valuemunicipio = null;
-                          valuepuesto = null;
+                          valuebarrio.clear();
+                          valueleader.clear();
+                          valuemunicipio.clear();
+                          valuepuesto.clear();
                           setState(() {});
                         } else {
                           final response =
@@ -709,10 +506,10 @@ class _UserRegisterState extends State<UserRegister> {
                             telefono.clear();
                             direccion.clear();
                             edad.clear();
-                            valuebarrio = null;
-                            valueleader = null;
-                            valuemunicipio = null;
-                            valuepuesto = null;
+                            valuebarrio.clear();
+                            valueleader.clear();
+                            valuemunicipio.clear();
+                            valuepuesto.clear();
                             setState(() {});
                           }
                         }
