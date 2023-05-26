@@ -1,13 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:registrovot/controller/mainController.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
@@ -48,6 +44,7 @@ class _UserRegisterState extends State<UserRegister> {
   bool enable = false;
   bool update = false;
   String? valueIDleader;
+  Leader? valueLeader2;
   TextEditingController valuemunicipio = TextEditingController();
   TextEditingController valuebarrio = TextEditingController();
   TextEditingController valueleader = TextEditingController();
@@ -183,6 +180,9 @@ class _UserRegisterState extends State<UserRegister> {
                       height: 50,
                       child: Form(
                           child: SearchField<Municipio>(
+                        onSuggestionTap: (_) {
+                          print("object");
+                        },
                         suggestions: staticfields
                             .getMunicipios()
                             .map((e) =>
@@ -192,7 +192,7 @@ class _UserRegisterState extends State<UserRegister> {
                         textInputAction: TextInputAction.next,
                         hint: 'Seleccione',
                         searchStyle: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           color: Colors.black.withOpacity(0.8),
                         ),
                         controller: valuemunicipio,
@@ -233,6 +233,9 @@ class _UserRegisterState extends State<UserRegister> {
                           height: 50,
                           child: Form(
                               child: SearchField<Barrio>(
+                            onSuggestionTap: (_) {
+                              print("object");
+                            },
                             controller: valuebarrio,
                             suggestions: staticfields
                                 .getBarrios()
@@ -243,7 +246,7 @@ class _UserRegisterState extends State<UserRegister> {
                             textInputAction: TextInputAction.next,
                             hint: 'Seleccione',
                             searchStyle: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black.withOpacity(0.8),
                             ),
                             // validator: (x) {
@@ -299,7 +302,7 @@ class _UserRegisterState extends State<UserRegister> {
                     }
                     // if (valueleader == null) {
                     // }
-
+                    filterLeader.clear();
                     for (var i = 0; i < snapshot.data!.length; i++) {
                       filterLeader.add(snapshot.data![i]);
                     }
@@ -316,39 +319,44 @@ class _UserRegisterState extends State<UserRegister> {
                           const SizedBox(
                             width: 40,
                           ),
-                          Container(
+                          SizedBox(
                             width: 500,
                             height: 50,
-                            child: Form(
-                                child: SearchField<Leader>(
-                              onSuggestionTap: (p0) {
-                                valueleader.text = p0.item!.id!;
+                            child: InkWell(
+                              onTap: () {
+                                print("object");
                               },
-                              controller: valueleader,
-                              suggestions: snapshot.data!
-                                  .map((e) =>
-                                      SearchFieldListItem<Leader>(e.name!))
-                                  .toList(),
-                              suggestionState: Suggestion.expand,
-                              textInputAction: TextInputAction.next,
-                              hint: 'Seleccione',
-                              searchStyle: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              searchInputDecoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.8),
+                              child: SearchField<Leader>(
+                                onSuggestionTap: (lidel) {
+                                  valueleader.text = lidel.item?.name ?? "yu";
+                                  print(lidel.item);
+                                },
+                                controller: valueleader,
+                                suggestions: filterLeader
+                                    .map((e) =>
+                                        SearchFieldListItem<Leader>(e.name!))
+                                    .toList(),
+                                suggestionState: Suggestion.expand,
+                                textInputAction: TextInputAction.next,
+                                hint: 'Seleccione',
+                                searchStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                                searchInputDecoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.8),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
                                   ),
                                 ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red),
-                                ),
+                                maxSuggestionsInViewPort: 6,
+                                itemHeight: 50,
                               ),
-                              maxSuggestionsInViewPort: 6,
-                              itemHeight: 50,
-                            )),
+                            ),
                           )
                         ],
                       ),
@@ -385,11 +393,14 @@ class _UserRegisterState extends State<UserRegister> {
                           const SizedBox(
                             width: 40,
                           ),
-                          Container(
+                          SizedBox(
                             width: 500,
                             height: 50,
                             child: Form(
                                 child: SearchField<Puesto>(
+                              onSuggestionTap: (_) {
+                                print("object");
+                              },
                               controller: valuepuesto,
                               suggestions: filter
                                   .map((e) =>
@@ -399,7 +410,7 @@ class _UserRegisterState extends State<UserRegister> {
                               textInputAction: TextInputAction.next,
                               hint: 'Seleccione',
                               searchStyle: TextStyle(
-                                fontSize: 18,
+                                fontSize: 14,
                                 color: Colors.black.withOpacity(0.8),
                               ),
                               searchInputDecoration: InputDecoration(
@@ -435,7 +446,7 @@ class _UserRegisterState extends State<UserRegister> {
                         Votante votante = Votante(
                             name: nombre.text,
                             id: cedula.text,
-                            leaderID: valueleader.text,
+                            leaderID: valueLeader2!.id!,
                             phone: telefono.text,
                             puestoID: valuepuesto.text,
                             direccion: direccion.text,

@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 30,
                               ),
                               _materialButton('Registro Base de Datos',
-                                  Icons.person_2_outlined, 0, buttons[0]),
+                                  Icons.person, 0, buttons[0]),
                               _materialButton('Descargar Archivo BD',
                                   Icons.download_outlined, 1, buttons[1]),
                               _materialButton(

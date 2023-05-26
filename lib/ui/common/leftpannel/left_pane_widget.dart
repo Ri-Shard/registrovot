@@ -29,8 +29,8 @@ class LeftPane extends StatelessWidget {
             ),
             MainNavItem("Lideres", Icons.rocket_launch_outlined, selected == 0,
                 '/leadersregister'),
-            MainNavItem("Usuarios", Icons.person_2_outlined, selected == 1,
-                '/usersregister'),
+            MainNavItem(
+                "Usuarios", Icons.percent, selected == 1, '/usersregister'),
             MainNavItem("Puestos", Icons.verified_outlined, selected == 2,
                 '/placesregister'),
             MainNavItem("Agenda", Icons.date_range_outlined, selected == 3,
