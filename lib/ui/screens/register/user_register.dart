@@ -9,7 +9,6 @@ import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
-import 'package:searchfield/searchfield.dart';
 
 class UserRegister extends StatefulWidget {
   UserRegister({Key? key}) : super(key: key);
@@ -35,16 +34,22 @@ class _UserRegisterState extends State<UserRegister> {
   List<Leader> aux = [];
   List<String> leadersname = [];
   List<String> puestoname = [];
-  List<Puesto> filter = [];
-  List<Leader> filterLeader = [];
+  List<Puesto> filterPuestoPre = [];
+  RxList<Leader> filterLeader = <Leader>[].obs;
+  RxList<Municipio> filterMunicipio = <Municipio>[].obs;
+  RxList<Barrio> filterBarrio = <Barrio>[].obs;
+  RxList<Puesto> filterPuesto = <Puesto>[].obs;
+  RxList<Puesto> filterPuestoSearch = <Puesto>[].obs;
 
   MainController mainController = Get.find();
   StaticFields staticfields = StaticFields();
 
+  RxBool haspuesto = false.obs;
   bool enable = false;
   bool update = false;
   String? valueIDleader;
   Leader? valueLeader2;
+  Puesto? valuePuesto2;
   TextEditingController valuemunicipio = TextEditingController();
   TextEditingController valuebarrio = TextEditingController();
   TextEditingController valueleader = TextEditingController();
@@ -100,13 +105,15 @@ class _UserRegisterState extends State<UserRegister> {
                             nombre.text = response.name;
                             cedula.text = response.id;
                             valuemunicipio.text = response.municipio;
-
+                            filterBarrio.value = staticfields.getBarrios();
+                            filterMunicipio.value =
+                                staticfields.getMunicipios();
                             valueleader.text = filterLeader
                                 .firstWhere((element) =>
                                     element.id == response.leaderID)
                                 .name
                                 .toString();
-                            valuepuesto.text = filter
+                            valuepuesto.text = filterPuestoPre
                                 .firstWhere((element) =>
                                     element.nombre == response.puestoID)
                                 .nombre
@@ -176,40 +183,125 @@ class _UserRegisterState extends State<UserRegister> {
                       width: 15,
                     ),
                     SizedBox(
-                      width: 500,
-                      height: 50,
-                      child: Form(
-                          child: SearchField<Municipio>(
-                        onSuggestionTap: (_) {
-                          print("object");
-                        },
-                        suggestions: staticfields
-                            .getMunicipios()
-                            .map((e) =>
-                                SearchFieldListItem<Municipio>(e.nombre!))
-                            .toList(),
-                        suggestionState: Suggestion.expand,
-                        textInputAction: TextInputAction.next,
-                        hint: 'Seleccione',
-                        searchStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black.withOpacity(0.8),
-                        ),
-                        controller: valuemunicipio,
-                        searchInputDecoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black.withOpacity(0.8),
+                        width: 500,
+                        child: Form(
+                          child: SizedBox(
+                            // width: MediaQuery.of(context).size.width * 0.5,
+                            child: Expanded(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                color: Colors.transparent,
+                                child: GetBuilder<MainController>(
+                                    id: "dropMunicipioView",
+                                    builder: (state) {
+                                      return OutlinedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      side: const BorderSide(
+                                                          width: 2.0,
+                                                          style: BorderStyle
+                                                              .solid)))),
+                                          onPressed: () {
+                                            // state.searchDomi("");
+                                            Get.dialog(Container(
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: Get.height * 0.1,
+                                                horizontal: Get.width * 0.2,
+                                              ),
+                                              child: Card(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                child: filterMunicipio.isEmpty
+                                                    ? const Center(
+                                                        child: Text(
+                                                            "No hay datos"),
+                                                      )
+                                                    : Obx(() {
+                                                        return Column(
+                                                          children: [
+                                                            TextField(
+                                                              autofocus: true,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                      hintText:
+                                                                          "nombre de.."),
+                                                              controller:
+                                                                  valuemunicipio,
+                                                              onChanged: (_) {
+                                                                filterMunicipio.value = staticfields
+                                                                    .getMunicipios()
+                                                                    .where((element) => element
+                                                                        .nombre!
+                                                                        .toLowerCase()
+                                                                        .contains(
+                                                                            _.toLowerCase()))
+                                                                    .toList();
+                                                                state.update([
+                                                                  "dropMunicipioView"
+                                                                ]);
+                                                              },
+                                                            ),
+                                                            Expanded(
+                                                                child: ListView
+                                                                    .builder(
+                                                                        itemCount:
+                                                                            filterMunicipio
+                                                                                .length,
+                                                                        itemBuilder:
+                                                                            (b, index) {
+                                                                          return ListTile(
+                                                                            onTap:
+                                                                                () {
+                                                                              valuemunicipio.text = filterMunicipio[index].nombre ?? "-";
+                                                                              // valueLeader2 = filterMunicipio[index];
+                                                                              state.update([
+                                                                                "dropMunicipioView"
+                                                                              ]);
+                                                                              valuepuesto.clear();
+                                                                              haspuesto.value = true;
+                                                                              setState(() {});
+                                                                              Get.back();
+                                                                            },
+                                                                            title:
+                                                                                Text(filterMunicipio[index].nombre ?? "-"),
+                                                                          );
+                                                                        })),
+                                                            Center(
+                                                              child:
+                                                                  OutlinedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Get.back();
+                                                                      },
+                                                                      child: const Text(
+                                                                          "Cerrar")),
+                                                            )
+                                                          ],
+                                                        );
+                                                      }),
+                                              ),
+                                            ));
+                                          },
+                                          child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 20),
+                                              child: Text(
+                                                valuemunicipio.text,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              )));
+                                    }),
+                              ),
                             ),
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                        ),
-                        maxSuggestionsInViewPort: 6,
-                        itemHeight: 50,
-                      )),
-                    )
+                        ))
                   ],
                 ),
               ),
@@ -229,46 +321,122 @@ class _UserRegisterState extends State<UserRegister> {
                           width: 45,
                         ),
                         SizedBox(
-                          width: 500,
-                          height: 50,
-                          child: Form(
-                              child: SearchField<Barrio>(
-                            onSuggestionTap: (_) {
-                              print("object");
-                            },
-                            controller: valuebarrio,
-                            suggestions: staticfields
-                                .getBarrios()
-                                .map((e) =>
-                                    SearchFieldListItem<Barrio>(e.barrio!))
-                                .toList(),
-                            suggestionState: Suggestion.expand,
-                            textInputAction: TextInputAction.next,
-                            hint: 'Seleccione',
-                            searchStyle: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                            // validator: (x) {
-                            //   if (!_statesOfIndia.contains(x) || x!.isEmpty) {
-                            //     return 'Please Enter a valid State';
-                            //   }
-                            //   return null;
-                            // },
-                            searchInputDecoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.8),
+                            width: 500,
+                            child: Form(
+                              child: SizedBox(
+                                // width: MediaQuery.of(context).size.width * 0.5,
+                                child: Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    color: Colors.transparent,
+                                    child: GetBuilder<MainController>(
+                                        id: "dropBarrioView",
+                                        builder: (state) {
+                                          return OutlinedButton(
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty
+                                                      .all(RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          side: const BorderSide(
+                                                              width: 2.0,
+                                                              style: BorderStyle
+                                                                  .solid)))),
+                                              onPressed: () {
+                                                // state.searchDomi("");
+                                                Get.dialog(Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                    vertical: Get.height * 0.1,
+                                                    horizontal: Get.width * 0.2,
+                                                  ),
+                                                  child: Card(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child: filterBarrio.isEmpty
+                                                        ? const Center(
+                                                            child: Text(
+                                                                "No hay datos"),
+                                                          )
+                                                        : Obx(() {
+                                                            return Column(
+                                                              children: [
+                                                                TextField(
+                                                                  autofocus:
+                                                                      true,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "nombre de.."),
+                                                                  controller:
+                                                                      valuebarrio,
+                                                                  onChanged:
+                                                                      (_) {
+                                                                    filterBarrio.value = staticfields
+                                                                        .getBarrios()
+                                                                        .where((element) => element
+                                                                            .barrio!
+                                                                            .toLowerCase()
+                                                                            .contains(_.toLowerCase()))
+                                                                        .toList();
+                                                                    state
+                                                                        .update([
+                                                                      "dropBarrioView"
+                                                                    ]);
+                                                                  },
+                                                                ),
+                                                                Expanded(
+                                                                    child: ListView
+                                                                        .builder(
+                                                                            itemCount:
+                                                                                filterBarrio.length,
+                                                                            itemBuilder: (b, index) {
+                                                                              return ListTile(
+                                                                                onTap: () {
+                                                                                  valuebarrio.text = filterBarrio[index].barrio ?? "-";
+                                                                                  // valueLeader2 = filterMunicipio[index];
+                                                                                  state.update([
+                                                                                    "dropBarrioView"
+                                                                                  ]);
+                                                                                  Get.back();
+                                                                                },
+                                                                                title: Text(filterBarrio[index].barrio ?? "-"),
+                                                                              );
+                                                                            })),
+                                                                Center(
+                                                                  child:
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Get.back();
+                                                                          },
+                                                                          child:
+                                                                              const Text("Cerrar")),
+                                                                )
+                                                              ],
+                                                            );
+                                                          }),
+                                                  ),
+                                                ));
+                                              },
+                                              child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 20),
+                                                  child: Text(
+                                                    valuebarrio.text,
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  )));
+                                        }),
+                                  ),
                                 ),
                               ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red),
-                              ),
-                            ),
-                            maxSuggestionsInViewPort: 6,
-                            itemHeight: 50,
-                          )),
-                        )
+                            ))
                       ],
                     )
                   : const SizedBox(),
@@ -321,40 +489,114 @@ class _UserRegisterState extends State<UserRegister> {
                           ),
                           SizedBox(
                             width: 500,
-                            height: 50,
-                            child: InkWell(
-                              onTap: () {
-                                print("object");
-                              },
-                              child: SearchField<Leader>(
-                                onSuggestionTap: (lidel) {
-                                  valueleader.text = lidel.item?.name ?? "yu";
-                                  print(lidel.item);
-                                },
-                                controller: valueleader,
-                                suggestions: filterLeader
-                                    .map((e) =>
-                                        SearchFieldListItem<Leader>(e.name!))
-                                    .toList(),
-                                suggestionState: Suggestion.expand,
-                                textInputAction: TextInputAction.next,
-                                hint: 'Seleccione',
-                                searchStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black.withOpacity(0.8),
+                            child: SizedBox(
+                              // width: MediaQuery.of(context).size.width * 0.5,
+                              child: Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  color: Colors.transparent,
+                                  child: GetBuilder<MainController>(
+                                      id: "dropLeaderView",
+                                      builder: (state) {
+                                        return OutlinedButton(
+                                            style: ButtonStyle(
+                                                shape: MaterialStateProperty
+                                                    .all(RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        side: const BorderSide(
+                                                            width: 2.0,
+                                                            style: BorderStyle
+                                                                .solid)))),
+                                            onPressed: () {
+                                              // state.searchDomi("");
+                                              Get.dialog(Container(
+                                                margin: EdgeInsets.symmetric(
+                                                  vertical: Get.height * 0.1,
+                                                  horizontal: Get.width * 0.2,
+                                                ),
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: filterLeader.isEmpty
+                                                      ? const Center(
+                                                          child: Text(
+                                                              "No hay datos"),
+                                                        )
+                                                      : Obx(() {
+                                                          return Column(
+                                                            children: [
+                                                              TextField(
+                                                                autofocus: true,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        hintText:
+                                                                            ""),
+                                                                controller:
+                                                                    valueleader,
+                                                                onChanged: (_) {
+                                                                  filterLeader.value = snapshot
+                                                                      .data!
+                                                                      .where((element) => element
+                                                                          .name!
+                                                                          .toLowerCase()
+                                                                          .contains(
+                                                                              _.toLowerCase()))
+                                                                      .toList();
+                                                                  state.update([
+                                                                    "dropLeaderView"
+                                                                  ]);
+                                                                },
+                                                              ),
+                                                              Expanded(
+                                                                  child: ListView
+                                                                      .builder(
+                                                                          itemCount: filterLeader
+                                                                              .length,
+                                                                          itemBuilder:
+                                                                              (b, index) {
+                                                                            return ListTile(
+                                                                              onTap: () {
+                                                                                valueleader.text = filterLeader[index].name ?? "-";
+                                                                                valueLeader2 = filterLeader[index];
+                                                                                state.update([
+                                                                                  "dropLeaderView"
+                                                                                ]);
+                                                                                Get.back();
+                                                                              },
+                                                                              title: Text(filterLeader[index].name ?? "-"),
+                                                                            );
+                                                                          })),
+                                                              Center(
+                                                                child:
+                                                                    OutlinedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Get.back();
+                                                                        },
+                                                                        child: const Text(
+                                                                            "Cerrar")),
+                                                              )
+                                                            ],
+                                                          );
+                                                        }),
+                                                ),
+                                              ));
+                                            },
+                                            child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 20),
+                                                child: Text(
+                                                  valueleader.text,
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )));
+                                      }),
                                 ),
-                                searchInputDecoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.black.withOpacity(0.8),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                ),
-                                maxSuggestionsInViewPort: 6,
-                                itemHeight: 50,
                               ),
                             ),
                           )
@@ -371,14 +613,20 @@ class _UserRegisterState extends State<UserRegister> {
                     if (!snapshot.hasData) {
                       return const CircularProgressIndicator();
                     }
-                    // for (var i = 0; i < snapshot.data!.length; i++) {
-                    //   if (snapshot.data![i].municipio!.toLowerCase() ==
-                    //       valuemunicipio.text.toLowerCase()) {
-                    //     filter.add(snapshot.data![i]);
-                    //   }
-                    // }
+                    filterPuestoPre.clear();
                     for (var i = 0; i < snapshot.data!.length; i++) {
-                      filter.add(snapshot.data![i]);
+                      filterPuestoPre.add(snapshot.data![i]);
+                    }
+                    filterPuesto.clear();
+                    for (var i = 0; i < filterPuestoPre.length; i++) {
+                      if (filterPuestoPre[i].municipio!.toLowerCase() ==
+                          valuemunicipio.text.toLowerCase()) {
+                        filterPuesto.add(filterPuestoPre[i]);
+                      }
+                    }
+                    filterPuestoSearch.clear();
+                    for (var element in filterPuesto) {
+                      filterPuestoSearch.add(element);
                     }
                     return Visibility(
                       visible: enable,
@@ -395,37 +643,120 @@ class _UserRegisterState extends State<UserRegister> {
                           ),
                           SizedBox(
                             width: 500,
-                            height: 50,
                             child: Form(
-                                child: SearchField<Puesto>(
-                              onSuggestionTap: (_) {
-                                print("object");
-                              },
-                              controller: valuepuesto,
-                              suggestions: filter
-                                  .map((e) =>
-                                      SearchFieldListItem<Puesto>(e.nombre!))
-                                  .toList(),
-                              suggestionState: Suggestion.expand,
-                              textInputAction: TextInputAction.next,
-                              hint: 'Seleccione',
-                              searchStyle: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              searchInputDecoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.8),
+                              child: SizedBox(
+                                // width: MediaQuery.of(context).size.width * 0.5,
+                                child: Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    color: Colors.transparent,
+                                    child: GetBuilder<MainController>(
+                                        id: "dropPuestoView",
+                                        builder: (state) {
+                                          return OutlinedButton(
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty
+                                                      .all(RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          side: const BorderSide(
+                                                              width: 2.0,
+                                                              style: BorderStyle
+                                                                  .solid)))),
+                                              onPressed: () {
+                                                // state.searchDomi("");
+                                                Get.dialog(Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                    vertical: Get.height * 0.1,
+                                                    horizontal: Get.width * 0.2,
+                                                  ),
+                                                  child: Card(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child: filterPuesto.isEmpty
+                                                        ? const Center(
+                                                            child: Text(
+                                                                "No hay datos"),
+                                                          )
+                                                        : Obx(() {
+                                                            return Column(
+                                                              children: [
+                                                                TextField(
+                                                                  autofocus:
+                                                                      true,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "Nombre de.."),
+                                                                  controller:
+                                                                      valuepuesto,
+                                                                  onChanged:
+                                                                      (_) {
+                                                                    filterPuestoSearch.value = filterPuesto
+                                                                        .where((element) => element
+                                                                            .nombre!
+                                                                            .toLowerCase()
+                                                                            .contains(_.toLowerCase()))
+                                                                        .toList();
+                                                                    state
+                                                                        .update([
+                                                                      "dropPuestoView"
+                                                                    ]);
+                                                                  },
+                                                                ),
+                                                                Expanded(
+                                                                    child: ListView
+                                                                        .builder(
+                                                                            itemCount:
+                                                                                filterPuestoSearch.length,
+                                                                            itemBuilder: (b, index) {
+                                                                              return ListTile(
+                                                                                onTap: () {
+                                                                                  valuepuesto.text = filterPuestoSearch[index].nombre ?? "-";
+                                                                                  valuePuesto2 = filterPuestoSearch[index];
+                                                                                  state.update([
+                                                                                    "dropPuestoView"
+                                                                                  ]);
+                                                                                  Get.back();
+                                                                                },
+                                                                                title: Text(filterPuestoSearch[index].nombre ?? "-"),
+                                                                              );
+                                                                            })),
+                                                                Center(
+                                                                  child:
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Get.back();
+                                                                          },
+                                                                          child:
+                                                                              const Text("Cerrar")),
+                                                                )
+                                                              ],
+                                                            );
+                                                          }),
+                                                  ),
+                                                ));
+                                              },
+                                              child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 20),
+                                                  child: Text(
+                                                    valuepuesto.text,
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  )));
+                                        }),
                                   ),
                                 ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red),
-                                ),
                               ),
-                              maxSuggestionsInViewPort: 6,
-                              itemHeight: 50,
-                            )),
+                            ),
                           )
                         ],
                       ),
