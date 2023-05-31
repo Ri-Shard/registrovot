@@ -277,7 +277,8 @@ class MainController extends GetxController {
       colection = FirebaseFirestore.instance.collection('location');
       colection.doc('puestos').set(
         {
-          puesto.id: {
+          puesto.id.toString(): {
+            'id': puesto.id.toString(),
             'nombre': puesto.nombre,
             'latitud': puesto.latitud,
             'longitud': puesto.longitud,
@@ -340,14 +341,14 @@ class MainController extends GetxController {
     return puesto;
   }
 
-  void anotheraddpuesto(int index, Map puesto) async {
+  void anotheraddpuesto(String id, Map puesto) async {
     CollectionReference colection;
 
     colection = FirebaseFirestore.instance.collection('location');
     colection
         .doc('puestos')
         .set(
-          {index.toString(): puesto},
+          {id: puesto},
           SetOptions(merge: true),
         )
         .then((value) {})

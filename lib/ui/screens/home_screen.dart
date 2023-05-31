@@ -60,19 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(top: 10),
+                  // margin: const EdgeInsets.only(top: 10),
                   height: 80,
                   width: 250,
-                  decoration: const BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(40)),
-                    color: Colors.black,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
                   ),
                   child: Image.asset('assets/images/vco_logo.png'),
                 ),
                 Expanded(
                   child: Container(
-                      decoration: const BoxDecoration(color: Colors.black),
+                      decoration: BoxDecoration(color: Colors.grey.shade100),
                       width: 250,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -116,7 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           dialogType: DialogType.info,
                                           animType: AnimType.rightSlide,
                                           headerAnimationLoop: false,
-                                          title: '¿Seguro que desea salir?',
+                                          title:
+                                              '¿Seguro que desea cerrar sesion?',
+                                          btnCancelText: 'Cancelar',
+                                          btnOkText: 'Salir',
                                           btnCancelOnPress: () {},
                                           btnOkOnPress: () {
                                             authentication.signOut();
@@ -162,11 +163,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  decoration: const BoxDecoration(
-                    borderRadius:
-                        BorderRadius.horizontal(right: Radius.circular(40)),
-                    color: Colors.black,
+                  // margin: const EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
                   ),
                   height: 80,
                   child: Row(),
@@ -188,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
         visible: visible,
         child: MaterialButton(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          color: index == indx ? const Color(0xffff004e) : null,
+          color: index == indx ? Colors.grey.shade300 : null,
           onPressed: () {
             index = indx;
             setState(() {});
@@ -198,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Icon(
                 icon,
-                color: Colors.white,
+                color: Colors.grey,
                 size: 20,
               ),
               const SizedBox(
@@ -206,9 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
+                  color: Colors.grey.shade800,
                 ),
               ),
             ],

@@ -11,6 +11,7 @@ class PlacesRegister extends StatelessWidget {
   PlacesRegister({Key? key}) : super(key: key);
 
   TextEditingController nombre = TextEditingController();
+  TextEditingController direccion = TextEditingController();
   TextEditingController latitud = TextEditingController();
   TextEditingController longitud = TextEditingController();
   TextEditingController textEditingController = TextEditingController();
@@ -33,6 +34,10 @@ class PlacesRegister extends StatelessWidget {
             SizedBox(
               width: 500,
               child: _textFormField('Nombre', TextInputType.text, nombre),
+            ),
+            SizedBox(
+              width: 500,
+              child: _textFormField('Dirección', TextInputType.text, direccion),
             ),
             SizedBox(
               width: 200,
@@ -188,8 +193,21 @@ class PlacesRegister extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-//                     Puesto puesto = Puesto(nombre: nombre.text, id: , latitud: latitud, longitud: longitud, municipio: municipio, direccion: direccion)
-// mainController.addPuesto()
+                    Puesto puesto = Puesto(
+                        nombre: nombre.text,
+                        id: dropdownvalue! + nombre.text,
+                        latitud: latitud.text,
+                        longitud: latitud.text,
+                        municipio: dropdownvalue,
+                        direccion: direccion.text);
+                    mainController.addPuesto(puesto);
+
+                    // for (var i = 0; i < staticfields.listapuestos.length; i++) {
+                    //   mainController.anotheraddpuesto(
+                    //       staticfields.listapuestos[i]['municipio']! +
+                    //           staticfields.listapuestos[i]['nombre']!,
+                    //       staticfields.listapuestos[i] as Map<String, String>);
+                    // }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xffff004e),
