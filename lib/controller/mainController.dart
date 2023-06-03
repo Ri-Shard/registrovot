@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:registrovot/model/favores.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
@@ -15,6 +16,7 @@ class MainController extends GetxController {
   String? collection;
   RxList<Leader> filterLeader = <Leader>[].obs;
   RxList<Votante> filterVotante = <Votante>[].obs;
+  RxList<Puesto> filterPuesto = <Puesto>[].obs;
   Future<User?> getFirebaseUser() async {
     User? firebaseUser = _auth.currentUser;
     firebaseUser ??= await _auth.authStateChanges().first;
@@ -164,8 +166,7 @@ class MainController extends GetxController {
   Future<String?> addVotante(Votante votante) async {
     String response = '';
     CollectionReference colection;
-    Votante? exist =
-        filterVotante.firstWhereOrNull((element) => element.id == votante.id);
+    Votante? exist = getoneVotante(votante.id);
     if (exist != null) {
       response = 'Ya Existe';
       return response;
@@ -269,7 +270,7 @@ class MainController extends GetxController {
   Future<String?> addPuesto(Puesto puesto) async {
     String response = '';
     CollectionReference colection;
-    final exist = await getonePuesto(puesto.id!);
+    final exist = getonePuesto(puesto.id!);
     if (exist != null) {
       response = 'Ya Existe';
       return response;
@@ -288,7 +289,7 @@ class MainController extends GetxController {
           }
         },
         SetOptions(merge: true),
-      ).then((value) {
+      ).then((_) {
         response = "Usuario registrado";
         return response;
       }).catchError((error) {
@@ -300,48 +301,31 @@ class MainController extends GetxController {
     return response;
   }
 
-  Future<List<Puesto>> getPuestos() async {
-    List<Puesto> aux = [];
+  Stream<List<Puesto>> getPuestos() {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection('location');
-    final puntosdata = await colection.doc('puestos').get();
-    Map<dynamic, dynamic> dataid = puntosdata.data() as Map<dynamic, dynamic>;
-    dataid.forEach((key, value) {
-      Puesto puesto = Puesto(
-          nombre: value['nombre'],
-          id: key.toString(),
-          latitud: value?['latitud'],
-          longitud: value['longitud'],
-          direccion: value['direccion'],
-          municipio: value['municipio'],
-          estado: value['estado'] ?? "-");
-
-      aux.add(puesto);
-    });
-
-    return aux;
-  }
-
-  Future<Puesto?> getonePuesto(String idPuesto) async {
-    Puesto? puesto;
-    CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection('location');
-    final puestosdata = await colection.doc('puestos').get();
-    Map<dynamic, dynamic> dataid = puestosdata.data() as Map<dynamic, dynamic>;
-    dataid.forEach((key, value) {
-      if (key == idPuesto) {
-        Puesto puestoaux = Puesto(
+    return colection.doc('puestos').snapshots().asyncMap((event) {
+      List<Puesto> aux = [];
+      Map<dynamic, dynamic> dataid = event.data() as Map<dynamic, dynamic>;
+      dataid.forEach((key, value) {
+        Puesto puesto = Puesto(
             nombre: value['nombre'],
             id: key.toString(),
-            latitud: value['latitud'],
+            latitud: value?['latitud'],
             longitud: value['longitud'],
             direccion: value['direccion'],
             municipio: value['municipio'],
             estado: value['estado'] ?? "-");
-        puesto = puestoaux;
-      }
-    });
 
+        aux.add(puesto);
+      });
+      return aux;
+    });
+  }
+
+  Puesto? getonePuesto(String idPuesto) {
+    Puesto? puesto =
+        filterPuesto.firstWhereOrNull((element) => element.id == idPuesto);
     return puesto;
   }
 
@@ -421,5 +405,33 @@ class MainController extends GetxController {
       },
       SetOptions(merge: true),
     );
+  }
+
+  //FAVORES METHODS
+  Future<String?> addFavor(Favores favores) async {
+    String response = '';
+    CollectionReference colection;
+    colection = FirebaseFirestore.instance.collection(collection!);
+    colection.doc('favores').set(
+      {
+        favores.id.toString(): {
+          'id': favores.id.toString(),
+          'nombre': favores.nombre,
+          'descripcion': favores.descripcion,
+          'leaderID': favores.leaderID,
+          'fecha': favores.fechafavor,
+          'estado': favores.estado,
+        }
+      },
+      SetOptions(merge: true),
+    ).then((value) {
+      response = "Favor registrado";
+      return response;
+    }).catchError((error) {
+      response = "Error al agregar el Favor: $error";
+      return response;
+    });
+
+    return response;
   }
 }

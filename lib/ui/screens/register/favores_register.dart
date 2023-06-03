@@ -1,199 +1,264 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:registrovot/ui/common/staticsFields.dart';
+import 'package:get/get.dart';
+import 'package:registrovot/controller/mainController.dart';
+import 'package:registrovot/model/favores.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+import '../../../model/leader.dart';
 
 // ignore: must_be_immutable
-class FavoresRegister extends StatelessWidget {
+class FavoresRegister extends StatefulWidget {
   FavoresRegister({Key? key}) : super(key: key);
 
+  @override
+  State<FavoresRegister> createState() => _FavoresRegisterState();
+}
+
+class _FavoresRegisterState extends State<FavoresRegister> {
   TextEditingController nombre = TextEditingController();
-  TextEditingController latitud = TextEditingController();
-  TextEditingController longitud = TextEditingController();
-  TextEditingController textEditingController = TextEditingController();
-  StaticFields municipios = StaticFields();
+
+  TextEditingController descripcion = TextEditingController();
+
+  TextEditingController valueleader = TextEditingController();
+
+  TextEditingController fecha = TextEditingController();
+
   String? dropdownvalue;
+
+  RxList<Leader> filterLeader = <Leader>[].obs;
+
+  Leader? valueLeader2;
 
   final formkey = GlobalKey<FormState>();
 
+  MainController mainController = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Padding(
-    //     padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
-    //     child: Center(
-    //         child: Column(
-    //       children: [
-    //         _textFormField('Nombre', TextInputType.text, nombre),
-    //         _textFormField('Latitud', TextInputType.number, latitud),
-    //         _textFormField('Longitud', TextInputType.number, longitud),
-    //         const SizedBox(
-    //           height: 20,
-    //         ),
-    //         Row(
-    //           children: [
-    //             const Text(
-    //               'Municipio',
-    //               style: TextStyle(
-    //                 fontSize: 15,
-    //               ),
-    //             ),
-    //             const SizedBox(
-    //               width: 40,
-    //             ),
-    //             StatefulBuilder(builder: (context, setState) {
-    //               return DropdownButtonHideUnderline(
-    //                 child: DropdownButton2(
-    //                   isExpanded: true,
-    //                   hint: Row(
-    //                     children: const [
-    //                       Icon(
-    //                         Icons.list,
-    //                         size: 16,
-    //                         color: Colors.grey,
-    //                       ),
-    //                       SizedBox(
-    //                         width: 4,
-    //                       ),
-    //                       Expanded(
-    //                         child: Text(
-    //                           'Seleccione',
-    //                           style: TextStyle(
-    //                             fontSize: 14,
-    //                             fontWeight: FontWeight.bold,
-    //                             color: Colors.grey,
-    //                           ),
-    //                           overflow: TextOverflow.ellipsis,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                   items: municipios
-    //                       .getMunicipios()
-    //                       .map((item) => DropdownMenuItem<String>(
-    //                             value: item.nombre,
-    //                             child: Text(
-    //                               item.nombre!,
-    //                               style: const TextStyle(
-    //                                 fontSize: 14,
-    //                                 fontWeight: FontWeight.bold,
-    //                                 color: Colors.grey,
-    //                               ),
-    //                               overflow: TextOverflow.ellipsis,
-    //                             ),
-    //                           ))
-    //                       .toList(),
-    //                   value: dropdownvalue,
-    //                   onChanged: (value) {
-    //                     setState(() {
-    //                       dropdownvalue = value as String;
-    //                     });
-    //                   },
-    //                   icon: const Icon(
-    //                     Icons.arrow_forward_ios_outlined,
-    //                   ),
-    //                   searchController: textEditingController,
-    //                   searchInnerWidgetHeight: 50,
-    //                   searchInnerWidget: Container(
-    //                     height: 50,
-    //                     padding: const EdgeInsets.only(
-    //                       top: 8,
-    //                       bottom: 4,
-    //                       right: 8,
-    //                       left: 8,
-    //                     ),
-    //                     child: TextFormField(
-    //                       expands: true,
-    //                       maxLines: null,
-    //                       controller: textEditingController,
-    //                       decoration: InputDecoration(
-    //                         isDense: true,
-    //                         contentPadding: const EdgeInsets.symmetric(
-    //                           horizontal: 10,
-    //                           vertical: 8,
-    //                         ),
-    //                         hintText: 'Busca un municipio',
-    //                         hintStyle: const TextStyle(fontSize: 12),
-    //                         border: OutlineInputBorder(
-    //                           borderRadius: BorderRadius.circular(8),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   searchMatchFn: (item, searchValue) {
-    //                     return (item.value.toString().contains(searchValue));
-    //                   },
-
-    //                   //This to clear the search value when you close the menu
-    //                   onMenuStateChange: (isOpen) {
-    //                     if (!isOpen) {
-    //                       textEditingController.clear();
-    //                     }
-    //                   },
-    //                   iconSize: 14,
-    //                   iconEnabledColor: Colors.grey,
-    //                   iconDisabledColor: Colors.grey,
-    //                   buttonHeight: 50,
-    //                   buttonWidth: 300,
-    //                   buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-    //                   buttonDecoration: BoxDecoration(
-    //                     borderRadius: BorderRadius.circular(14),
-    //                     border: Border.all(
-    //                       color: Colors.black26,
-    //                     ),
-    //                     color: Colors.white,
-    //                   ),
-    //                   buttonElevation: 2,
-    //                   itemHeight: 40,
-    //                   itemPadding: const EdgeInsets.only(left: 14, right: 14),
-    //                   dropdownMaxHeight: 200,
-    //                   dropdownWidth: 200,
-    //                   dropdownPadding: null,
-    //                   dropdownDecoration: BoxDecoration(
-    //                     borderRadius: BorderRadius.circular(14),
-    //                     color: Colors.white,
-    //                   ),
-    //                   dropdownElevation: 8,
-    //                   scrollbarRadius: const Radius.circular(40),
-    //                   scrollbarThickness: 6,
-    //                   scrollbarAlwaysShow: true,
-    //                   offset: const Offset(-20, 0),
-    //                 ),
-    //               );
-    //             }),
-    //           ],
-    //         ),
-    //         const SizedBox(
-    //           height: 20,
-    //         ),
-    //         TextButton(
-    //           onPressed: () {},
-    //           style: TextButton.styleFrom(
-    //             backgroundColor: const Color(0xffff004e),
-    //             padding: const EdgeInsets.symmetric(
-    //               vertical: 20,
-    //               horizontal: 10,
-    //             ),
-    //           ),
-    //           child: const Text(
-    //             'Registrar puesto',
-    //             style: TextStyle(
-    //               fontSize: 15,
-    //               color: Colors.white,
-    //               fontWeight: FontWeight.w600,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     )),
-    //   ),
-    // );
-    return const Center(
-      child: Text('Registro Favores'),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
+        child: Center(
+            child: Column(
+          children: [
+            _textFormField('Nombre', TextInputType.text, nombre, 1),
+            _textFormField('Descripcion', TextInputType.text, descripcion, 3),
+            const SizedBox(
+              height: 20,
+            ),
+            Builder(builder: (_) {
+              // if (valueleader == null) {
+              // }
+              filterLeader.clear();
+              for (var i = 0; i < mainController.filterLeader.length; i++) {
+                filterLeader.add(mainController.filterLeader[i]);
+              }
+              return Row(
+                children: [
+                  const Text(
+                    'Lider',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  SizedBox(
+                    width: 500,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      color: Colors.transparent,
+                      child: GetBuilder<MainController>(
+                          id: "dropLeaderView",
+                          builder: (state) {
+                            return OutlinedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            side: const BorderSide(
+                                                width: 2.0,
+                                                style: BorderStyle.solid)))),
+                                onPressed: () {
+                                  Get.dialog(Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: Get.height * 0.1,
+                                      horizontal: Get.width * 0.2,
+                                    ),
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: mainController.filterLeader.isEmpty
+                                          ? const Center(
+                                              child: Text("No hay datos"),
+                                            )
+                                          : Obx(() {
+                                              return Column(
+                                                children: [
+                                                  TextField(
+                                                    autofocus: true,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            hintText: ""),
+                                                    controller: valueleader,
+                                                    onChanged: (_) {
+                                                      filterLeader.value = mainController
+                                                          .filterLeader
+                                                          .where((element) =>
+                                                              element.name!
+                                                                  .toLowerCase()
+                                                                  .contains(_
+                                                                      .toLowerCase()))
+                                                          .toList();
+                                                      state.update(
+                                                          ["dropLeaderView"]);
+                                                    },
+                                                  ),
+                                                  Expanded(
+                                                      child: ListView.builder(
+                                                          itemCount:
+                                                              filterLeader
+                                                                  .length,
+                                                          itemBuilder:
+                                                              (b, index) {
+                                                            return ListTile(
+                                                              onTap: () {
+                                                                valueleader
+                                                                        .text =
+                                                                    filterLeader[index]
+                                                                            .name ??
+                                                                        "-";
+                                                                valueLeader2 =
+                                                                    filterLeader[
+                                                                        index];
+                                                                state.update([
+                                                                  "dropLeaderView"
+                                                                ]);
+                                                                Get.back();
+                                                              },
+                                                              title: Text(
+                                                                  filterLeader[
+                                                                              index]
+                                                                          .name ??
+                                                                      "-"),
+                                                            );
+                                                          })),
+                                                  Center(
+                                                    child: OutlinedButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: const Text(
+                                                            "Cerrar")),
+                                                  )
+                                                ],
+                                              );
+                                            }),
+                                    ),
+                                  ));
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 20),
+                                    child: Text(
+                                      valueleader.text,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    )));
+                          }),
+                    ),
+                  )
+                ],
+              );
+            }),
+            TextFormField(
+              onTap: () {
+                _selectDate(context);
+              },
+              controller: fecha,
+              decoration: InputDecoration(
+                labelText: 'Fecha',
+              ),
+              readOnly: true, // Hacer que el campo de texto sea de solo lectura
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () {
+                String now = DateTime.now().toString();
+                Favores favor = Favores(
+                    nombre: nombre.text,
+                    id: now,
+                    descripcion: descripcion.text,
+                    fechafavor: fecha.text,
+                    leaderID: valueLeader2!.id!);
+                mainController.addFavor(favor);
+                AwesomeDialog(
+                        width: 566,
+                        context: context,
+                        dialogType: DialogType.success,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: 'Registro exitoso',
+                        desc: 'El favor fue registrado correctamente',
+                        btnOkOnPress: () {},
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: const Color(0xff01b9ff))
+                    .show();
+                nombre.clear();
+                descripcion.clear();
+                valueleader.clear();
+                fecha.clear();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xffff004e),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 10,
+                ),
+              ),
+              child: const Text(
+                'Registrar Favor',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        )),
+      ),
     );
   }
 
-  Widget _textFormField(
-      String labelText, TextInputType input, TextEditingController controller) {
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // Fecha inicial del selector
+      firstDate: DateTime(2000), // Fecha más temprana permitida
+      lastDate: DateTime(2100), // Fecha más tardía permitida
+    );
+
+    if (picked != null) {
+      final DateFormat formatter = DateFormat('dd/MM/yyyy');
+      final String formattedDate = formatter.format(picked);
+      setState(() {
+        fecha.text = formattedDate;
+      });
+    }
+  }
+
+  Widget _textFormField(String labelText, TextInputType input,
+      TextEditingController controller, int lines) {
     return TextFormField(
+      maxLines: lines,
       decoration: InputDecoration(labelText: labelText),
       keyboardType: input,
       controller: controller,

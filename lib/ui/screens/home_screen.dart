@@ -188,6 +188,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     children: [
                       StreamBuilder(
+                          stream: mainController.getPuestos(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              mainController.filterPuesto.clear();
+                              for (var i = 0; i < snapshot.data!.length; i++) {
+                                mainController.filterPuesto
+                                    .add(snapshot.data![i]);
+                              }
+                            }
+                            return SizedBox();
+                          }),
+                      StreamBuilder(
                           stream: mainController.getVotantes(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -198,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             }
                             return SizedBox();
-                          })
+                          }),
                     ],
                   ),
                 ),

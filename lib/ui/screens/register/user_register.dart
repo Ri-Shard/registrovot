@@ -776,157 +776,153 @@ class _UserRegisterState extends State<UserRegister> {
               Container(
                 height: 40,
               ),
-              FutureBuilder<List<Puesto>>(
-                  future: mainController.getPuestos(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-                    filterPuestoPre.clear();
-                    for (var i = 0; i < snapshot.data!.length; i++) {
-                      filterPuestoPre.add(snapshot.data![i]);
-                    }
-                    filterPuesto.clear();
-                    for (var i = 0; i < filterPuestoPre.length; i++) {
-                      if (filterPuestoPre[i].municipio!.toLowerCase() ==
-                          valuemunicipio.text.toLowerCase()) {
-                        filterPuesto.add(filterPuestoPre[i]);
-                      }
-                    }
-                    filterPuestoSearch.clear();
-                    for (var element in filterPuesto) {
-                      filterPuestoSearch.add(element);
-                    }
-                    return Visibility(
-                      visible: enable,
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Puesto',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          SizedBox(
-                            width: 500,
-                            child: Form(
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                color: Colors.transparent,
-                                child: GetBuilder<MainController>(
-                                    id: "dropPuestoView",
-                                    builder: (state) {
-                                      return OutlinedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      side: const BorderSide(
-                                                          width: 2.0,
-                                                          style: BorderStyle
-                                                              .solid)))),
-                                          onPressed: () {
-                                            // state.searchDomi("");
-                                            Get.dialog(Container(
-                                              margin: EdgeInsets.symmetric(
-                                                vertical: Get.height * 0.1,
-                                                horizontal: Get.width * 0.2,
-                                              ),
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: filterPuesto.isEmpty
-                                                    ? const Center(
-                                                        child: Text(
-                                                            "No hay datos"),
-                                                      )
-                                                    : Obx(() {
-                                                        return Column(
-                                                          children: [
-                                                            TextField(
-                                                              autofocus: true,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "Nombre de.."),
-                                                              controller:
-                                                                  valuepuesto,
-                                                              onChanged: (_) {
-                                                                filterPuestoSearch.value = filterPuesto
+              Builder(builder: (_) {
+                if (mainController.filterPuesto.isEmpty) {
+                  return Container();
+                }
+                filterPuestoPre.clear();
+                for (var i = 0; i < mainController.filterPuesto.length; i++) {
+                  filterPuestoPre.add(mainController.filterPuesto[i]);
+                }
+                filterPuesto.clear();
+                for (var i = 0; i < filterPuestoPre.length; i++) {
+                  if (filterPuestoPre[i].municipio!.toLowerCase() ==
+                      valuemunicipio.text.toLowerCase()) {
+                    filterPuesto.add(filterPuestoPre[i]);
+                  }
+                }
+                filterPuestoSearch.clear();
+                for (var element in filterPuesto) {
+                  filterPuestoSearch.add(element);
+                }
+                return Visibility(
+                  visible: enable,
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Puesto',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      SizedBox(
+                        width: 500,
+                        child: Form(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            color: Colors.transparent,
+                            child: GetBuilder<MainController>(
+                                id: "dropPuestoView",
+                                builder: (state) {
+                                  return OutlinedButton(
+                                      style: ButtonStyle(
+                                          shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  side: const BorderSide(
+                                                      width: 2.0,
+                                                      style:
+                                                          BorderStyle.solid)))),
+                                      onPressed: () {
+                                        // state.searchDomi("");
+                                        Get.dialog(Container(
+                                          margin: EdgeInsets.symmetric(
+                                            vertical: Get.height * 0.1,
+                                            horizontal: Get.width * 0.2,
+                                          ),
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: filterPuesto.isEmpty
+                                                ? const Center(
+                                                    child: Text("No hay datos"),
+                                                  )
+                                                : Obx(() {
+                                                    return Column(
+                                                      children: [
+                                                        TextField(
+                                                          autofocus: true,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  hintText:
+                                                                      "Nombre de.."),
+                                                          controller:
+                                                              valuepuesto,
+                                                          onChanged: (_) {
+                                                            filterPuestoSearch
+                                                                    .value =
+                                                                filterPuesto
                                                                     .where((element) => element
                                                                         .nombre!
                                                                         .toLowerCase()
                                                                         .contains(
                                                                             _.toLowerCase()))
                                                                     .toList();
-                                                                state.update([
-                                                                  "dropPuestoView"
-                                                                ]);
+                                                            state.update([
+                                                              "dropPuestoView"
+                                                            ]);
+                                                          },
+                                                        ),
+                                                        Expanded(
+                                                            child: ListView
+                                                                .builder(
+                                                                    itemCount:
+                                                                        filterPuestoSearch
+                                                                            .length,
+                                                                    itemBuilder:
+                                                                        (b, index) {
+                                                                      return ListTile(
+                                                                        onTap:
+                                                                            () {
+                                                                          valuepuesto.text =
+                                                                              filterPuestoSearch[index].nombre ?? "-";
+                                                                          valuePuesto2 =
+                                                                              filterPuestoSearch[index];
+                                                                          state
+                                                                              .update([
+                                                                            "dropPuestoView"
+                                                                          ]);
+                                                                          Get.back();
+                                                                        },
+                                                                        title: Text(filterPuestoSearch[index].nombre ??
+                                                                            "-"),
+                                                                      );
+                                                                    })),
+                                                        Center(
+                                                          child: OutlinedButton(
+                                                              onPressed: () {
+                                                                Get.back();
                                                               },
-                                                            ),
-                                                            Expanded(
-                                                                child: ListView
-                                                                    .builder(
-                                                                        itemCount:
-                                                                            filterPuestoSearch
-                                                                                .length,
-                                                                        itemBuilder:
-                                                                            (b, index) {
-                                                                          return ListTile(
-                                                                            onTap:
-                                                                                () {
-                                                                              valuepuesto.text = filterPuestoSearch[index].nombre ?? "-";
-                                                                              valuePuesto2 = filterPuestoSearch[index];
-                                                                              state.update([
-                                                                                "dropPuestoView"
-                                                                              ]);
-                                                                              Get.back();
-                                                                            },
-                                                                            title:
-                                                                                Text(filterPuestoSearch[index].nombre ?? "-"),
-                                                                          );
-                                                                        })),
-                                                            Center(
-                                                              child:
-                                                                  OutlinedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Get.back();
-                                                                      },
-                                                                      child: const Text(
-                                                                          "Cerrar")),
-                                                            )
-                                                          ],
-                                                        );
-                                                      }),
-                                              ),
-                                            ));
-                                          },
-                                          child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 20),
-                                              child: Text(
-                                                valuepuesto.text,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              )));
-                                    }),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
+                                                              child: const Text(
+                                                                  "Cerrar")),
+                                                        )
+                                                      ],
+                                                    );
+                                                  }),
+                                          ),
+                                        ));
+                                      },
+                                      child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          child: Text(
+                                            valuepuesto.text,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          )));
+                                }),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
               const SizedBox(
                 height: 20,
               ),

@@ -200,7 +200,23 @@ class PlacesRegister extends StatelessWidget {
                         longitud: latitud.text,
                         municipio: dropdownvalue,
                         direccion: direccion.text);
-                    mainController.addPuesto(puesto);
+                    await mainController.addPuesto(puesto);
+                    AwesomeDialog(
+                            width: 566,
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.rightSlide,
+                            headerAnimationLoop: false,
+                            title: 'Registro exitoso',
+                            desc: 'El puesto fue registrado correctamente',
+                            btnOkOnPress: () {},
+                            btnOkIcon: Icons.cancel,
+                            btnOkColor: const Color(0xff01b9ff))
+                        .show();
+                    nombre.clear();
+                    latitud.clear();
+                    longitud.clear();
+                    direccion.clear();
 
                     // for (var i = 0; i < staticfields.listapuestos.length; i++) {
                     //   mainController.anotheraddpuesto(

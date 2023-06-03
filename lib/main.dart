@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:registrovot/controller/mainController.dart';
 import 'package:registrovot/ui/screens/splash_screen.dart';
 
 void main() async {
+  initializeDateFormatting('es');
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(MainController());
     return GetMaterialApp(
+      locale: const Locale('es'),
       debugShowCheckedModeBanner: false,
       title: 'VCO',
       theme: ThemeData(
