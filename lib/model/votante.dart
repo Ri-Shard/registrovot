@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class Votante {
   Votante({
     required this.name,
@@ -9,7 +11,10 @@ class Votante {
     required this.edad,
     required this.municipio,
     this.barrio,
+    this.estado,
+    this.encuesta,
   });
+
   late final String name;
   late final String id;
   late final String leaderID;
@@ -19,6 +24,8 @@ class Votante {
   late final String edad;
   late final String municipio;
   late String? barrio;
+  String? estado = "activo";
+  bool? encuesta = false;
 
   Votante.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -26,10 +33,12 @@ class Votante {
     leaderID = json['leaderID'];
     phone = json['phone'];
     puestoID = json['puntoID'];
-    puestoID = json['direccion'];
-    puestoID = json['edad'];
-    puestoID = json['municipio'];
-    puestoID = json['barrio'];
+    direccion = json['direccion'];
+    edad = json['edad'];
+    municipio = json['municipio'];
+    barrio = json['barrio'];
+    estado = json['estado'];
+    encuesta = json['encuesta'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +52,8 @@ class Votante {
     _data['edad'] = edad;
     _data['barrio'] = barrio;
     _data['municipio'] = municipio;
+    _data['estado'] = estado;
+    _data['encuesta'] = encuesta;
     return _data;
   }
 }

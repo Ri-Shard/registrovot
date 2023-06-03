@@ -16,8 +16,8 @@ MainController mainController = Get.find();
 class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Leader>>(
-        future: mainController.getLeaders(),
+    return StreamBuilder(
+        stream: mainController.getLeaders(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Align(

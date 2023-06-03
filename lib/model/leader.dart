@@ -1,22 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class Leader extends Equatable {
-  Leader({
-    required this.name,
-    required this.id,
-    required this.phone,
-    required this.municipio,
-  });
+  Leader(
+      {required this.name,
+      required this.id,
+      required this.phone,
+      required this.municipio,
+      this.estado});
   String? name;
   String? id;
   String? phone;
   String? municipio;
+  String? estado = "activo";
 
   Leader.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     phone = json['phone'];
     municipio = json['municipio'];
+    estado = json['estado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -25,6 +27,7 @@ class Leader extends Equatable {
     _data['id'] = id;
     _data['phone'] = phone;
     _data['municipio'] = municipio;
+    _data['estado'] = estado;
     return _data;
   }
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../service/navigator_services.dart';
-
 class MainNavItem extends StatelessWidget {
   /// a. definition of variables
   final String title;

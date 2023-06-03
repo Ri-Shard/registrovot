@@ -35,6 +35,8 @@ class _UserRegisterState extends State<UserRegister> {
   List<String> leadersname = [];
   List<String> puestoname = [];
   List<Puesto> filterPuestoPre = [];
+
+  RxList<Votante> searchvotante = <Votante>[].obs;
   RxList<Leader> filterLeader = <Leader>[].obs;
   RxList<Municipio> filterMunicipio = <Municipio>[].obs;
   RxList<Barrio> filterBarrio = <Barrio>[].obs;
@@ -74,106 +76,279 @@ class _UserRegisterState extends State<UserRegister> {
                 children: [
                   SizedBox(
                       width: 500,
-                      child: _textFormField(
-                          'Cedula', TextInputType.number, cedula, true)),
+                      child: GetBuilder<MainController>(
+                          id: 'dropCedulaView',
+                          builder: (state) {
+                            return InkWell(
+                              onTap: () {
+                                // searchvotante.clear();
+                                searchvotante.value =
+                                    mainController.filterVotante.value;
+                                Get.dialog(Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: Get.height * 0.1,
+                                    horizontal: Get.width * 0.2,
+                                  ),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Obx(() {
+                                      return Column(
+                                        children: [
+                                          TextField(
+                                            autofocus: true,
+                                            decoration: const InputDecoration(
+                                                hintText: "Nombre de.."),
+                                            controller: cedula,
+                                            onChanged: (_) {
+                                              searchvotante.value =
+                                                  mainController.filterVotante
+                                                      .where((element) => element
+                                                          .toJson()
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              _.toLowerCase()))
+                                                      .toList();
+                                              state.update(["dropCedulaView"]);
+                                            },
+                                          ),
+                                          Expanded(
+                                              child: ListView.builder(
+                                                  itemCount: (searchvotante
+                                                              .isEmpty &&
+                                                          cedula.text.isNum &&
+                                                          cedula.text.length >=
+                                                              6 &&
+                                                          cedula.text.length <=
+                                                              11)
+                                                      ? 1
+                                                      : searchvotante.length,
+                                                  itemBuilder: (b, index) {
+                                                    if (searchvotante.isEmpty &&
+                                                        cedula.text.isNum &&
+                                                        cedula.text.length >=
+                                                            6) {
+                                                      return Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 20),
+                                                            width: 200,
+                                                            child: TextButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  enable = true;
+                                                                  filterBarrio
+                                                                          .value =
+                                                                      staticfields
+                                                                          .getBarrios();
+                                                                  filterMunicipio
+                                                                          .value =
+                                                                      staticfields
+                                                                          .getMunicipios();
+                                                                  nombre
+                                                                      .clear();
+                                                                  telefono
+                                                                      .clear();
+                                                                  direccion
+                                                                      .clear();
+                                                                  edad.clear();
+                                                                  valuebarrio
+                                                                      .clear();
+                                                                  valueleader
+                                                                      .clear();
+                                                                  valuemunicipio
+                                                                      .clear();
+                                                                  valuepuesto
+                                                                      .clear();
+                                                                  Get.back();
+                                                                });
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                fixedSize:
+                                                                    const Size(
+                                                                        120,
+                                                                        40),
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xffff004e),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  vertical: 20,
+                                                                  horizontal:
+                                                                      10,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  const SizedBox(
+                                                                width: 200,
+                                                                child: Text(
+                                                                  'Agregar',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    return ListTile(
+                                                      onTap: () {
+                                                        filterLeader.clear();
+                                                        for (var i = 0;
+                                                            i <
+                                                                mainController
+                                                                    .filterLeader
+                                                                    .length;
+                                                            i++) {
+                                                          filterLeader.add(
+                                                              mainController
+                                                                  .filterLeader[i]);
+                                                        }
+                                                        cedula.text =
+                                                            searchvotante[index]
+                                                                .id;
+                                                        // valueLeader2 = filterMunicipio[index];
+                                                        state.update(
+                                                            ["dropCedulaView"]);
+                                                        setState(() {
+                                                          enable = true;
+                                                          update = true;
+
+                                                          nombre.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .name;
+                                                          cedula.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .id;
+                                                          valuemunicipio.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .municipio;
+                                                          filterBarrio.value =
+                                                              staticfields
+                                                                  .getBarrios();
+                                                          filterMunicipio
+                                                                  .value =
+                                                              staticfields
+                                                                  .getMunicipios();
+                                                          valueleader.text = filterLeader
+                                                              .firstWhere((element) =>
+                                                                  element.id ==
+                                                                  searchvotante[
+                                                                          index]
+                                                                      .leaderID)
+                                                              .name
+                                                              .toString();
+                                                          valueLeader2 = filterLeader
+                                                              .firstWhere((element) =>
+                                                                  element.id ==
+                                                                  searchvotante[
+                                                                          index]
+                                                                      .leaderID);
+                                                          valuepuesto.text = filterPuestoPre
+                                                              .firstWhere((element) =>
+                                                                  element.id ==
+                                                                  searchvotante[
+                                                                          index]
+                                                                      .puestoID)
+                                                              .nombre
+                                                              .toString();
+                                                          valuePuesto2 = filterPuestoPre
+                                                              .firstWhere((element) =>
+                                                                  element.id ==
+                                                                  searchvotante[
+                                                                          index]
+                                                                      .puestoID);
+
+                                                          telefono.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .phone;
+                                                          direccion.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .direccion;
+                                                          edad.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .edad;
+                                                          if (searchvotante[
+                                                                      index]
+                                                                  .municipio !=
+                                                              'Valledupar') {
+                                                            valuebarrio.clear();
+                                                          } else {
+                                                            valuebarrio.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .barrio!;
+                                                          }
+                                                        });
+                                                        Get.back();
+                                                      },
+                                                      title: Text(
+                                                          "${searchvotante[index].id} ${searchvotante[index].name}"),
+                                                    );
+                                                  })),
+                                          Center(
+                                            child: OutlinedButton(
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                                child: const Text("Cerrar")),
+                                          )
+                                        ],
+                                      );
+                                    }),
+                                  ),
+                                ));
+                              },
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: const InputDecoration(
+                                  labelText: 'Cedula',
+                                ),
+                                keyboardType: TextInputType.number,
+                                controller: cedula,
+                                validator: (_) {
+                                  if (_ == null || _.isEmpty) {
+                                    return "Debe llenar este campo";
+                                  }
+
+                                  if (_.length > 10) {
+                                    return "número no válido";
+                                  }
+                                  if (_.length < 7) {
+                                    return "número no válido";
+                                  }
+                                },
+                                onChanged: (_) {},
+                              ),
+                            );
+                          })),
                   const SizedBox(
                     width: 40,
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      if (cedula.text.isEmpty) {
-                        AwesomeDialog(
-                                width: 566,
-                                context: context,
-                                dialogType: DialogType.error,
-                                animType: AnimType.rightSlide,
-                                headerAnimationLoop: false,
-                                title: 'Campos vacios',
-                                desc: 'Digite una cedula',
-                                btnOkOnPress: () {},
-                                btnOkIcon: Icons.cancel,
-                                btnOkColor: const Color(0xffff004e))
-                            .show();
-                      } else {
-                        final response =
-                            await mainController.getoneVotante(cedula.text);
-                        if (response != null) {
-                          setState(() {
-                            enable = true;
-                            update = true;
-
-                            nombre.text = response.name;
-                            cedula.text = response.id;
-                            valuemunicipio.text = response.municipio;
-                            filterBarrio.value = staticfields.getBarrios();
-                            filterMunicipio.value =
-                                staticfields.getMunicipios();
-                            valueleader.text = filterLeader
-                                .firstWhere((element) =>
-                                    element.id == response.leaderID)
-                                .name
-                                .toString();
-                            valuepuesto.text = filterPuestoPre
-                                .firstWhere((element) =>
-                                    element.id == response.puestoID)
-                                .nombre
-                                .toString();
-
-                            telefono.text = response.phone;
-                            direccion.text = response.direccion;
-                            edad.text = response.edad;
-                            if (response.municipio != 'Valledupar') {
-                              valuebarrio.clear();
-                            } else {
-                              valuebarrio.text = response.barrio!;
-                            }
-                          });
-                        } else {
-                          setState(() {
-                            enable = true;
-                            filterBarrio.value = staticfields.getBarrios();
-                            filterMunicipio.value =
-                                staticfields.getMunicipios();
-                            nombre.clear();
-                            telefono.clear();
-                            direccion.clear();
-                            edad.clear();
-                            valuebarrio.clear();
-                            valueleader.clear();
-                            valuemunicipio.clear();
-                            valuepuesto.clear();
-                            AwesomeDialog(
-                                    width: 566,
-                                    context: context,
-                                    dialogType: DialogType.info,
-                                    animType: AnimType.rightSlide,
-                                    headerAnimationLoop: false,
-                                    title: 'No existe',
-                                    desc: 'El votante no ha sido registrado',
-                                    btnOkOnPress: () {},
-                                    btnOkIcon: Icons.cancel,
-                                    btnOkColor: const Color(0xffff004e))
-                                .show();
-                          });
-                        }
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      fixedSize: const Size(120, 40),
-                      backgroundColor: const Color(0xffff004e),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 10,
-                      ),
-                    ),
-                    child: const Text(
-                      'Buscar',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -233,7 +408,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                         TextField(
                                                           autofocus: true,
                                                           decoration:
-                                                              InputDecoration(
+                                                              const InputDecoration(
                                                                   hintText:
                                                                       "Nombre de.."),
                                                           controller:
@@ -297,12 +472,12 @@ class _UserRegisterState extends State<UserRegister> {
                                         ));
                                       },
                                       child: Container(
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           child: Text(
                                             valuemunicipio.text,
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                            style: const TextStyle(
+                                                color: Colors.black),
                                           )));
                                 }),
                           ),
@@ -369,7 +544,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                             TextField(
                                                               autofocus: true,
                                                               decoration:
-                                                                  InputDecoration(
+                                                                  const InputDecoration(
                                                                       hintText:
                                                                           "Nombre de.."),
                                                               controller:
@@ -427,11 +602,12 @@ class _UserRegisterState extends State<UserRegister> {
                                             ));
                                           },
                                           child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 20),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20),
                                               child: Text(
                                                 valuebarrio.text,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black),
                                               )));
                                     }),
@@ -462,64 +638,57 @@ class _UserRegisterState extends State<UserRegister> {
               Container(
                 height: 40,
               ),
-              FutureBuilder<List<Leader>>(
-                  future: mainController.getLeaders(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-                    // if (valueleader == null) {
-                    // }
-                    filterLeader.clear();
-                    for (var i = 0; i < snapshot.data!.length; i++) {
-                      filterLeader.add(snapshot.data![i]);
-                    }
-                    return Visibility(
-                      visible: enable,
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Lider',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          SizedBox(
-                            width: 500,
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              color: Colors.transparent,
-                              child: GetBuilder<MainController>(
-                                  id: "dropLeaderView",
-                                  builder: (state) {
-                                    return OutlinedButton(
-                                        style: ButtonStyle(
-                                            shape: MaterialStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    side: const BorderSide(
-                                                        width: 2.0,
-                                                        style: BorderStyle
-                                                            .solid)))),
-                                        onPressed: () {
-                                          // state.searchDomi("");
-                                          Get.dialog(Container(
-                                            margin: EdgeInsets.symmetric(
-                                              vertical: Get.height * 0.1,
-                                              horizontal: Get.width * 0.2,
-                                            ),
-                                            child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: filterLeader.isEmpty
+              Builder(builder: (_) {
+                // if (valueleader == null) {
+                // }
+                filterLeader.clear();
+                for (var i = 0; i < mainController.filterLeader.length; i++) {
+                  filterLeader.add(mainController.filterLeader[i]);
+                }
+                return Visibility(
+                  visible: enable,
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Lider',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      SizedBox(
+                        width: 500,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          color: Colors.transparent,
+                          child: GetBuilder<MainController>(
+                              id: "dropLeaderView",
+                              builder: (state) {
+                                return OutlinedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                side: const BorderSide(
+                                                    width: 2.0,
+                                                    style:
+                                                        BorderStyle.solid)))),
+                                    onPressed: () {
+                                      Get.dialog(Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: Get.height * 0.1,
+                                          horizontal: Get.width * 0.2,
+                                        ),
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child:
+                                              mainController
+                                                      .filterLeader.isEmpty
                                                   ? const Center(
                                                       child:
                                                           Text("No hay datos"),
@@ -530,14 +699,14 @@ class _UserRegisterState extends State<UserRegister> {
                                                           TextField(
                                                             autofocus: true,
                                                             decoration:
-                                                                InputDecoration(
+                                                                const InputDecoration(
                                                                     hintText:
                                                                         ""),
                                                             controller:
                                                                 valueleader,
                                                             onChanged: (_) {
-                                                              filterLeader.value = snapshot
-                                                                  .data!
+                                                              filterLeader.value = mainController
+                                                                  .filterLeader
                                                                   .where((element) => element
                                                                       .name!
                                                                       .toLowerCase()
@@ -586,24 +755,24 @@ class _UserRegisterState extends State<UserRegister> {
                                                         ],
                                                       );
                                                     }),
-                                            ),
-                                          ));
-                                        },
-                                        child: Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 20),
-                                            child: Text(
-                                              valueleader.text,
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            )));
-                                  }),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
+                                        ),
+                                      ));
+                                    },
+                                    child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Text(
+                                          valueleader.text,
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        )));
+                              }),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
               Container(
                 height: 40,
               ),
@@ -611,7 +780,7 @@ class _UserRegisterState extends State<UserRegister> {
                   future: mainController.getPuestos(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
+                      return Container();
                     }
                     filterPuestoPre.clear();
                     for (var i = 0; i < snapshot.data!.length; i++) {
@@ -685,7 +854,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                             TextField(
                                                               autofocus: true,
                                                               decoration:
-                                                                  InputDecoration(
+                                                                  const InputDecoration(
                                                                       hintText:
                                                                           "Nombre de.."),
                                                               controller:
@@ -742,11 +911,12 @@ class _UserRegisterState extends State<UserRegister> {
                                             ));
                                           },
                                           child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 20),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20),
                                               child: Text(
                                                 valuepuesto.text,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black),
                                               )));
                                     }),

@@ -1,18 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class Agenda extends Equatable {
-  Agenda({
-    required this.id,
-    required this.titulo,
-    required this.descripcion,
-    required this.horainicio,
-    required this.horafinal,
-  });
+  Agenda(
+      {required this.id,
+      required this.titulo,
+      required this.descripcion,
+      required this.horainicio,
+      required this.horafinal,
+      this.estado});
   late final String id;
   late final String titulo;
   late final String descripcion;
   late final String horainicio;
   late final String horafinal;
+  String? estado = "activo";
 
   Agenda.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -20,6 +21,7 @@ class Agenda extends Equatable {
     descripcion = json['descripcion'];
     horainicio = json['horainicio'];
     horafinal = json['horafinal'];
+    estado = json['estado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class Agenda extends Equatable {
     _data['horainicio'] = horainicio;
     _data['horafinal'] = horafinal;
 
+    _data['estado'] = estado;
     return _data;
   }
 

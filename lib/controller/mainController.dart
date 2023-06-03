@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,8 @@ class MainController extends GetxController {
   final _auth = FirebaseAuth.instance;
   List<bool> listviews = [];
   String? collection;
+  RxList<Leader> filterLeader = <Leader>[].obs;
+  RxList<Votante> filterVotante = <Votante>[].obs;
   Future<User?> getFirebaseUser() async {
     User? firebaseUser = _auth.currentUser;
     firebaseUser ??= await _auth.authStateChanges().first;
@@ -89,7 +93,8 @@ class MainController extends GetxController {
             'id': leader.id.toString(),
             'name': leader.name,
             'phone': leader.phone,
-            'municipio': leader.municipio
+            'municipio': leader.municipio,
+            'estado': leader.estado
           }
         },
         SetOptions(merge: true),
@@ -105,39 +110,30 @@ class MainController extends GetxController {
     return response;
   }
 
-  Future<List<Leader>> getLeaders() async {
-    List<Leader> prueba = [];
+  Stream<List<Leader>> getLeaders() {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
-    final lideresdata = await colection.doc('lideres').get();
-    Map<dynamic, dynamic> data = lideresdata.data() as Map<dynamic, dynamic>;
-    data.forEach((key, value) {
-      Leader leader = Leader(
-          name: value['name'],
-          id: value['id'],
-          phone: value['phone'],
-          municipio: value['municipio']);
-      prueba.add(leader);
+    return colection.doc('lideres').snapshots().asyncMap((event) {
+      List<Leader> leaderAux = [];
+      Map<dynamic, dynamic> data = event.data() as Map<dynamic, dynamic>;
+      data.forEach((key, value) {
+        if (value['estado'] == 'activo') {
+          Leader leader = Leader(
+              name: value['name'],
+              id: value['id'],
+              phone: value['phone'],
+              municipio: value['municipio'],
+              estado: value['estado']);
+          leaderAux.add(leader);
+        }
+      });
+      return leaderAux;
     });
-    return prueba;
   }
 
   Future<Leader?> getoneLeader(String idLeader) async {
     Leader? leader;
-    CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection(collection!);
-    final lideresdata = await colection.doc('lideres').get();
-    Map<dynamic, dynamic> dataid = lideresdata.data() as Map<dynamic, dynamic>;
-    dataid.forEach((key, value) {
-      if (key == idLeader) {
-        Leader leaderaux = Leader(
-            name: value['name'],
-            id: value['id'],
-            phone: value['phone'],
-            municipio: value['municipio']);
-        leader = leaderaux;
-      }
-    });
+    leader = filterLeader.firstWhere((element) => element.id == idLeader);
     return leader;
   }
 
@@ -156,7 +152,8 @@ class MainController extends GetxController {
   Future<String?> addVotante(Votante votante) async {
     String response = '';
     CollectionReference colection;
-    final exist = await getoneVotante(votante.id);
+    Votante? exist =
+        filterVotante.firstWhereOrNull((element) => element.id == votante.id);
     if (exist != null) {
       response = 'Ya Existe';
       return response;
@@ -174,6 +171,8 @@ class MainController extends GetxController {
             'edad': votante.edad,
             'municipio': votante.municipio,
             'barrio': votante.barrio,
+            'estado': 'activo',
+            'encuesta': false,
           }
         },
         SetOptions(merge: true),
@@ -205,6 +204,8 @@ class MainController extends GetxController {
           'edad': votante.edad,
           'municipio': votante.municipio,
           'barrio': votante.barrio,
+          'estado': votante.estado,
+          'encuesta': votante.encuesta,
         }
       },
       SetOptions(merge: true),
@@ -219,49 +220,36 @@ class MainController extends GetxController {
     return response;
   }
 
-  Future<List<Votante>> getVotantes() async {
-    List<Votante> aux = [];
+  Stream<List<Votante>> getVotantes() {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
-    final votantesdata = await colection.doc('usuarios').get();
-    Map<dynamic, dynamic> dataid = votantesdata.data() as Map<dynamic, dynamic>;
-    dataid.forEach((key, value) {
-      Votante votante = Votante(
-          name: value['name'],
-          id: value['id'],
-          phone: value['phone'],
-          leaderID: value['leaderID'],
-          direccion: value['direccion'],
-          edad: value['edad'],
-          municipio: value['municipio'],
-          barrio: value['barrio'],
-          puestoID: value['puestoID']);
-      aux.add(votante);
+    return colection.doc('usuarios').snapshots().asyncMap((event) {
+      List<Votante> aux = [];
+      Map<dynamic, dynamic> dataid = event.data() as Map<dynamic, dynamic>;
+      dataid.forEach((key, value) {
+        if (value['estado'] == 'activo') {
+          Votante votante = Votante(
+              name: value['name'],
+              id: value['id'],
+              phone: value['phone'],
+              leaderID: value['leaderID'],
+              direccion: value['direccion'],
+              edad: value['edad'],
+              municipio: value['municipio'],
+              barrio: value['barrio'],
+              puestoID: value['puestoID'],
+              estado: value['estado'],
+              encuesta: value['encuesta']);
+          aux.add(votante);
+        }
+      });
+      return aux;
     });
-    return aux;
   }
 
-  Future<Votante?> getoneVotante(String idVotante) async {
-    Votante? votanteaux;
-    CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection(collection!);
-    final votantesdata = await colection.doc('usuarios').get();
-    Map<dynamic, dynamic> dataid = votantesdata.data() as Map<dynamic, dynamic>;
-    dataid.forEach((key, value) {
-      if (key == idVotante) {
-        Votante votante = Votante(
-            name: value['name'],
-            id: value['id'],
-            phone: value['phone'],
-            leaderID: value['leaderID'],
-            direccion: value['direccion'],
-            edad: value['edad'],
-            municipio: value['municipio'],
-            barrio: value['barrio'],
-            puestoID: value['puestoID']);
-        votanteaux = votante;
-      }
-    });
+  Votante? getoneVotante(String idVotante) {
+    Votante? votanteaux =
+        filterVotante.firstWhereOrNull((element) => element.id == idVotante);
     return votanteaux;
   }
 
@@ -284,6 +272,7 @@ class MainController extends GetxController {
             'longitud': puesto.longitud,
             'municipio': puesto.municipio,
             'direccion': puesto.direccion,
+            'estado': puesto.estado,
           }
         },
         SetOptions(merge: true),
@@ -312,7 +301,9 @@ class MainController extends GetxController {
           latitud: value?['latitud'],
           longitud: value['longitud'],
           direccion: value['direccion'],
-          municipio: value['municipio']);
+          municipio: value['municipio'],
+          estado: value['estado'] ?? "-");
+
       aux.add(puesto);
     });
 
@@ -331,9 +322,10 @@ class MainController extends GetxController {
             nombre: value['nombre'],
             id: key.toString(),
             latitud: value['latitud'],
-            longitud: value[['longitud']],
-            direccion: value[['direccion']],
-            municipio: value[['municipio']]);
+            longitud: value['longitud'],
+            direccion: value['direccion'],
+            municipio: value['municipio'],
+            estado: value['estado'] ?? "-");
         puesto = puestoaux;
       }
     });
@@ -369,6 +361,7 @@ class MainController extends GetxController {
           'descripcion': appointment.notes,
           'horainicio': appointment.startTime.toString(),
           'horafinal': appointment.endTime.toString(),
+          'estado': "activo",
         }
       },
       SetOptions(merge: true),
@@ -390,14 +383,16 @@ class MainController extends GetxController {
     final agendadata = await colection.doc('agenda').get();
     Map<dynamic, dynamic> dataid = agendadata.data() as Map<dynamic, dynamic>;
     dataid.forEach((key, value) {
-      Appointment appointment = Appointment(
-        id: value['id'],
-        subject: value['titulo'],
-        notes: value['descripcion'],
-        startTime: DateTime.parse(value['horainicio']),
-        endTime: DateTime.parse(value['horafinal']),
-      );
-      aux.add(appointment);
+      if (value["estado"] == 'activo') {
+        Appointment appointment = Appointment(
+          id: value['id'],
+          subject: value['titulo'],
+          notes: value['descripcion'],
+          startTime: DateTime.parse(value['horainicio']),
+          endTime: DateTime.parse(value['horafinal']),
+        );
+        aux.add(appointment);
+      }
     });
 
     return aux;

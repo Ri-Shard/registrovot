@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:registrovot/service/authentication.dart';
 import 'package:registrovot/ui/common/layouts/logindesktop_screen.dart';
-import 'package:registrovot/ui/common/leftpannel/left_pane_widget.dart';
 import 'package:registrovot/ui/screens/Map/map_screen.dart';
 import 'package:registrovot/ui/screens/Map/routes_screen.dart';
 import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
@@ -57,17 +56,28 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  // margin: const EdgeInsets.only(top: 10),
-                  height: 80,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                  ),
-                  child: Image.asset('assets/images/vco_logo.png'),
-                ),
+                StreamBuilder(
+                    stream: mainController.getLeaders(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        mainController.filterLeader.clear();
+                        for (var i = 0; i < snapshot.data!.length; i++) {
+                          mainController.filterLeader.add(snapshot.data![i]);
+                        }
+                      }
+
+                      return Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        // margin: const EdgeInsets.only(top: 10),
+                        height: 60,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Image.asset('assets/images/vco_logo.png'),
+                      );
+                    }),
                 Expanded(
                   child: Container(
                       decoration: BoxDecoration(color: Colors.grey.shade100),
@@ -131,9 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           btnOkColor: const Color(0xffff004e))
                                       .show();
                                 },
-                                child: Row(
+                                child: const Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.logout_outlined,
                                       color: Colors.white,
@@ -164,11 +174,29 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   // margin: const EdgeInsets.only(top: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
                   ),
-                  height: 80,
-                  child: Row(),
+                  height: 60,
+                  child: Row(
+                    children: [
+                      StreamBuilder(
+                          stream: mainController.getVotantes(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              mainController.filterVotante.clear();
+                              for (var i = 0; i < snapshot.data!.length; i++) {
+                                mainController.filterVotante
+                                    .add(snapshot.data![i]);
+                              }
+                            }
+                            return SizedBox();
+                          })
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Expanded(
                     child: Center(
