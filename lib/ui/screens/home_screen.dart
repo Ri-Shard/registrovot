@@ -11,6 +11,7 @@ import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 import 'package:registrovot/ui/screens/getdata/consultarPuestos_screen.dart';
 import 'package:registrovot/ui/screens/getdata/downloadDB_screen.dart';
 import 'package:registrovot/ui/screens/register/agenda_register.dart';
+import 'package:registrovot/ui/screens/register/encuesta_register.dart';
 import 'package:registrovot/ui/screens/register/favores_register.dart';
 import 'package:registrovot/ui/screens/register/leaders_register.dart';
 import 'package:registrovot/ui/screens/register/places_register.dart';
@@ -41,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const ConsultarPuestosScreen(),
     const RoutesScreen(),
     const MapScreen(),
-    FavoresRegister()
+    FavoresRegister(),
+    EncuestaView()
   ];
 
   @override
@@ -112,6 +114,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   'Mapas', Icons.map_outlined, 8, buttons[8]),
                               _materialButton('Favores',
                                   Icons.featured_video_outlined, 9, buttons[9]),
+                              _materialButton(
+                                  'Call Center',
+                                  Icons.featured_video_outlined,
+                                  10,
+                                  buttons[10]),
                               const Spacer(),
                               MaterialButton(
                                 padding: const EdgeInsets.symmetric(

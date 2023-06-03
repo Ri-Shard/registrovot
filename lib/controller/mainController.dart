@@ -26,7 +26,19 @@ class MainController extends GetxController {
   List<bool> defineViews(String email) {
     collection = email.split('@').last.split('.').first;
     if (email.contains('candidato')) {
-      listviews = [true, true, true, true, true, true, true, true, true, true];
+      listviews = [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ];
       return listviews;
     } else if (email.contains('director')) {
       listviews = [
@@ -396,5 +408,18 @@ class MainController extends GetxController {
     });
 
     return aux;
+  }
+
+  updateEncuesta(String id, bool encuesta) async {
+    CollectionReference colection;
+    colection = FirebaseFirestore.instance.collection(collection!);
+    await colection.doc('usuarios').set(
+      {
+        id.toString(): {
+          'encuesta': encuesta,
+        }
+      },
+      SetOptions(merge: true),
+    );
   }
 }
