@@ -114,6 +114,8 @@ class _UserRegisterState extends State<UserRegister> {
                                               state.update(["dropCedulaView"]);
                                             },
                                           ),
+                                          const SizedBox(height: 10),
+                                          const Text('Seleccionar Resultado'),
                                           Expanded(
                                               child: ListView.builder(
                                                   itemCount: (searchvotante
@@ -427,6 +429,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                             ]);
                                                           },
                                                         ),
+                                                        const SizedBox(
+                                                            height: 10),
+                                                        const Text(
+                                                            'Seleccionar Resultado'),
                                                         Expanded(
                                                             child: ListView
                                                                 .builder(
@@ -563,6 +569,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                                 ]);
                                                               },
                                                             ),
+                                                            const SizedBox(
+                                                                height: 10),
+                                                            const Text(
+                                                                'Seleccionar Resultado'),
                                                             Expanded(
                                                                 child: ListView
                                                                     .builder(
@@ -718,6 +728,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                               ]);
                                                             },
                                                           ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          const Text(
+                                                              'Seleccionar Resultado'),
                                                           Expanded(
                                                               child: ListView
                                                                   .builder(
@@ -868,6 +882,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                             ]);
                                                           },
                                                         ),
+                                                        const SizedBox(
+                                                            height: 10),
+                                                        const Text(
+                                                            'Seleccionar Resultado'),
                                                         Expanded(
                                                             child: ListView
                                                                 .builder(

@@ -115,10 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               _materialButton('Favores',
                                   Icons.featured_video_outlined, 9, buttons[9]),
                               _materialButton(
-                                  'Call Center',
-                                  Icons.featured_video_outlined,
-                                  10,
-                                  buttons[10]),
+                                  'Call Center', Icons.phone, 10, buttons[10]),
                               const Spacer(),
                               MaterialButton(
                                 padding: const EdgeInsets.symmetric(
@@ -253,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 text,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: Colors.grey.shade800,
                 ),
               ),
