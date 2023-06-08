@@ -394,6 +394,29 @@ class MainController extends GetxController {
     return aux;
   }
 
+  Future<String?> deleteAgenda(Appointment appointment) async {
+    String response = '';
+    // User? firebaseUser = _auth.currentUser;
+    CollectionReference colection;
+    colection = FirebaseFirestore.instance.collection(collection!);
+    colection.doc('agenda').set(
+      {
+        appointment.id.toString(): {
+          'estado': "inactivo",
+        }
+      },
+      SetOptions(merge: true),
+    ).then((value) {
+      response = "Agenda registrada";
+      return response;
+    }).catchError((error) {
+      response = "Error al agregar la agenda: $error";
+      return response;
+    });
+
+    return response;
+  }
+
   updateEncuesta(String id, bool encuesta) async {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);

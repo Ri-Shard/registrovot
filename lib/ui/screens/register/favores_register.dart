@@ -42,9 +42,15 @@ class _FavoresRegisterState extends State<FavoresRegister> {
         padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
         child: Center(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _textFormField('Nombre', TextInputType.text, nombre, 1),
-            _textFormField('Descripcion', TextInputType.text, descripcion, 3),
+            SizedBox(
+                width: 475,
+                child: _textFormField('Nombre', TextInputType.text, nombre, 1)),
+            SizedBox(
+                width: 475,
+                child: _textFormField(
+                    'Descripcion', TextInputType.text, descripcion, 3)),
             const SizedBox(
               height: 20,
             ),
@@ -67,7 +73,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                     width: 40,
                   ),
                   SizedBox(
-                    width: 500,
+                    width: 420,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       color: Colors.transparent,
@@ -86,8 +92,8 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                 onPressed: () {
                                   Get.dialog(Container(
                                     margin: EdgeInsets.symmetric(
-                                      vertical: Get.height * 0.1,
-                                      horizontal: Get.width * 0.2,
+                                      vertical: Get.height * 0.2,
+                                      horizontal: Get.width * 0.25,
                                     ),
                                     child: Card(
                                       shape: RoundedRectangleBorder(
@@ -100,25 +106,34 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                           : Obx(() {
                                               return Column(
                                                 children: [
-                                                  TextField(
-                                                    autofocus: true,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            hintText: ""),
-                                                    controller: valueleader,
-                                                    onChanged: (_) {
-                                                      filterLeader.value = mainController
-                                                          .filterLeader
-                                                          .where((element) =>
-                                                              element.name!
-                                                                  .toLowerCase()
-                                                                  .contains(_
-                                                                      .toLowerCase()))
-                                                          .toList();
-                                                      state.update(
-                                                          ["dropLeaderView"]);
-                                                    },
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            20),
+                                                    child: TextField(
+                                                      autofocus: true,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              hintText:
+                                                                  "Nombre de.."),
+                                                      controller: valueleader,
+                                                      onChanged: (_) {
+                                                        filterLeader.value = mainController
+                                                            .filterLeader
+                                                            .where((element) =>
+                                                                element.name!
+                                                                    .toLowerCase()
+                                                                    .contains(_
+                                                                        .toLowerCase()))
+                                                            .toList();
+                                                        state.update(
+                                                            ["dropLeaderView"]);
+                                                      },
+                                                    ),
                                                   ),
+                                                  const SizedBox(height: 10),
+                                                  const Text(
+                                                      'Seleccionar Resultado'),
                                                   Expanded(
                                                       child: ListView.builder(
                                                           itemCount:
@@ -149,12 +164,42 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                                             );
                                                           })),
                                                   Center(
-                                                    child: OutlinedButton(
-                                                        onPressed: () {
-                                                          Get.back();
-                                                        },
-                                                        child: const Text(
-                                                            "Cerrar")),
+                                                    child: TextButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                      style:
+                                                          TextButton.styleFrom(
+                                                        fixedSize:
+                                                            const Size(120, 40),
+                                                        backgroundColor:
+                                                            const Color(
+                                                                0xffff004e),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          vertical: 20,
+                                                          horizontal: 10,
+                                                        ),
+                                                      ),
+                                                      child: const SizedBox(
+                                                        width: 200,
+                                                        child: Text(
+                                                          'Cerrar',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
                                                   )
                                                 ],
                                               );
@@ -176,15 +221,19 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                 ],
               );
             }),
-            TextFormField(
-              onTap: () {
-                _selectDate(context);
-              },
-              controller: fecha,
-              decoration: InputDecoration(
-                labelText: 'Fecha',
+            SizedBox(
+              width: 470,
+              child: TextFormField(
+                onTap: () {
+                  _selectDate(context);
+                },
+                controller: fecha,
+                decoration: InputDecoration(
+                  labelText: 'Fecha',
+                ),
+                readOnly:
+                    true, // Hacer que el campo de texto sea de solo lectura
               ),
-              readOnly: true, // Hacer que el campo de texto sea de solo lectura
             ),
             const SizedBox(
               height: 20,
@@ -240,6 +289,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
+      locale: const Locale('es', ''),
       context: context,
       initialDate: DateTime.now(), // Fecha inicial del selector
       firstDate: DateTime(2000), // Fecha más temprana permitida

@@ -30,7 +30,7 @@ class MapScreenState extends State<MapScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FloatingActionButton(
-                        child: Icon(Icons.add),
+                        child: const Icon(Icons.add),
                         onPressed: () {
                           final centerZoom = _mapController
                               .centerZoomFitBounds(_mapController.bounds!);
@@ -40,8 +40,11 @@ class MapScreenState extends State<MapScreen> {
                           }
                           _mapController.move(centerZoom.center, zoom);
                         }),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     FloatingActionButton(
-                        child: Icon(Icons.remove),
+                        child: const Icon(Icons.remove),
                         onPressed: () {
                           final centerZoom = _mapController
                               .centerZoomFitBounds(_mapController.bounds!);
@@ -51,7 +54,13 @@ class MapScreenState extends State<MapScreen> {
                           }
                           _mapController.move(centerZoom.center, zoom);
                         }),
+                    const SizedBox(
+                      height: 10,
+                    ),
                   ],
+                ),
+                const SizedBox(
+                  width: 20,
                 ),
               ],
             ),

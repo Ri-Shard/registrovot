@@ -33,15 +33,15 @@ class LeadersRegister extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 500,
+                width: 416,
                 child: _textFormField('Cedula', TextInputType.number, cedula),
               ),
               SizedBox(
-                width: 500,
+                width: 416,
                 child: _textFormField('Nombre', TextInputType.text, nombre),
               ),
               SizedBox(
-                width: 500,
+                width: 416,
                 child: _textFormField('Telefono', TextInputType.number, phone),
               ),
               const SizedBox(

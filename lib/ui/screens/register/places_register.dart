@@ -32,11 +32,11 @@ class PlacesRegister extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 500,
+              width: 416,
               child: _textFormField('Nombre', TextInputType.text, nombre),
             ),
             SizedBox(
-              width: 500,
+              width: 416,
               child: _textFormField('Dirección', TextInputType.text, direccion),
             ),
             SizedBox(
