@@ -63,9 +63,11 @@ class _UserRegisterState extends State<UserRegister> {
 
   @override
   Widget build(BuildContext context) {
+    double localwidth = MediaQuery.of(context).size.width;
+    double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200),
+        padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
         child: Form(
           key: formkey,
           child: SingleChildScrollView(
@@ -75,606 +77,118 @@ class _UserRegisterState extends State<UserRegister> {
               Row(
                 children: [
                   SizedBox(
-                      width: 500,
-                      child: GetBuilder<MainController>(
-                          id: 'dropCedulaView',
-                          builder: (state) {
-                            return InkWell(
-                              onTap: () {
-                                // searchvotante.clear();
-                                searchvotante.value =
-                                    mainController.filterVotante.value;
-                                Get.dialog(Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: Get.height * 0.2,
-                                    horizontal: Get.width * 0.25,
-                                  ),
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Obx(() {
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(20),
-                                            child: TextField(
-                                              autofocus: true,
-                                              decoration: const InputDecoration(
-                                                  hintText: "Nombre de.."),
-                                              controller: cedula,
-                                              onChanged: (_) {
-                                                searchvotante.value =
-                                                    mainController
-                                                        .filterVotante
-                                                        .where((element) => element
-                                                            .toJson()
-                                                            .toString()
-                                                            .toLowerCase()
-                                                            .contains(_
-                                                                .toLowerCase()))
-                                                        .toList();
-                                                state
-                                                    .update(["dropCedulaView"]);
-                                              },
+                      width: localwidth >= 800
+                          ? localwidth * 0.24
+                          : localwidth * 0.67,
+                      child: Container(
+                        child: GetBuilder<MainController>(
+                            id: 'dropCedulaView',
+                            builder: (state) {
+                              return InkWell(
+                                onTap: () {
+                                  // searchvotante.clear();
+                                  searchvotante.value =
+                                      mainController.filterVotante.value;
+                                  Get.dialog(Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: localHeigth * 0.2,
+                                      horizontal: localwidth * 0.1,
+                                    ),
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Obx(() {
+                                        return Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(20),
+                                              child: TextField(
+                                                autofocus: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText:
+                                                            "Nombre de.."),
+                                                controller: cedula,
+                                                onChanged: (_) {
+                                                  searchvotante.value =
+                                                      mainController
+                                                          .filterVotante
+                                                          .where((element) =>
+                                                              element
+                                                                  .toJson()
+                                                                  .toString()
+                                                                  .toLowerCase()
+                                                                  .contains(_
+                                                                      .toLowerCase()))
+                                                          .toList();
+                                                  state.update(
+                                                      ["dropCedulaView"]);
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          const Text('Seleccionar Resultado'),
-                                          Expanded(
-                                              child: ListView.builder(
-                                                  itemCount: (searchvotante
+                                            const SizedBox(height: 10),
+                                            const Text('Seleccionar Resultado'),
+                                            Expanded(
+                                                child: ListView.builder(
+                                                    itemCount: (searchvotante
+                                                                .isEmpty &&
+                                                            cedula.text.isNum &&
+                                                            cedula.text
+                                                                    .length >=
+                                                                6 &&
+                                                            cedula.text
+                                                                    .length <=
+                                                                11)
+                                                        ? 1
+                                                        : searchvotante.length,
+                                                    itemBuilder: (b, index) {
+                                                      if (searchvotante
                                                               .isEmpty &&
                                                           cedula.text.isNum &&
                                                           cedula.text.length >=
-                                                              6 &&
-                                                          cedula.text.length <=
-                                                              11)
-                                                      ? 1
-                                                      : searchvotante.length,
-                                                  itemBuilder: (b, index) {
-                                                    if (searchvotante.isEmpty &&
-                                                        cedula.text.isNum &&
-                                                        cedula.text.length >=
-                                                            6) {
-                                                      return Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 20),
-                                                            width: 200,
-                                                            child: TextButton(
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  enable = true;
-                                                                  filterBarrio
-                                                                          .value =
-                                                                      staticfields
-                                                                          .getBarrios();
-                                                                  filterMunicipio
-                                                                          .value =
-                                                                      staticfields
-                                                                          .getMunicipios();
-                                                                  nombre
-                                                                      .clear();
-                                                                  telefono
-                                                                      .clear();
-                                                                  direccion
-                                                                      .clear();
-                                                                  edad.clear();
-                                                                  valuebarrio
-                                                                      .clear();
-                                                                  valueleader
-                                                                      .clear();
-                                                                  valuemunicipio
-                                                                      .clear();
-                                                                  valuepuesto
-                                                                      .clear();
-                                                                  Get.back();
-                                                                });
-                                                              },
-                                                              style: TextButton
-                                                                  .styleFrom(
-                                                                fixedSize:
-                                                                    const Size(
-                                                                        120,
-                                                                        40),
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xffff004e),
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                  vertical: 20,
-                                                                  horizontal:
-                                                                      10,
-                                                                ),
-                                                              ),
-                                                              child:
-                                                                  const SizedBox(
-                                                                width: 200,
-                                                                child: Text(
-                                                                  'Agregar',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }
-                                                    return ListTile(
-                                                      onTap: () {
-                                                        filterLeader.clear();
-                                                        for (var i = 0;
-                                                            i <
-                                                                mainController
-                                                                    .filterLeader
-                                                                    .length;
-                                                            i++) {
-                                                          filterLeader.add(
-                                                              mainController
-                                                                  .filterLeader[i]);
-                                                        }
-                                                        cedula.text =
-                                                            searchvotante[index]
-                                                                .id;
-                                                        // valueLeader2 = filterMunicipio[index];
-                                                        state.update(
-                                                            ["dropCedulaView"]);
-                                                        setState(() {
-                                                          enable = true;
-                                                          update = true;
-
-                                                          nombre.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .name;
-                                                          cedula.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .id;
-                                                          valuemunicipio.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .municipio;
-                                                          filterBarrio.value =
-                                                              staticfields
-                                                                  .getBarrios();
-                                                          filterMunicipio
-                                                                  .value =
-                                                              staticfields
-                                                                  .getMunicipios();
-                                                          valueleader.text = filterLeader
-                                                              .firstWhere((element) =>
-                                                                  element.id ==
-                                                                  searchvotante[
-                                                                          index]
-                                                                      .leaderID)
-                                                              .name
-                                                              .toString();
-                                                          valueLeader2 = filterLeader
-                                                              .firstWhere((element) =>
-                                                                  element.id ==
-                                                                  searchvotante[
-                                                                          index]
-                                                                      .leaderID);
-                                                          valuepuesto.text = filterPuestoPre
-                                                              .firstWhere((element) =>
-                                                                  element.id ==
-                                                                  searchvotante[
-                                                                          index]
-                                                                      .puestoID)
-                                                              .nombre
-                                                              .toString();
-                                                          valuePuesto2 = filterPuestoPre
-                                                              .firstWhere((element) =>
-                                                                  element.id ==
-                                                                  searchvotante[
-                                                                          index]
-                                                                      .puestoID);
-
-                                                          telefono.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .phone;
-                                                          direccion.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .direccion;
-                                                          edad.text =
-                                                              searchvotante[
-                                                                      index]
-                                                                  .edad;
-                                                          if (searchvotante[
-                                                                      index]
-                                                                  .municipio !=
-                                                              'Valledupar') {
-                                                            valuebarrio.clear();
-                                                          } else {
-                                                            valuebarrio.text =
-                                                                searchvotante[
-                                                                        index]
-                                                                    .barrio!;
-                                                          }
-                                                        });
-                                                        Get.back();
-                                                      },
-                                                      title: Text(
-                                                          "${searchvotante[index].id} ${searchvotante[index].name}"),
-                                                    );
-                                                  })),
-                                          Center(
-                                            child: TextButton(
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                              style: TextButton.styleFrom(
-                                                fixedSize: const Size(120, 40),
-                                                backgroundColor:
-                                                    const Color(0xffff004e),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 20,
-                                                  horizontal: 10,
-                                                ),
-                                              ),
-                                              child: const SizedBox(
-                                                width: 200,
-                                                child: Text(
-                                                  'Cerrar',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          )
-                                        ],
-                                      );
-                                    }),
-                                  ),
-                                ));
-                              },
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: const InputDecoration(
-                                  labelText: 'Cedula',
-                                ),
-                                keyboardType: TextInputType.number,
-                                controller: cedula,
-                                validator: (_) {
-                                  if (_ == null || _.isEmpty) {
-                                    return "Debe llenar este campo";
-                                  }
-
-                                  if (_.length > 10) {
-                                    return "número no válido";
-                                  }
-                                  if (_.length < 7) {
-                                    return "número no válido";
-                                  }
-                                },
-                                onChanged: (_) {},
-                              ),
-                            );
-                          })),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Visibility(
-                visible: enable,
-                child: Row(
-                  children: [
-                    const Text(
-                      'Municipio',
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    SizedBox(
-                        width: 430,
-                        child: Form(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            color: Colors.transparent,
-                            child: GetBuilder<MainController>(
-                                id: "dropMunicipioView",
-                                builder: (state) {
-                                  return OutlinedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: const BorderSide(
-                                                      width: 2.0,
-                                                      style:
-                                                          BorderStyle.solid)))),
-                                      onPressed: () {
-                                        // state.searchDomi("");
-                                        Get.dialog(Container(
-                                          margin: EdgeInsets.symmetric(
-                                            vertical: Get.height * 0.2,
-                                            horizontal: Get.width * 0.25,
-                                          ),
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: filterMunicipio.isEmpty
-                                                ? const Center(
-                                                    child: Text("No hay datos"),
-                                                  )
-                                                : Obx(() {
-                                                    return Column(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(20),
-                                                          child: TextField(
-                                                            autofocus: true,
-                                                            decoration:
-                                                                const InputDecoration(
-                                                                    hintText:
-                                                                        "Nombre de.."),
-                                                            controller:
-                                                                valuemunicipio,
-                                                            onChanged: (_) {
-                                                              filterMunicipio.value = staticfields
-                                                                  .getMunicipios()
-                                                                  .where((element) => element
-                                                                      .nombre!
-                                                                      .toLowerCase()
-                                                                      .contains(
-                                                                          _.toLowerCase()))
-                                                                  .toList();
-                                                              state.update([
-                                                                "dropMunicipioView"
-                                                              ]);
-                                                            },
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        const Text(
-                                                            'Seleccionar Resultado'),
-                                                        Expanded(
-                                                            child: ListView
-                                                                .builder(
-                                                                    itemCount:
-                                                                        filterMunicipio
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (b, index) {
-                                                                      return ListTile(
-                                                                        onTap:
-                                                                            () {
-                                                                          valuemunicipio.text =
-                                                                              filterMunicipio[index].nombre ?? "-";
-                                                                          // valueLeader2 = filterMunicipio[index];
-                                                                          state
-                                                                              .update([
-                                                                            "dropMunicipioView"
-                                                                          ]);
-                                                                          valuepuesto
-                                                                              .clear();
-                                                                          haspuesto.value =
-                                                                              true;
-                                                                          setState(
-                                                                              () {});
-                                                                          Get.back();
-                                                                        },
-                                                                        title: Text(filterMunicipio[index].nombre ??
-                                                                            "-"),
-                                                                      );
-                                                                    })),
-                                                        Center(
-                                                          child: TextButton(
-                                                            onPressed: () {
-                                                              Get.back();
-                                                            },
-                                                            style: TextButton
-                                                                .styleFrom(
-                                                              fixedSize:
-                                                                  const Size(
-                                                                      120, 40),
-                                                              backgroundColor:
-                                                                  const Color(
-                                                                      0xffff004e),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                vertical: 20,
-                                                                horizontal: 10,
-                                                              ),
-                                                            ),
-                                                            child:
-                                                                const SizedBox(
-                                                              width: 200,
-                                                              child: Text(
-                                                                'Cerrar',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 20,
-                                                        )
-                                                      ],
-                                                    );
-                                                  }),
-                                          ),
-                                        ));
-                                      },
-                                      child: Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          child: Text(
-                                            valuemunicipio.text,
-                                            style: const TextStyle(
-                                                color: Colors.black),
-                                          )));
-                                }),
-                          ),
-                        ))
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              valuemunicipio.text == 'Valledupar'
-                  ? Row(
-                      children: [
-                        const Text(
-                          'Barrio',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 45,
-                        ),
-                        SizedBox(
-                            width: 430,
-                            child: Form(
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                color: Colors.transparent,
-                                child: GetBuilder<MainController>(
-                                    id: "dropBarrioView",
-                                    builder: (state) {
-                                      return OutlinedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      side: const BorderSide(
-                                                          width: 2.0,
-                                                          style: BorderStyle
-                                                              .solid)))),
-                                          onPressed: () {
-                                            // state.searchDomi("");
-                                            Get.dialog(Container(
-                                              margin: EdgeInsets.symmetric(
-                                                vertical: Get.height * 0.2,
-                                                horizontal: Get.width * 0.25,
-                                              ),
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: filterBarrio.isEmpty
-                                                    ? const Center(
-                                                        child: Text(
-                                                            "No hay datos"),
-                                                      )
-                                                    : Obx(() {
-                                                        return Column(
+                                                              6) {
+                                                        return Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
                                                           children: [
                                                             Container(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(20),
-                                                              child: TextField(
-                                                                autofocus: true,
-                                                                decoration:
-                                                                    const InputDecoration(
-                                                                        hintText:
-                                                                            "Nombre de.."),
-                                                                controller:
-                                                                    valuebarrio,
-                                                                onChanged: (_) {
-                                                                  filterBarrio.value = staticfields
-                                                                      .getBarrios()
-                                                                      .where((element) => element
-                                                                          .barrio!
-                                                                          .toLowerCase()
-                                                                          .contains(
-                                                                              _.toLowerCase()))
-                                                                      .toList();
-                                                                  state.update([
-                                                                    "dropBarrioView"
-                                                                  ]);
-                                                                },
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            const Text(
-                                                                'Seleccionar Resultado'),
-                                                            Expanded(
-                                                                child: ListView
-                                                                    .builder(
-                                                                        itemCount:
-                                                                            filterBarrio
-                                                                                .length,
-                                                                        itemBuilder:
-                                                                            (b, index) {
-                                                                          return ListTile(
-                                                                            onTap:
-                                                                                () {
-                                                                              valuebarrio.text = filterBarrio[index].barrio ?? "-";
-                                                                              // valueLeader2 = filterMunicipio[index];
-                                                                              state.update([
-                                                                                "dropBarrioView"
-                                                                              ]);
-                                                                              Get.back();
-                                                                            },
-                                                                            title:
-                                                                                Text(filterBarrio[index].barrio ?? "-"),
-                                                                          );
-                                                                        })),
-                                                            Center(
+                                                                          .only(
+                                                                      top: 20),
+                                                              width: 200,
                                                               child: TextButton(
                                                                 onPressed: () {
-                                                                  Get.back();
+                                                                  setState(() {
+                                                                    enable =
+                                                                        true;
+                                                                    filterBarrio
+                                                                            .value =
+                                                                        staticfields
+                                                                            .getBarrios();
+                                                                    filterMunicipio
+                                                                            .value =
+                                                                        staticfields
+                                                                            .getMunicipios();
+                                                                    nombre
+                                                                        .clear();
+                                                                    telefono
+                                                                        .clear();
+                                                                    direccion
+                                                                        .clear();
+                                                                    edad.clear();
+                                                                    valuebarrio
+                                                                        .clear();
+                                                                    valueleader
+                                                                        .clear();
+                                                                    valuemunicipio
+                                                                        .clear();
+                                                                    valuepuesto
+                                                                        .clear();
+                                                                    Get.back();
+                                                                  });
                                                                 },
                                                                 style: TextButton
                                                                     .styleFrom(
@@ -698,10 +212,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     const SizedBox(
                                                                   width: 200,
                                                                   child: Text(
-                                                                    'Cerrar',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
+                                                                    'Agregar',
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
@@ -716,47 +227,564 @@ class _UserRegisterState extends State<UserRegister> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            const SizedBox(
-                                                              height: 20,
-                                                            )
                                                           ],
                                                         );
-                                                      }),
+                                                      }
+                                                      return ListTile(
+                                                        onTap: () {
+                                                          filterLeader.clear();
+                                                          for (var i = 0;
+                                                              i <
+                                                                  mainController
+                                                                      .filterLeader
+                                                                      .length;
+                                                              i++) {
+                                                            filterLeader.add(
+                                                                mainController
+                                                                    .filterLeader[i]);
+                                                          }
+                                                          cedula.text =
+                                                              searchvotante[
+                                                                      index]
+                                                                  .id;
+                                                          // valueLeader2 = filterMunicipio[index];
+                                                          state.update([
+                                                            "dropCedulaView"
+                                                          ]);
+                                                          setState(() {
+                                                            enable = true;
+                                                            update = true;
+
+                                                            nombre.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .name;
+                                                            cedula.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .id;
+                                                            valuemunicipio
+                                                                    .text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .municipio;
+                                                            filterBarrio.value =
+                                                                staticfields
+                                                                    .getBarrios();
+                                                            filterMunicipio
+                                                                    .value =
+                                                                staticfields
+                                                                    .getMunicipios();
+                                                            valueleader.text = filterLeader
+                                                                .firstWhere((element) =>
+                                                                    element
+                                                                        .id ==
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .leaderID)
+                                                                .name
+                                                                .toString();
+                                                            valueLeader2 = filterLeader
+                                                                .firstWhere((element) =>
+                                                                    element
+                                                                        .id ==
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .leaderID);
+                                                            valuepuesto.text = filterPuestoPre
+                                                                .firstWhere((element) =>
+                                                                    element
+                                                                        .id ==
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .puestoID)
+                                                                .nombre
+                                                                .toString();
+                                                            valuePuesto2 = filterPuestoPre
+                                                                .firstWhere((element) =>
+                                                                    element
+                                                                        .id ==
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .puestoID);
+
+                                                            telefono.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .phone;
+                                                            direccion.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .direccion;
+                                                            edad.text =
+                                                                searchvotante[
+                                                                        index]
+                                                                    .edad;
+                                                            if (searchvotante[
+                                                                        index]
+                                                                    .municipio !=
+                                                                'Valledupar') {
+                                                              valuebarrio
+                                                                  .clear();
+                                                            } else {
+                                                              valuebarrio.text =
+                                                                  searchvotante[
+                                                                          index]
+                                                                      .barrio!;
+                                                            }
+                                                          });
+                                                          Get.back();
+                                                        },
+                                                        title: Text(
+                                                            "${searchvotante[index].id} ${searchvotante[index].name}"),
+                                                      );
+                                                    })),
+                                            Center(
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  fixedSize:
+                                                      const Size(120, 40),
+                                                  backgroundColor:
+                                                      const Color(0xffff004e),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 20,
+                                                    horizontal: 10,
+                                                  ),
+                                                ),
+                                                child: SizedBox(
+                                                  width: localwidth * 0.5,
+                                                  child: const Text(
+                                                    'Cerrar',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ));
-                                          },
-                                          child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 20),
-                                              child: Text(
-                                                valuebarrio.text,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              )));
-                                    }),
-                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  ));
+                                },
+                                child: TextFormField(
+                                  enabled: false,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Cedula',
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: cedula,
+                                  validator: (_) {
+                                    if (_ == null || _.isEmpty) {
+                                      return "Debe llenar este campo";
+                                    }
+
+                                    if (_.length > 10) {
+                                      return "número no válido";
+                                    }
+                                    if (_.length < 7) {
+                                      return "número no válido";
+                                    }
+                                  },
+                                  onChanged: (_) {},
+                                ),
+                              );
+                            }),
+                      )),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Visibility(
+                visible: enable,
+                child: Row(
+                  children: [
+                    const Text(
+                      'Municipio',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SizedBox(
+                        width: localwidth >= 800
+                            ? localwidth * 0.2
+                            : localwidth * 0.5,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          color: Colors.transparent,
+                          child: GetBuilder<MainController>(
+                              id: "dropMunicipioView",
+                              builder: (state) {
+                                return OutlinedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                side: const BorderSide(
+                                                    width: 2.0,
+                                                    style:
+                                                        BorderStyle.solid)))),
+                                    onPressed: () {
+                                      // state.searchDomi("");
+                                      Get.dialog(Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: Get.height * 0.2,
+                                          horizontal: Get.width * 0.25,
+                                        ),
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: filterMunicipio.isEmpty
+                                              ? const Center(
+                                                  child: Text("No hay datos"),
+                                                )
+                                              : Obx(() {
+                                                  return Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(20),
+                                                        child: TextField(
+                                                          autofocus: true,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  hintText:
+                                                                      "Nombre de.."),
+                                                          controller:
+                                                              valuemunicipio,
+                                                          onChanged: (_) {
+                                                            filterMunicipio.value = staticfields
+                                                                .getMunicipios()
+                                                                .where((element) => element
+                                                                    .nombre!
+                                                                    .toLowerCase()
+                                                                    .contains(_
+                                                                        .toLowerCase()))
+                                                                .toList();
+                                                            state.update([
+                                                              "dropMunicipioView"
+                                                            ]);
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      const Text(
+                                                          'Seleccionar Resultado'),
+                                                      Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                                  itemCount:
+                                                                      filterMunicipio
+                                                                          .length,
+                                                                  itemBuilder:
+                                                                      (b, index) {
+                                                                    return ListTile(
+                                                                      onTap:
+                                                                          () {
+                                                                        valuemunicipio
+                                                                            .text = filterMunicipio[index]
+                                                                                .nombre ??
+                                                                            "-";
+                                                                        // valueLeader2 = filterMunicipio[index];
+                                                                        state
+                                                                            .update([
+                                                                          "dropMunicipioView"
+                                                                        ]);
+                                                                        valuepuesto
+                                                                            .clear();
+                                                                        haspuesto.value =
+                                                                            true;
+                                                                        setState(
+                                                                            () {});
+                                                                        Get.back();
+                                                                      },
+                                                                      title: Text(
+                                                                          filterMunicipio[index].nombre ??
+                                                                              "-"),
+                                                                    );
+                                                                  })),
+                                                      Center(
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            Get.back();
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                            fixedSize:
+                                                                const Size(
+                                                                    120, 40),
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xffff004e),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              vertical: 20,
+                                                              horizontal: 10,
+                                                            ),
+                                                          ),
+                                                          child: const SizedBox(
+                                                            width: 200,
+                                                            child: Text(
+                                                              'Cerrar',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      )
+                                                    ],
+                                                  );
+                                                }),
+                                        ),
+                                      ));
+                                    },
+                                    child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Text(
+                                          valuemunicipio.text,
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        )));
+                              }),
+                        ))
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              valuemunicipio.text == 'Valledupar'
+                  ? Row(
+                      children: [
+                        const Text(
+                          'Barrio',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 45,
+                        ),
+                        SizedBox(
+                            width: localwidth >= 800
+                                ? localwidth * 0.2
+                                : localwidth * 0.5,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              color: Colors.transparent,
+                              child: GetBuilder<MainController>(
+                                  id: "dropBarrioView",
+                                  builder: (state) {
+                                    return OutlinedButton(
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: const BorderSide(
+                                                        width: 2.0,
+                                                        style: BorderStyle
+                                                            .solid)))),
+                                        onPressed: () {
+                                          // state.searchDomi("");
+                                          Get.dialog(Container(
+                                            margin: EdgeInsets.symmetric(
+                                              vertical: Get.height * 0.2,
+                                              horizontal: Get.width * 0.25,
+                                            ),
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: filterBarrio.isEmpty
+                                                  ? const Center(
+                                                      child:
+                                                          Text("No hay datos"),
+                                                    )
+                                                  : Obx(() {
+                                                      return Column(
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(20),
+                                                            child: TextField(
+                                                              autofocus: true,
+                                                              decoration:
+                                                                  const InputDecoration(
+                                                                      hintText:
+                                                                          "Nombre de.."),
+                                                              controller:
+                                                                  valuebarrio,
+                                                              onChanged: (_) {
+                                                                filterBarrio.value = staticfields
+                                                                    .getBarrios()
+                                                                    .where((element) => element
+                                                                        .barrio!
+                                                                        .toLowerCase()
+                                                                        .contains(
+                                                                            _.toLowerCase()))
+                                                                    .toList();
+                                                                state.update([
+                                                                  "dropBarrioView"
+                                                                ]);
+                                                              },
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          const Text(
+                                                              'Seleccionar Resultado'),
+                                                          Expanded(
+                                                              child: ListView
+                                                                  .builder(
+                                                                      itemCount:
+                                                                          filterBarrio
+                                                                              .length,
+                                                                      itemBuilder:
+                                                                          (b, index) {
+                                                                        return ListTile(
+                                                                          onTap:
+                                                                              () {
+                                                                            valuebarrio.text =
+                                                                                filterBarrio[index].barrio ?? "-";
+                                                                            // valueLeader2 = filterMunicipio[index];
+                                                                            state.update([
+                                                                              "dropBarrioView"
+                                                                            ]);
+                                                                            Get.back();
+                                                                          },
+                                                                          title:
+                                                                              Text(filterBarrio[index].barrio ?? "-"),
+                                                                        );
+                                                                      })),
+                                                          Center(
+                                                            child: TextButton(
+                                                              onPressed: () {
+                                                                Get.back();
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                fixedSize:
+                                                                    const Size(
+                                                                        120,
+                                                                        40),
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xffff004e),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  vertical: 20,
+                                                                  horizontal:
+                                                                      10,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  const SizedBox(
+                                                                width: 200,
+                                                                child: Text(
+                                                                  'Cerrar',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          )
+                                                        ],
+                                                      );
+                                                    }),
+                                            ),
+                                          ));
+                                        },
+                                        child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Text(
+                                              valuebarrio.text,
+                                              style: const TextStyle(
+                                                  color: Colors.black),
+                                            )));
+                                  }),
                             ))
                       ],
                     )
                   : const SizedBox(),
               SizedBox(
-                width: 500,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
                     'Nombres', TextInputType.text, nombre, enable),
               ),
               SizedBox(
-                width: 500,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
                     'Direccion', TextInputType.text, direccion, enable),
               ),
               SizedBox(
-                width: 500,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
                     'Telefono', TextInputType.number, telefono, enable),
               ),
               SizedBox(
-                width: 500,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
                   'Edad',
                   TextInputType.number,
@@ -788,7 +816,9 @@ class _UserRegisterState extends State<UserRegister> {
                         width: 40,
                       ),
                       SizedBox(
-                        width: 430,
+                        width: localwidth >= 800
+                            ? localwidth * 0.2
+                            : localwidth * 0.5,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           color: Colors.transparent,
@@ -981,159 +1011,160 @@ class _UserRegisterState extends State<UserRegister> {
                         width: 40,
                       ),
                       SizedBox(
-                        width: 430,
-                        child: Form(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            color: Colors.transparent,
-                            child: GetBuilder<MainController>(
-                                id: "dropPuestoView",
-                                builder: (state) {
-                                  return OutlinedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: const BorderSide(
-                                                      width: 2.0,
-                                                      style:
-                                                          BorderStyle.solid)))),
-                                      onPressed: () {
-                                        // state.searchDomi("");
-                                        Get.dialog(Container(
-                                          margin: EdgeInsets.symmetric(
-                                            vertical: Get.height * 0.2,
-                                            horizontal: Get.width * 0.25,
-                                          ),
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
+                        width: localwidth >= 800
+                            ? localwidth * 0.2
+                            : localwidth * 0.5,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          color: Colors.transparent,
+                          child: GetBuilder<MainController>(
+                              id: "dropPuestoView",
+                              builder: (state) {
+                                return OutlinedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: filterPuesto.isEmpty
-                                                ? const Center(
-                                                    child: Text("No hay datos"),
-                                                  )
-                                                : Obx(() {
-                                                    return Column(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(20),
-                                                          child: TextField(
-                                                            autofocus: true,
-                                                            decoration:
-                                                                const InputDecoration(
-                                                                    hintText:
-                                                                        "Nombre de.."),
-                                                            controller:
-                                                                valuepuesto,
-                                                            onChanged: (_) {
-                                                              filterPuestoSearch
-                                                                      .value =
-                                                                  filterPuesto
-                                                                      .where((element) => element
-                                                                          .nombre!
-                                                                          .toLowerCase()
-                                                                          .contains(
-                                                                              _.toLowerCase()))
-                                                                      .toList();
-                                                              state.update([
-                                                                "dropPuestoView"
-                                                              ]);
-                                                            },
-                                                          ),
+                                                    BorderRadius.circular(10),
+                                                side: const BorderSide(
+                                                    width: 2.0,
+                                                    style:
+                                                        BorderStyle.solid)))),
+                                    onPressed: () {
+                                      // state.searchDomi("");
+                                      Get.dialog(Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: Get.height * 0.2,
+                                          horizontal: Get.width * 0.25,
+                                        ),
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: filterPuesto.isEmpty
+                                              ? const Center(
+                                                  child: Text("No hay datos"),
+                                                )
+                                              : Obx(() {
+                                                  return Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(20),
+                                                        child: TextField(
+                                                          autofocus: true,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  hintText:
+                                                                      "Nombre de.."),
+                                                          controller:
+                                                              valuepuesto,
+                                                          onChanged: (_) {
+                                                            filterPuestoSearch
+                                                                    .value =
+                                                                filterPuesto
+                                                                    .where((element) => element
+                                                                        .nombre!
+                                                                        .toLowerCase()
+                                                                        .contains(
+                                                                            _.toLowerCase()))
+                                                                    .toList();
+                                                            state.update([
+                                                              "dropPuestoView"
+                                                            ]);
+                                                          },
                                                         ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        const Text(
-                                                            'Seleccionar Resultado'),
-                                                        Expanded(
-                                                            child: ListView
-                                                                .builder(
-                                                                    itemCount:
-                                                                        filterPuestoSearch
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (b, index) {
-                                                                      return ListTile(
-                                                                        onTap:
-                                                                            () {
-                                                                          valuepuesto.text =
-                                                                              filterPuestoSearch[index].nombre ?? "-";
-                                                                          valuePuesto2 =
-                                                                              filterPuestoSearch[index];
-                                                                          state
-                                                                              .update([
-                                                                            "dropPuestoView"
-                                                                          ]);
-                                                                          Get.back();
-                                                                        },
-                                                                        title: Text(filterPuestoSearch[index].nombre ??
-                                                                            "-"),
-                                                                      );
-                                                                    })),
-                                                        Center(
-                                                          child: TextButton(
-                                                            onPressed: () {
-                                                              Get.back();
-                                                            },
-                                                            style: TextButton
-                                                                .styleFrom(
-                                                              fixedSize:
-                                                                  const Size(
-                                                                      120, 40),
-                                                              backgroundColor:
-                                                                  const Color(
-                                                                      0xffff004e),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                vertical: 20,
-                                                                horizontal: 10,
-                                                              ),
-                                                            ),
-                                                            child:
-                                                                const SizedBox(
-                                                              width: 200,
-                                                              child: Text(
-                                                                'Cerrar',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ),
-                                                              ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      const Text(
+                                                          'Seleccionar Resultado'),
+                                                      Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                                  itemCount:
+                                                                      filterPuestoSearch
+                                                                          .length,
+                                                                  itemBuilder:
+                                                                      (b, index) {
+                                                                    return ListTile(
+                                                                      onTap:
+                                                                          () {
+                                                                        valuepuesto
+                                                                            .text = filterPuestoSearch[index]
+                                                                                .nombre ??
+                                                                            "-";
+                                                                        valuePuesto2 =
+                                                                            filterPuestoSearch[index];
+                                                                        state
+                                                                            .update([
+                                                                          "dropPuestoView"
+                                                                        ]);
+                                                                        Get.back();
+                                                                      },
+                                                                      title: Text(
+                                                                          filterPuestoSearch[index].nombre ??
+                                                                              "-"),
+                                                                    );
+                                                                  })),
+                                                      Center(
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            Get.back();
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                            fixedSize:
+                                                                const Size(
+                                                                    120, 40),
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xffff004e),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              vertical: 20,
+                                                              horizontal: 10,
                                                             ),
                                                           ),
+                                                          child: const SizedBox(
+                                                            width: 200,
+                                                            child: Text(
+                                                              'Cerrar',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                        const SizedBox(
-                                                          height: 20,
-                                                        )
-                                                      ],
-                                                    );
-                                                  }),
-                                          ),
-                                        ));
-                                      },
-                                      child: Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          child: Text(
-                                            valuepuesto.text,
-                                            style: const TextStyle(
-                                                color: Colors.black),
-                                          )));
-                                }),
-                          ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      )
+                                                    ],
+                                                  );
+                                                }),
+                                        ),
+                                      ));
+                                    },
+                                    child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Text(
+                                          valuepuesto.text,
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        )));
+                              }),
                         ),
                       )
                     ],
@@ -1145,8 +1176,10 @@ class _UserRegisterState extends State<UserRegister> {
               ),
               Row(
                 children: [
-                  const SizedBox(
-                    width: 506,
+                  SizedBox(
+                    width: localwidth >= 800
+                        ? localwidth * 0.24
+                        : localwidth * 0.27,
                   ),
                   TextButton(
                     onPressed: () async {
@@ -1246,16 +1279,13 @@ class _UserRegisterState extends State<UserRegister> {
                     ),
                     child: Text(
                       !update ? 'Registrar usuario' : 'Actualizar usuario',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 50,
-                  )
                 ],
               ),
               const SizedBox(

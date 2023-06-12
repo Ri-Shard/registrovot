@@ -10,8 +10,11 @@ class RoutesScreen extends StatefulWidget {
 class RoutesScreenState extends State<RoutesScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Routes Screen'),
+    return Center(
+      child: Container(
+        child: Column(children: [TextFormField()]),
+        color: Colors.yellow,
+      ),
     );
   }
 }

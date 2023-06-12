@@ -24,27 +24,29 @@ class PlacesRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double localwidth = MediaQuery.of(context).size.width;
+    double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
+        padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
         child: Center(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 416,
+              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
               child: _textFormField('Nombre', TextInputType.text, nombre),
             ),
             SizedBox(
-              width: 416,
+              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
               child: _textFormField('Dirección', TextInputType.text, direccion),
             ),
             SizedBox(
-              width: 200,
+              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
               child: _textFormField('Latitud', TextInputType.number, latitud),
             ),
             SizedBox(
-              width: 200,
+              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
               child: _textFormField('Longitud', TextInputType.number, longitud),
             ),
             const SizedBox(
@@ -65,8 +67,8 @@ class PlacesRegister extends StatelessWidget {
                   return DropdownButtonHideUnderline(
                     child: DropdownButton2(
                       isExpanded: true,
-                      hint: Row(
-                        children: const [
+                      hint: const Row(
+                        children: [
                           Icon(
                             Icons.list,
                             size: 16,
@@ -154,7 +156,9 @@ class PlacesRegister extends StatelessWidget {
                       iconEnabledColor: Colors.grey,
                       iconDisabledColor: Colors.grey,
                       buttonHeight: 50,
-                      buttonWidth: 300,
+                      buttonWidth: localwidth >= 800
+                          ? localwidth * 0.18
+                          : localwidth * 0.39,
                       buttonPadding: const EdgeInsets.only(left: 14, right: 14),
                       buttonDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
@@ -188,8 +192,9 @@ class PlacesRegister extends StatelessWidget {
             ),
             Row(
               children: [
-                const SizedBox(
-                  width: 516,
+                SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.30,
                 ),
                 TextButton(
                   onPressed: () async {
@@ -241,9 +246,6 @@ class PlacesRegister extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 50,
-                )
               ],
             ),
           ],

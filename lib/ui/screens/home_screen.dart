@@ -28,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+  bool mobile = false;
   MainController mainController = Get.find();
 
   Authentication authentication = Authentication();
@@ -52,174 +53,113 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                StreamBuilder(
-                    stream: mainController.getLeaders(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        mainController.filterLeader.clear();
-                        for (var i = 0; i < snapshot.data!.length; i++) {
-                          mainController.filterLeader.add(snapshot.data![i]);
-                        }
-                      }
-
-                      return Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        // margin: const EdgeInsets.only(top: 10),
-                        height: 60,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                        ),
-                        child: Image.asset('assets/images/vco_logo.png'),
-                      );
-                    }),
                 Expanded(
+                  flex: 1,
+                  child: StreamBuilder(
+                      stream: mainController.getLeaders(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          mainController.filterLeader.clear();
+                          for (var i = 0; i < snapshot.data!.length; i++) {
+                            mainController.filterLeader.add(snapshot.data![i]);
+                          }
+                        }
+
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
+                          // margin: const EdgeInsets.only(top: 10),
+                          height: 60,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                          ),
+                          child: Image.asset('assets/images/vco_logo.png'),
+                        );
+                      }),
+                ),
+                Expanded(
+                  flex: 4,
                   child: Container(
-                      decoration: BoxDecoration(color: Colors.grey.shade100),
-                      width: 250,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              _materialButton('Registro Base de Datos',
-                                  Icons.person, 0, buttons[0]),
-                              _materialButton('Descargar Archivo BD',
-                                  Icons.download_outlined, 1, buttons[1]),
-                              _materialButton(
-                                  'Agenda', Icons.date_range, 2, buttons[2]),
-                              _materialButton('Registro de Lideres',
-                                  Icons.rocket_launch_outlined, 3, buttons[3]),
-                              _materialButton('Informacion Lideres',
-                                  Icons.info_outline, 4, buttons[4]),
-                              _materialButton('Registro de Puestos',
-                                  Icons.place_outlined, 5, buttons[5]),
-                              _materialButton('Informacion de Puestos',
-                                  Icons.info_outline, 6, buttons[6]),
-                              _materialButton(
-                                  'Rutas', Icons.route_outlined, 7, buttons[7]),
-                              _materialButton(
-                                  'Mapas', Icons.map_outlined, 8, buttons[8]),
-                              _materialButton('Favores',
-                                  Icons.featured_video_outlined, 9, buttons[9]),
-                              _materialButton(
-                                  'Call Center', Icons.phone, 10, buttons[10]),
-                              const Spacer(),
-                              MaterialButton(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 20),
-                                color: const Color(0xffff004e),
+                    // margin: const EdgeInsets.only(top: 10),
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                    ),
+                    height: 60,
+                    child: Row(
+                      children: [
+                        StreamBuilder(
+                            stream: mainController.getPuestos(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                mainController.filterPuesto.clear();
+                                for (var i = 0;
+                                    i < snapshot.data!.length;
+                                    i++) {
+                                  mainController.filterPuesto
+                                      .add(snapshot.data![i]);
+                                }
+                              }
+                              return const SizedBox();
+                            }),
+                        StreamBuilder(
+                            stream: mainController.getVotantes(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                mainController.filterVotante.clear();
+                                for (var i = 0;
+                                    i < snapshot.data!.length;
+                                    i++) {
+                                  mainController.filterVotante
+                                      .add(snapshot.data![i]);
+                                }
+                              }
+                              return const SizedBox();
+                            }),
+                        const Spacer(),
+                        MediaQuery.of(context).size.width < 800
+                            ? IconButton(
+                                color: Colors.white,
                                 onPressed: () {
-                                  AwesomeDialog(
-                                          width: 566,
-                                          context: context,
-                                          dialogType: DialogType.info,
-                                          animType: AnimType.rightSlide,
-                                          headerAnimationLoop: false,
-                                          title:
-                                              '¿Seguro que desea cerrar sesion?',
-                                          btnCancelText: 'Cancelar',
-                                          btnOkText: 'Salir',
-                                          btnCancelOnPress: () {},
-                                          btnOkOnPress: () {
-                                            authentication.signOut();
-                                            Navigator.pushReplacement(context,
-                                                CupertinoPageRoute(
-                                                    builder: (_) {
-                                              return const LoginScreen();
-                                            }));
-                                          },
-                                          btnOkIcon: Icons.cancel,
-                                          btnOkColor: const Color(0xffff004e))
-                                      .show();
+                                  mobile = true;
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: _menu(),
+                                      );
+                                    },
+                                  );
                                 },
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Icon(
-                                      Icons.logout_outlined,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'Cerrar Sesion',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      )),
-                )
+                                icon: const Icon(Icons.menu))
+                            : const SizedBox()
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
             Expanded(
-                child: Column(
-              children: [
-                Container(
-                  // margin: const EdgeInsets.only(top: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                  ),
-                  height: 60,
-                  child: Row(
-                    children: [
-                      StreamBuilder(
-                          stream: mainController.getPuestos(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              mainController.filterPuesto.clear();
-                              for (var i = 0; i < snapshot.data!.length; i++) {
-                                mainController.filterPuesto
-                                    .add(snapshot.data![i]);
-                              }
-                            }
-                            return SizedBox();
-                          }),
-                      StreamBuilder(
-                          stream: mainController.getVotantes(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              mainController.filterVotante.clear();
-                              for (var i = 0; i < snapshot.data!.length; i++) {
-                                mainController.filterVotante
-                                    .add(snapshot.data![i]);
-                              }
-                            }
-                            return SizedBox();
-                          }),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
+              child: Row(
+                children: [
+                  MediaQuery.of(context).size.width >= 800
+                      ? _menu()
+                      : const SizedBox(height: 10),
+                  Expanded(
+                    flex: 4,
                     child: Center(
-                  child: views[index],
-                ))
-              ],
-            ))
+                      child: views[index],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -228,34 +168,121 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _materialButton(String text, IconData icon, int indx, bool visible) {
     return Visibility(
-        visible: visible,
-        child: MaterialButton(
+      visible: visible,
+      child: InkWell(
+        onTap: () {
+          index = indx;
+          if (mobile) {
+            Get.back();
+          }
+          setState(() {});
+        },
+        child: Container(
+          height: 55,
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           color: index == indx ? Colors.grey.shade300 : null,
-          onPressed: () {
-            index = indx;
-            setState(() {});
-          },
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             children: [
               Icon(
                 icon,
                 color: Colors.grey,
                 size: 20,
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade800,
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  text,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade800,
+                  ),
                 ),
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  _menu() {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(color: Colors.grey.shade100),
+        width: 250,
+        child: ListView(
+          children: [
+            const SizedBox(height: 30),
+            _materialButton(
+                'Registro Base de Datos', Icons.person, 0, buttons[0]),
+            _materialButton(
+                'Descargar Archivo BD', Icons.download_outlined, 1, buttons[1]),
+            _materialButton('Agenda', Icons.date_range, 2, buttons[2]),
+            _materialButton('Registro de Lideres', Icons.rocket_launch_outlined,
+                3, buttons[3]),
+            _materialButton(
+                'Informacion Lideres', Icons.info_outline, 4, buttons[4]),
+            _materialButton(
+                'Registro de Puestos', Icons.place_outlined, 5, buttons[5]),
+            _materialButton(
+                'Informacion de Puestos', Icons.info_outline, 6, buttons[6]),
+            _materialButton('Rutas', Icons.route_outlined, 7, buttons[7]),
+            _materialButton('Mapas', Icons.map_outlined, 8, buttons[8]),
+            _materialButton(
+                'Favores', Icons.featured_video_outlined, 9, buttons[9]),
+            _materialButton('Call Center', Icons.phone, 10, buttons[10]),
+            const Spacer(),
+            MaterialButton(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              color: const Color(0xffff004e),
+              onPressed: () {
+                AwesomeDialog(
+                  width: 566,
+                  context: context,
+                  dialogType: DialogType.info,
+                  animType: AnimType.rightSlide,
+                  headerAnimationLoop: false,
+                  title: '¿Seguro que desea cerrar sesion?',
+                  btnCancelText: 'Cancelar',
+                  btnOkText: 'Salir',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    authentication.signOut();
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (_) {
+                        return const LoginScreen();
+                      }),
+                    );
+                  },
+                  btnOkIcon: Icons.cancel,
+                  btnOkColor: const Color(0xffff004e),
+                ).show();
+              },
+              child: const Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Cerrar Sesion',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

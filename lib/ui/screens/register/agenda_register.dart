@@ -30,9 +30,12 @@ class _AgendaRegisterState extends State<AgendaRegister> {
 
   @override
   Widget build(BuildContext context) {
+    double localwidth = MediaQuery.of(context).size.width;
+    double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
+        padding: EdgeInsets.symmetric(
+            horizontal: localwidth * 0.1, vertical: localHeigth * 0.1),
         child: Center(
             child: Column(
           children: [

@@ -37,18 +37,22 @@ class _FavoresRegisterState extends State<FavoresRegister> {
 
   @override
   Widget build(BuildContext context) {
+    double localwidth = MediaQuery.of(context).size.width;
+    double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 40),
+        padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
         child: Center(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-                width: 475,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField('Nombre', TextInputType.text, nombre, 1)),
             SizedBox(
-                width: 475,
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
                     'Descripcion', TextInputType.text, descripcion, 3)),
             const SizedBox(
@@ -73,7 +77,8 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                     width: 40,
                   ),
                   SizedBox(
-                    width: 420,
+                    width:
+                        localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.5,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       color: Colors.transparent,
@@ -222,13 +227,13 @@ class _FavoresRegisterState extends State<FavoresRegister> {
               );
             }),
             SizedBox(
-              width: 470,
+              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.68,
               child: TextFormField(
                 onTap: () {
                   _selectDate(context);
                 },
                 controller: fecha,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Fecha',
                 ),
                 readOnly:
@@ -238,48 +243,56 @@ class _FavoresRegisterState extends State<FavoresRegister> {
             const SizedBox(
               height: 20,
             ),
-            TextButton(
-              onPressed: () {
-                String now = DateTime.now().toString();
-                Favores favor = Favores(
-                    nombre: nombre.text,
-                    id: now,
-                    descripcion: descripcion.text,
-                    fechafavor: fecha.text,
-                    leaderID: valueLeader2!.id!);
-                mainController.addFavor(favor);
-                AwesomeDialog(
-                        width: 566,
-                        context: context,
-                        dialogType: DialogType.success,
-                        animType: AnimType.rightSlide,
-                        headerAnimationLoop: false,
-                        title: 'Registro exitoso',
-                        desc: 'El favor fue registrado correctamente',
-                        btnOkOnPress: () {},
-                        btnOkIcon: Icons.cancel,
-                        btnOkColor: const Color(0xff01b9ff))
-                    .show();
-                nombre.clear();
-                descripcion.clear();
-                valueleader.clear();
-                fecha.clear();
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: const Color(0xffff004e),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 10,
+            Row(
+              children: [
+                SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.33,
                 ),
-              ),
-              child: const Text(
-                'Registrar Favor',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                TextButton(
+                  onPressed: () {
+                    String now = DateTime.now().toString();
+                    Favores favor = Favores(
+                        nombre: nombre.text,
+                        id: now,
+                        descripcion: descripcion.text,
+                        fechafavor: fecha.text,
+                        leaderID: valueLeader2!.id!);
+                    mainController.addFavor(favor);
+                    AwesomeDialog(
+                            width: 566,
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.rightSlide,
+                            headerAnimationLoop: false,
+                            title: 'Registro exitoso',
+                            desc: 'El favor fue registrado correctamente',
+                            btnOkOnPress: () {},
+                            btnOkIcon: Icons.cancel,
+                            btnOkColor: const Color(0xff01b9ff))
+                        .show();
+                    nombre.clear();
+                    descripcion.clear();
+                    valueleader.clear();
+                    fecha.clear();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xffff004e),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 10,
+                    ),
+                  ),
+                  child: const Text(
+                    'Registrar Favor',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         )),
