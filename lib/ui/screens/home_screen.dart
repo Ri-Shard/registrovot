@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
   bool mobile = false;
   MainController mainController = Get.find();
-
+  String _label = 'Registro Base de Datos';
   Authentication authentication = Authentication();
   List<bool> buttons = [];
   List<Widget> views = [
@@ -94,6 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 60,
                     child: Row(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            _label,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
                         StreamBuilder(
                             stream: mainController.getPuestos(),
                             builder: (context, snapshot) {
@@ -171,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
       visible: visible,
       child: InkWell(
         onTap: () {
+          _label = text;
           index = indx;
           if (mobile) {
             Get.back();

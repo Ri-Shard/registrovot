@@ -86,6 +86,28 @@ class _UserRegisterState extends State<UserRegister> {
                             builder: (state) {
                               return InkWell(
                                 onTap: () {
+                                  filterPuestoPre.clear();
+                                  for (var i = 0;
+                                      i < mainController.filterPuesto.length;
+                                      i++) {
+                                    filterPuestoPre
+                                        .add(mainController.filterPuesto[i]);
+                                  }
+                                  filterPuesto.clear();
+                                  for (var i = 0;
+                                      i < filterPuestoPre.length;
+                                      i++) {
+                                    if (filterPuestoPre[i]
+                                            .municipio!
+                                            .toLowerCase() ==
+                                        valuemunicipio.text.toLowerCase()) {
+                                      filterPuesto.add(filterPuestoPre[i]);
+                                    }
+                                  }
+                                  filterPuestoSearch.clear();
+                                  for (var element in filterPuesto) {
+                                    filterPuestoSearch.add(element);
+                                  }
                                   // searchvotante.clear();
                                   searchvotante.value =
                                       mainController.filterVotante.value;
@@ -981,21 +1003,6 @@ class _UserRegisterState extends State<UserRegister> {
               Builder(builder: (_) {
                 if (mainController.filterPuesto.isEmpty) {
                   return Container();
-                }
-                filterPuestoPre.clear();
-                for (var i = 0; i < mainController.filterPuesto.length; i++) {
-                  filterPuestoPre.add(mainController.filterPuesto[i]);
-                }
-                filterPuesto.clear();
-                for (var i = 0; i < filterPuestoPre.length; i++) {
-                  if (filterPuestoPre[i].municipio!.toLowerCase() ==
-                      valuemunicipio.text.toLowerCase()) {
-                    filterPuesto.add(filterPuestoPre[i]);
-                  }
-                }
-                filterPuestoSearch.clear();
-                for (var element in filterPuesto) {
-                  filterPuestoSearch.add(element);
                 }
                 return Visibility(
                   visible: enable,

@@ -22,21 +22,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final authservice = Authentication();
   @override
   Widget build(BuildContext context) {
+    double localWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Column(
             children: [
-              Expanded(
-                  child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                color: Colors.grey.shade300,
-                child: Image.asset(
-                  'assets/images/fondo.png',
-                  fit: BoxFit.cover,
-                ),
-              )),
+              localWidth >= 800
+                  ? Expanded(
+                      child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      color: Colors.grey.shade300,
+                      child: Image.asset(
+                        'assets/images/fondo.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ))
+                  : SizedBox(),
             ],
           ),
           Expanded(
@@ -120,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
                       ),
-                      const SizedBox(width: 25),
+                      SizedBox(width: 25),
                     ],
                   ),
                   const SizedBox(height: 30),

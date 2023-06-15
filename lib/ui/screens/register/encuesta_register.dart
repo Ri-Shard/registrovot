@@ -20,9 +20,9 @@ class _EncuestaViewState extends State<EncuestaView> {
       alignment: Alignment.bottomCenter,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: const Row(
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -43,11 +43,11 @@ class _EncuestaViewState extends State<EncuestaView> {
                 String dropdownvalue =
                     mainController.filterVotante[index].encuesta! ? 'Si' : 'No';
                 return ListTile(
-                    subtitle: Text('Telefono            Nombre'),
+                    subtitle: const Text('Telefono            Nombre'),
                     minVerticalPadding: 10,
                     title: Text(
                         "${mainController.filterVotante[index].phone} ${mainController.filterVotante[index].name}"),
-                    trailing: Container(
+                    trailing: SizedBox(
                       width: localwidth >= 800
                           ? localwidth * 0.1
                           : localwidth * 0.3,

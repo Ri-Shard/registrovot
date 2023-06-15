@@ -24,7 +24,7 @@ dependencies:
   latlong2: ^0.8.0
   intl: ^0.18.0
   flutter_localization: ^0.1.11
-
+  excel: ^2.1.0
   flutter:
     sdk: flutter
 
