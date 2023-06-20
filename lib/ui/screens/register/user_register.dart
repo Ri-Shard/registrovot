@@ -63,6 +63,21 @@ class _UserRegisterState extends State<UserRegister> {
 
   @override
   Widget build(BuildContext context) {
+    filterPuestoPre.clear();
+    for (var i = 0; i < mainController.filterPuesto.length; i++) {
+      filterPuestoPre.add(mainController.filterPuesto[i]);
+    }
+    filterPuesto.clear();
+    for (var i = 0; i < filterPuestoPre.length; i++) {
+      if (filterPuestoPre[i].municipio!.toLowerCase() ==
+          valuemunicipio.text.toLowerCase()) {
+        filterPuesto.add(filterPuestoPre[i]);
+      }
+    }
+    filterPuestoSearch.clear();
+    for (var element in filterPuesto) {
+      filterPuestoSearch.add(element);
+    }
     double localwidth = MediaQuery.of(context).size.width;
     double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -1209,7 +1224,7 @@ class _UserRegisterState extends State<UserRegister> {
                             votante.barrio = null;
                           }
                           final response =
-                              await mainController.updateVotante(votante);
+                              await mainController.updateVotante2(votante);
                           AwesomeDialog(
                                   width: 566,
                                   context: context,
@@ -1235,7 +1250,7 @@ class _UserRegisterState extends State<UserRegister> {
                           setState(() {});
                         } else {
                           final response =
-                              await mainController.addVotante(votante);
+                              await mainController.addVotante2(votante);
                           if (response == 'Ya Existe') {
                             AwesomeDialog(
                                     width: 566,

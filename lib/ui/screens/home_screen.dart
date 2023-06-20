@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     buttons = mainController.listviews;
+    index = buttons.indexWhere((element) => element);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -94,36 +95,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 60,
                     child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            _label,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
+                        GetBuilder<MainController>(
+                            id: 'principalView',
+                            builder: (context) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: Text(
+                                  _label,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              );
+                            }),
                         StreamBuilder(
                             stream: mainController.getPuestos(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                mainController.getVotantes();
                                 mainController.filterPuesto.clear();
                                 for (var i = 0;
                                     i < snapshot.data!.length;
                                     i++) {
                                   mainController.filterPuesto
-                                      .add(snapshot.data![i]);
-                                }
-                              }
-                              return const SizedBox();
-                            }),
-                        StreamBuilder(
-                            stream: mainController.getVotantes(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                mainController.filterVotante.clear();
-                                for (var i = 0;
-                                    i < snapshot.data!.length;
-                                    i++) {
-                                  mainController.filterVotante
                                       .add(snapshot.data![i]);
                                 }
                               }
@@ -160,9 +153,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       : const SizedBox(height: 10),
                   Expanded(
                     flex: 4,
-                    child: Center(
-                      child: views[index],
-                    ),
+                    child: GetBuilder<MainController>(
+                        id: 'principalView',
+                        builder: (context) {
+                          return Center(
+                            child: views[index],
+                          );
+                        }),
                   ),
                 ],
               ),
@@ -178,12 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
       visible: visible,
       child: InkWell(
         onTap: () {
-          _label = text;
-          index = indx;
-          if (mobile) {
-            Get.back();
-          }
-          setState(() {});
+          _ontapButton(text, indx);
         },
         child: Container(
           height: 55,
@@ -220,77 +212,91 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         decoration: BoxDecoration(color: Colors.grey.shade100),
         width: 250,
-        child: ListView(
-          children: [
-            const SizedBox(height: 30),
-            _materialButton(
-                'Registro Base de Datos', Icons.person, 0, buttons[0]),
-            _materialButton(
-                'Descargar Archivo BD', Icons.download_outlined, 1, buttons[1]),
-            _materialButton('Agenda', Icons.date_range, 2, buttons[2]),
-            _materialButton('Registro de Lideres', Icons.rocket_launch_outlined,
-                3, buttons[3]),
-            _materialButton(
-                'Informacion Lideres', Icons.info_outline, 4, buttons[4]),
-            _materialButton(
-                'Registro de Puestos', Icons.place_outlined, 5, buttons[5]),
-            _materialButton(
-                'Informacion de Puestos', Icons.info_outline, 6, buttons[6]),
-            _materialButton('Rutas', Icons.route_outlined, 7, buttons[7]),
-            _materialButton('Mapas', Icons.map_outlined, 8, buttons[8]),
-            _materialButton(
-                'Favores', Icons.featured_video_outlined, 9, buttons[9]),
-            _materialButton('Call Center', Icons.phone, 10, buttons[10]),
-            const Spacer(),
-            MaterialButton(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              color: const Color(0xffff004e),
-              onPressed: () {
-                AwesomeDialog(
-                  width: 566,
-                  context: context,
-                  dialogType: DialogType.info,
-                  animType: AnimType.rightSlide,
-                  headerAnimationLoop: false,
-                  title: '¿Seguro que desea cerrar sesion?',
-                  btnCancelText: 'Cancelar',
-                  btnOkText: 'Salir',
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () {
-                    authentication.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      CupertinoPageRoute(builder: (_) {
-                        return const LoginScreen();
-                      }),
-                    );
-                  },
-                  btnOkIcon: Icons.cancel,
-                  btnOkColor: const Color(0xffff004e),
-                ).show();
-              },
-              child: const Row(
-                mainAxisSize: MainAxisSize.max,
+        height: MediaQuery.of(context).size.height,
+        child: GetBuilder<MainController>(
+            id: 'principalView',
+            builder: (_) {
+              return ListView(
                 children: [
-                  Icon(
-                    Icons.logout_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Cerrar Sesion',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+                  const SizedBox(height: 30),
+                  _materialButton(
+                      'Registro Base de Datos', Icons.person, 0, buttons[0]),
+                  _materialButton('Descargar Archivo BD',
+                      Icons.download_outlined, 1, buttons[1]),
+                  _materialButton('Agenda', Icons.date_range, 2, buttons[2]),
+                  _materialButton('Registro de Lideres',
+                      Icons.rocket_launch_outlined, 3, buttons[3]),
+                  _materialButton(
+                      'Informacion Lideres', Icons.info_outline, 4, buttons[4]),
+                  _materialButton('Registro de Puestos', Icons.place_outlined,
+                      5, buttons[5]),
+                  _materialButton('Informacion de Puestos', Icons.info_outline,
+                      6, buttons[6]),
+                  _materialButton('Rutas', Icons.route_outlined, 7, buttons[7]),
+                  _materialButton('Mapas', Icons.map_outlined, 8, buttons[8]),
+                  _materialButton(
+                      'Favores', Icons.featured_video_outlined, 9, buttons[9]),
+                  _materialButton('Call Center', Icons.phone, 10, buttons[10]),
+                  MaterialButton(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    color: const Color(0xffff004e),
+                    onPressed: () {
+                      AwesomeDialog(
+                        width: 566,
+                        context: context,
+                        dialogType: DialogType.info,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: '¿Seguro que desea cerrar sesion?',
+                        btnCancelText: 'Cancelar',
+                        btnOkText: 'Salir',
+                        btnCancelOnPress: () {},
+                        btnOkOnPress: () {
+                          authentication.signOut();
+                          Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(builder: (_) {
+                              return const LoginScreen();
+                            }),
+                          );
+                        },
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: const Color(0xffff004e),
+                      ).show();
+                    },
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Icon(
+                          Icons.logout_outlined,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Cerrar Sesion',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
+              );
+            }),
       ),
     );
+  }
+
+  _ontapButton(String text, int indx) {
+    _label = text;
+    index = indx;
+    if (mobile) {
+      Get.back();
+    }
+    mainController.update(['principalView']);
   }
 }

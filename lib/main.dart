@@ -8,12 +8,13 @@ import 'package:registrovot/ui/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: const FirebaseOptions(
         storageBucket: "vota-734bf.appspot.com",
         measurementId: "G-5SJMR18MR6",
         authDomain: "vota-734bf.firebaseapp.com",
-        databaseURL: "https://drinki-f70e7-default-rtdb.firebaseio.com",
+        databaseURL: "https://vota-734bf-default-rtdb.firebaseio.com",
         apiKey: 'AIzaSyDqdhnZZ-pn1wEsiyi1icGKWCnFOFuB9gE',
         appId: "1:599170961042:web:30a34a9157b0c79e69e04b",
         messagingSenderId: "599170961042",

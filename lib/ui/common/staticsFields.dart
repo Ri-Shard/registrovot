@@ -2479,7 +2479,251 @@ class StaticFields {
       {"municipio": "Valledupar", "barrio": "San Joaquin", "comuna": "6"},
       {"municipio": "Valledupar", "barrio": "La Guajira", "comuna": "6"},
       {"municipio": "Valledupar", "barrio": "San Vicente", "comuna": "6"},
-      {"municipio": "Valledupar", "barrio": "Urb. Santa Rosalia", "comuna": "6"}
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Santa Rosalia",
+        "comuna": "6"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Acuarela",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urbanizacion Acuarela II",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Altavista",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Altos de Comfacesar",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Altos de Pimienta", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Altos del Valle", "comuna": "4"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Altos de Don Alberto",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Altos de Garupal", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Amaneceres del Valle",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Bella Vista", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Brisas de la Popa", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Callejas del Norte",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Residencial Callejas",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Orientes de Callejas",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Campo Romero", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Urb. Cañaveral", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Casa Blanca", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Colombia Conjunto", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Brasil",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Argentina",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Residencial Citaringa",
+        "comuna": "2"
+      },
+      {"municipio": "Valledupar", "barrio": "Dangond", "comuna": "4"},
+      {"municipio": "Valledupar", "barrio": "Urb. Don Miguel", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Portobello", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "El Eden", "comuna": "1"},
+      {"municipio": "Valledupar", "barrio": "El Galan", "comuna": "4"},
+      {"municipio": "Valledupar", "barrio": "Emmanuel", "comuna": "3"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Residencial Entresierras",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Esperanza Norte", "comuna": "3"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Futuro de los Niños",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Garupal Etapa 1", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Garupal Etapa 2", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Garupal Etapa 3", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Garupal Etapa 4", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Fontana Externa", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Las Flores", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Las Manuelitas", "comuna": "3"},
+      {"municipio": "Valledupar", "barrio": "Los Musicos", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Residencial Marsella Real",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Loft 38", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Condominio Diomedes Daza",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Mirador de la Sierra 1",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Mirador de la Sierra 2",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Altos de la Popa", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Miraflores Club House",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Casas de la Pradera",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Parques de la Pradera",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Urb. Girasoles", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Resindencial Rosario Norte 2",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Simon Bolivar", "comuna": "2"},
+      {"municipio": "Valledupar", "barrio": "Terraza 64", "comuna": "3"},
+      {"municipio": "Valledupar", "barrio": "Urb. Los Caciques", "comuna": "4"},
+      {"municipio": "Valledupar", "barrio": "Urb. Maria Paula", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Urb. Rocio", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Urb. Santorini", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Las Trinitarias",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Villa Clara Sur", "comuna": "2"},
+      {"municipio": "Valledupar", "barrio": "Villa Consuelo", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Villa del Rosario", "comuna": "6"},
+      {"municipio": "Valledupar", "barrio": "Vista Hermosa", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "11 de Noviembre", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Ciudad Tayrona", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Altos de Arizona", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Balcones de Santa Helena",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Chile",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Barcelona",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Bambuterra",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Edificio Bambu Condominio y Club",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Bilbao",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Flores de Maria 1",
+        "comuna": "4"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Flores de Maria 2",
+        "comuna": "4"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Granadillo",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Guayacanes", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Nueva Esperanza", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Condominio Club Palmetto",
+        "comuna": "5"
+      },
+      {"municipio": "Valledupar", "barrio": "Urb. Colombia", "comuna": "5"},
+      {"municipio": "Valledupar", "barrio": "Urb. La Riviera", "comuna": "5"},
+      {
+        "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Vive Alto - San Fernando",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Altos de Ziruma 2",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Altos de Ziruma 3",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Altos de Ziruma 4",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Altos de Ziruma 5",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Urb. Altos de Ziruma 6",
+        "comuna": "3"
+      },
+      {"municipio": "Valledupar", "barrio": "El Cielo", "comuna": "0"}
     ];
 
     List<Barrio> response = [];

@@ -40,6 +40,19 @@ class Votante {
     estado = json['estado'];
     encuesta = json['encuesta'];
   }
+  Votante.fromJsonExcel(Map<String, dynamic> json) {
+    name = json['Nombre'];
+    id = json['Cedula'];
+    leaderID = '11111111';
+    phone = json['Celular'];
+    puestoID = json['Puesto de Votacion'];
+    direccion = json['Direccion'];
+    edad = '';
+    municipio = 'Valledupar';
+    barrio = json['Barrio'];
+    estado = 'Activo';
+    encuesta = false;
+  }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};

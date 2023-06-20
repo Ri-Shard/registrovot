@@ -9,13 +9,16 @@ import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class MainController extends GetxController {
+  FirebaseDatabase database = FirebaseDatabase.instance;
   final _auth = FirebaseAuth.instance;
   List<bool> listviews = [];
   String? collection;
   RxList<Leader> filterLeader = <Leader>[].obs;
   RxList<Votante> filterVotante = <Votante>[].obs;
+  List<Votante> auxvot = [];
   RxList<Puesto> filterPuesto = <Puesto>[].obs;
   Future<User?> getFirebaseUser() async {
     User? firebaseUser = _auth.currentUser;
@@ -54,6 +57,7 @@ class MainController extends GetxController {
         true,
         false,
         true,
+        true
       ];
       return listviews;
     } else if (email.contains('secre')) {
@@ -67,15 +71,44 @@ class MainController extends GetxController {
         false,
         false,
         false,
+        true,
         true
       ];
       return listviews;
     } else if (email.contains('gerente')) {
-      listviews = [true, true, true, true, true, true, true, true, false, true];
+      listviews = [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ];
       return listviews;
     } else if (email.contains('asistente')) {
       listviews = [
         true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ];
+      return listviews;
+    } else if (email.contains('callcenter')) {
+      listviews = [
+        false,
+        false,
         false,
         false,
         false,
@@ -108,7 +141,7 @@ class MainController extends GetxController {
             'name': leader.name,
             'phone': leader.phone,
             'municipio': leader.municipio,
-            'estado': leader.estado
+            'estado': 'activo'
           }
         },
         SetOptions(merge: true),
@@ -147,7 +180,11 @@ class MainController extends GetxController {
 
   Future<Leader?> getoneLeader(String idLeader) async {
     Leader? leader;
-    leader = filterLeader.firstWhere((element) => element.id == idLeader);
+    if (filterLeader.isNotEmpty) {
+      leader =
+          filterLeader.firstWhereOrNull((element) => element.id == idLeader);
+      return leader;
+    }
     return leader;
   }
 
@@ -163,7 +200,7 @@ class MainController extends GetxController {
   }
 
   //USER METHODS
-  Future<String?> addVotante(Votante votante) async {
+  Future<String> addVotante(Votante votante) async {
     String response = '';
     CollectionReference colection;
     Votante? exist = getoneVotante(votante.id);
@@ -171,31 +208,31 @@ class MainController extends GetxController {
       response = 'Ya Existe';
       return response;
     } else {
-      colection = FirebaseFirestore.instance.collection(collection!);
-      colection.doc('usuarios').set(
-        {
-          votante.id: {
-            'id': votante.id,
-            'name': votante.name,
-            'phone': votante.phone,
-            'leaderID': votante.leaderID,
-            'puestoID': votante.puestoID,
-            'direccion': votante.direccion,
-            'edad': votante.edad,
-            'municipio': votante.municipio,
-            'barrio': votante.barrio,
-            'estado': 'activo',
-            'encuesta': false,
-          }
-        },
-        SetOptions(merge: true),
-      ).then((value) {
+      try {
+        colection = FirebaseFirestore.instance.collection(collection!);
+        await colection.doc('usuarios').set(
+          {
+            votante.id.toString(): {
+              'id': votante.id.toString(),
+              'name': votante.name,
+              'phone': votante.phone,
+              'leaderID': votante.leaderID,
+              'puestoID': votante.puestoID,
+              'direccion': votante.direccion,
+              'edad': votante.edad,
+              'municipio': votante.municipio,
+              'barrio': votante.barrio,
+              'estado': 'activo',
+              'encuesta': false,
+            }
+          },
+          SetOptions(merge: true),
+        );
         response = "Usuario registrado";
-        return response;
-      }).catchError((error) {
-        response = "Error al agregar el Usuario: $error";
-        return response;
-      });
+      } catch (e) {
+        auxvot.add(votante);
+        response = "Error al agregar el Usuario: $e";
+      }
     }
 
     return response;
@@ -233,37 +270,130 @@ class MainController extends GetxController {
     return response;
   }
 
-  Stream<List<Votante>> getVotantes() {
-    CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection(collection!);
-    return colection.doc('usuarios').snapshots().asyncMap((event) {
-      List<Votante> aux = [];
-      Map<dynamic, dynamic> dataid = event.data() as Map<dynamic, dynamic>;
-      dataid.forEach((key, value) {
-        if (value['estado'] == 'activo') {
-          Votante votante = Votante(
-              name: value['name'],
-              id: value['id'],
-              phone: value['phone'],
-              leaderID: value['leaderID'],
-              direccion: value['direccion'],
-              edad: value['edad'],
-              municipio: value['municipio'],
-              barrio: value['barrio'],
-              puestoID: value['puestoID'],
-              estado: value['estado'],
-              encuesta: value['encuesta']);
-          aux.add(votante);
+  getVotantes() {
+    // CollectionReference colection;
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref().child('$collection');
+    // colection = FirebaseFirestore.instance.collection(collection!);
+    // return colection.doc('usuarios').snapshots().asyncMap((event)
+    try {
+      return ref.onValue.listen((event) {
+        Map<dynamic, dynamic> dataid =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        if (dataid != null) {
+          filterVotante.clear();
+          dataid.forEach((key, value) {
+            if (value['estado'] == 'activo') {
+              Votante votante = Votante(
+                  name: value['name'],
+                  id: value['id'],
+                  phone: value['phone'],
+                  leaderID: value['leaderID'],
+                  direccion: value['direccion'],
+                  edad: value['edad'],
+                  municipio: value['municipio'],
+                  barrio: value['barrio'],
+                  puestoID: value['puestoID'],
+                  estado: value['estado'],
+                  encuesta: value['encuesta']);
+              filterVotante.add(votante);
+            }
+          });
+          print(filterVotante.length);
         }
       });
-      return aux;
-    });
+    } catch (e) {}
   }
 
   Votante? getoneVotante(String idVotante) {
-    Votante? votanteaux =
-        filterVotante.firstWhereOrNull((element) => element.id == idVotante);
+    Votante? votanteaux;
+    if (filterVotante.isNotEmpty) {
+      votanteaux =
+          filterVotante.firstWhereOrNull((element) => element.id == idVotante);
+      return votanteaux;
+    }
     return votanteaux;
+  }
+
+//USER REALTIME TRY
+  Future<String?> updateVotante2(Votante votante) async {
+    String response = '';
+
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child('$collection/${votante.id.toString()}');
+      await ref.update({
+        'name': votante.name,
+        'phone': votante.phone,
+        'leaderID': votante.leaderID,
+        'puestoID': votante.puestoID,
+        'direccion': votante.direccion,
+        'edad': votante.edad,
+        'municipio': votante.municipio,
+        'barrio': votante.barrio,
+        'estado': 'activo',
+      });
+    } catch (e) {
+      response = "Error al Actualizar el Usuario: $e";
+    }
+  }
+
+  updateEncuesta(String id, bool encuesta) async {
+    String response = '';
+
+    try {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child('$collection/${id.toString()}');
+      await ref.update({'encuesta': encuesta});
+
+      response = "Encuesta actualizada";
+    } catch (e) {
+      // auxvot.add(votante);
+      response = "Error al Actualizar el Usuario: $e";
+    }
+
+    return response;
+  }
+
+  void try3() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+    await ref.remove();
+  }
+
+  Future<String> addVotante2(Votante votante) async {
+    String response = '';
+    Votante? exist = getoneVotante(votante.id);
+    if (exist != null) {
+      response = 'Ya Existe';
+      return response;
+    } else {
+      try {
+        DatabaseReference ref = FirebaseDatabase.instance
+            .ref()
+            .child('$collection/${votante.id.toString()}');
+        await ref.set({
+          'id': votante.id.toString(),
+          'name': votante.name,
+          'phone': votante.phone,
+          'leaderID': votante.leaderID,
+          'puestoID': votante.puestoID,
+          'direccion': votante.direccion,
+          'edad': votante.edad,
+          'municipio': votante.municipio,
+          'barrio': votante.barrio,
+          'estado': 'activo',
+          'encuesta': false
+        });
+
+        response = "Usuario registrado";
+      } catch (e) {
+        // auxvot.add(votante);
+        response = "Error al agregar el Usuario: $e";
+      }
+
+      return response;
+    }
   }
 
 //PUESTO METHODS
@@ -324,8 +454,12 @@ class MainController extends GetxController {
   }
 
   Puesto? getonePuesto(String idPuesto) {
-    Puesto? puesto =
-        filterPuesto.firstWhereOrNull((element) => element.id == idPuesto);
+    Puesto? puesto;
+    if (filterPuesto.isNotEmpty) {
+      puesto =
+          filterPuesto.firstWhereOrNull((element) => element.id == idPuesto);
+      return puesto;
+    }
     return puesto;
   }
 
@@ -415,19 +549,6 @@ class MainController extends GetxController {
     });
 
     return response;
-  }
-
-  updateEncuesta(String id, bool encuesta) async {
-    CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection(collection!);
-    await colection.doc('usuarios').set(
-      {
-        id.toString(): {
-          'encuesta': encuesta,
-        }
-      },
-      SetOptions(merge: true),
-    );
   }
 
   //FAVORES METHODS
