@@ -23,7 +23,7 @@ class RoutesScreenState extends State<RoutesScreen> {
   MainController mainController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Routes Screen'));
+    return const Center(child: Text('Routes Screen'));
     // return Column(
     //   children: [
     //     Center(
@@ -56,10 +56,10 @@ class RoutesScreenState extends State<RoutesScreen> {
     //                   ccrepeat = true;
     //                   break;
     //                 }
-    //                 if (votante.phone == e.phone) {
-    //                   hasPhone = true;
-    //                   break;
-    //                 }
+    //                 // if (votante.phone == e.phone) {
+    //                 //   hasPhone = true;
+    //                 //   break;
+    //                 // }
     //               }
     //               if (!ccrepeat && !hasPhone) {
     //                 listVot.add(votante);

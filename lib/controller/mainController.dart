@@ -299,7 +299,6 @@ class MainController extends GetxController {
               filterVotante.add(votante);
             }
           });
-          print(filterVotante.length);
         }
       });
     } catch (e) {}

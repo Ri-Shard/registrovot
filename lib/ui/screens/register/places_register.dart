@@ -231,7 +231,7 @@ class PlacesRegister extends StatelessWidget {
                     // }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xffff004e),
+                    backgroundColor: const Color(0xff01b9ff),
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
                       horizontal: 10,
