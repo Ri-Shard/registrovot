@@ -338,7 +338,7 @@ class MainController extends GetxController {
     }
   }
 
-  updateEncuesta(String id, bool encuesta) async {
+  updateEncuesta(String id, bool? encuesta) async {
     String response = '';
 
     try {

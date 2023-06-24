@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:registrovot/controller/mainController.dart';
 import 'package:registrovot/model/votante.dart';
 
@@ -15,6 +16,8 @@ class _EncuestaViewState extends State<EncuestaView> {
   final mainController = Get.find<MainController>();
   TextEditingController cedula = TextEditingController();
   RxList<Votante> filterVotanteAux = <Votante>[].obs;
+
+  String? valuefilter;
   @override
   Widget build(BuildContext context) {
     filterVotanteAux.value = mainController.filterVotante;
@@ -23,38 +26,151 @@ class _EncuestaViewState extends State<EncuestaView> {
       alignment: Alignment.bottomCenter,
       child: Column(
         children: [
-          TextFormField(
-            enabled: true,
-            decoration: const InputDecoration(
-              labelText: 'Buscar',
-            ),
-            controller: cedula,
-            validator: (_) {
-              if (_ == null || _.isEmpty) {
-                return "Debe llenar este campo";
-              }
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
+                  child: TextFormField(
+                    enabled: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Buscar',
+                    ),
+                    controller: cedula,
+                    validator: (_) {
+                      if (_ == null || _.isEmpty) {
+                        return "Debe llenar este campo";
+                      }
 
-              if (_.length > 10) {
-                return "número no válido";
-              }
-              if (_.length < 7) {
-                return "número no válido";
-              }
-            },
-            onChanged: (_) {
-              if (_.isEmpty) {
-                filterVotanteAux.value = mainController.filterVotante;
-              } else {
-                filterVotanteAux.value = mainController.filterVotante
-                    .where((p0) => p0
-                        .toJson()
-                        .toString()
-                        .toLowerCase()
-                        .contains(_.toLowerCase()))
-                    .toList();
-              }
-              mainController.update(['dropCallcenter']);
-            },
+                      if (_.length > 10) {
+                        return "número no válido";
+                      }
+                      if (_.length < 7) {
+                        return "número no válido";
+                      }
+                    },
+                    onChanged: (_) {
+                      if (_.isEmpty) {
+                        filterVotanteAux.value = mainController.filterVotante;
+                      } else {
+                        filterVotanteAux.value = mainController.filterVotante
+                            .where((p0) => p0
+                                .toJson()
+                                .toString()
+                                .toLowerCase()
+                                .contains(_.toLowerCase()))
+                            .toList();
+                      }
+                      mainController.update(['dropCallcenter']);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GetBuilder<MainController>(
+                  id: 'filterSelect',
+                  builder: (sta) {
+                    return SizedBox(
+                      width: localwidth >= 800
+                          ? localwidth * 0.2
+                          : localwidth * 0.3,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          isExpanded: true,
+                          hint: const Row(
+                            children: [
+                              Icon(
+                                Icons.list,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Seleccione',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          items: ['Si', 'No', 'No responde']
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
+                          value: valuefilter,
+                          onChanged: (value) async {
+                            Get.dialog(LoadingAnimationWidget.newtonCradle(
+                                color: Colors.pink, size: 100));
+                            bool? auxval = value == 'Si'
+                                ? true
+                                : (value == 'No' ? false : null);
+                            filterVotanteAux.value = mainController
+                                .filterVotante
+                                .where((p0) => p0.encuesta == auxval)
+                                .toList();
+
+                            valuefilter = value!;
+                            sta.update(["filterSelect"]);
+                            mainController.update(["dropCallcenter"]);
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_outlined,
+                          ),
+                          //This to clear the search value when you close the menu
+                          iconSize: 12,
+                          iconEnabledColor: Colors.grey,
+                          iconDisabledColor: Colors.grey,
+                          buttonHeight: 50,
+                          buttonPadding:
+                              const EdgeInsets.only(left: 14, right: 14),
+                          buttonDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: Colors.black26,
+                            ),
+                            color: Colors.white,
+                          ),
+                          buttonElevation: 2,
+                          itemHeight: 36,
+                          itemPadding:
+                              const EdgeInsets.only(left: 14, right: 14),
+                          dropdownPadding: null,
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Colors.white,
+                          ),
+                          dropdownElevation: 8,
+                          scrollbarRadius: const Radius.circular(40),
+                          scrollbarThickness: 6,
+                          scrollbarAlwaysShow: true,
+                          offset: const Offset(-20, 0),
+                        ),
+                      ),
+                    );
+                  })
+            ],
           ),
           const Padding(
             padding: EdgeInsets.all(10),
@@ -79,8 +195,16 @@ class _EncuestaViewState extends State<EncuestaView> {
                   child: ListView.builder(
                     itemCount: filterVotanteAux.length,
                     itemBuilder: (_, index) {
-                      String dropdownvalue =
-                          filterVotanteAux[index].encuesta! ? 'Si' : 'No';
+                      String? dropdownvalue;
+                      if (filterVotanteAux[index].encuesta == true) {
+                        dropdownvalue = 'Si';
+                      } else {
+                        dropdownvalue =
+                            (filterVotanteAux[index].encuesta == false
+                                ? 'No'
+                                : 'No responde');
+                      }
+
                       return ListTile(
                           subtitle: const Text('Telefono            Nombre'),
                           minVerticalPadding: 10,
@@ -116,7 +240,7 @@ class _EncuestaViewState extends State<EncuestaView> {
                                     ),
                                   ],
                                 ),
-                                items: ['Si', 'No']
+                                items: ['Si', 'No', 'No responde']
                                     .map((item) => DropdownMenuItem<String>(
                                           value: item,
                                           child: Text(
@@ -132,15 +256,36 @@ class _EncuestaViewState extends State<EncuestaView> {
                                     .toList(),
                                 value: dropdownvalue,
                                 onChanged: (value) async {
-                                  Get.dialog(const Dialog());
+                                  Get.dialog(
+                                      LoadingAnimationWidget.newtonCradle(
+                                          color: Colors.pink, size: 100));
+
                                   await mainController.updateEncuesta(
                                       filterVotanteAux[index].id,
-                                      value == 'Si' ? true : false);
-                                  // Get.dialog(Container());
+                                      value == 'Si'
+                                          ? true
+                                          : (value == 'No' ? false : null));
+                                  for (Votante element
+                                      in mainController.filterVotante) {
+                                    if (element.id ==
+                                        filterVotanteAux[index].id) {
+                                      filterVotanteAux[index].encuesta =
+                                          element.encuesta;
+                                    }
+                                  }
+                                  if (valuefilter != null) {
+                                    bool? auxval = valuefilter == 'Si'
+                                        ? true
+                                        : (valuefilter == 'No' ? false : null);
+                                    filterVotanteAux.value = mainController
+                                        .filterVotante
+                                        .where((p0) => p0.encuesta == auxval)
+                                        .toList();
+                                  }
+
+                                  dropdownvalue = value!;
+                                  state.update(["dropCallcenter"]);
                                   Get.back();
-                                  setState(() {
-                                    dropdownvalue = value!;
-                                  });
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_outlined,
