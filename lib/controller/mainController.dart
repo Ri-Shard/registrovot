@@ -178,7 +178,7 @@ class MainController extends GetxController {
     });
   }
 
-  Future<Leader?> getoneLeader(String idLeader) async {
+  Leader? getoneLeader(String idLeader) {
     Leader? leader;
     if (filterLeader.isNotEmpty) {
       leader =
