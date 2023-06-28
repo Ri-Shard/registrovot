@@ -27,8 +27,11 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
     return Center(
       child: Center(
         child: ElevatedButton(
-          onPressed: () {
-            exportToExcel();
+          onPressed: () async {
+            _showloading();
+            await Future.delayed(const Duration(seconds: 1));
+            await exportToExcel();
+            Get.back();
           },
           child: const Text('Descargar Base de Datos'),
         ),
@@ -36,7 +39,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
     );
   }
 
-  void exportToExcel() {
+  Future<void> exportToExcel() async {
     try {
       final excel = Excel.createExcel();
       final Sheet sheet = excel[excel.getDefaultSheet()!];
@@ -124,7 +127,6 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
       }
 
       excel.save(fileName: "ReporteDataBase.xlsx");
-      Future.delayed(const Duration(seconds: 2)).whenComplete(() => Get.back());
     } catch (e) {
       Get.back();
       AwesomeDialog(
@@ -140,5 +142,15 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
               btnOkColor: const Color(0xff01b9ff))
           .show();
     }
+  }
+
+  void _showloading() {
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            content: LoadingAnimationWidget.newtonCradle(
+                color: Colors.pink, size: 100)));
   }
 }

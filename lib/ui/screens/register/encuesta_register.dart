@@ -169,7 +169,9 @@ class _EncuestaViewState extends State<EncuestaView> {
                         ),
                       ),
                     );
-                  })
+                  }),
+              Spacer(),
+              Text('Total Registros: ${filterVotanteAux.length}     ')
             ],
           ),
           const Padding(
@@ -181,7 +183,7 @@ class _EncuestaViewState extends State<EncuestaView> {
                   'Informacion BD',
                   style: TextStyle(fontSize: 20),
                 ),
-                Text('Respuesta Llamada', style: TextStyle(fontSize: 20)),
+                Text('Respuesta Llamada ', style: TextStyle(fontSize: 20)),
               ],
             ),
           ),
@@ -208,6 +210,7 @@ class _EncuestaViewState extends State<EncuestaView> {
                       return ListTile(
                           subtitle: const Text('Telefono            Nombre'),
                           minVerticalPadding: 10,
+                          leading: Text((index + 1).toString()),
                           title: Text(
                               "${filterVotanteAux[index].phone} ${filterVotanteAux[index].name}"),
                           trailing: SizedBox(
