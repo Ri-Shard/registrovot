@@ -22,12 +22,14 @@ class _FavoresRegisterState extends State<FavoresRegister> {
   TextEditingController descripcion = TextEditingController();
 
   TextEditingController valueleader = TextEditingController();
+  TextEditingController valuefavor = TextEditingController();
 
   TextEditingController fecha = TextEditingController();
 
   String? dropdownvalue;
 
   RxList<Leader> filterLeader = <Leader>[].obs;
+  RxList<Favores> filterFavor = <Favores>[].obs;
 
   Leader? valueLeader2;
 
@@ -46,6 +48,150 @@ class _FavoresRegisterState extends State<FavoresRegister> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.33,
+                ),
+                GetBuilder<MainController>(
+                    id: 'verCompromisosView',
+                    builder: (sta) {
+                      return TextButton(
+                        onPressed: () {
+                          filterFavor.value = mainController.filterFavores;
+                          Get.dialog(Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: Get.height * 0.2,
+                              horizontal: Get.width * 0.25,
+                            ),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: mainController.filterFavores.isEmpty
+                                  ? const Center(
+                                      child: Text("No hay datos"),
+                                    )
+                                  : Obx(() {
+                                      return Column(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(20),
+                                            child: TextField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                  hintText: "Nombre de.."),
+                                              controller: valuefavor,
+                                              onChanged: (_) {
+                                                filterFavor.value = mainController
+                                                    .filterFavores
+                                                    .where((element) => element
+                                                        .nombre!
+                                                        .toLowerCase()
+                                                        .contains(
+                                                            _.toLowerCase()))
+                                                    .toList();
+                                                sta.update(
+                                                    ["verCompromisosView"]);
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          const Text('Seleccionar Resultado'),
+                                          Expanded(
+                                              child: ListView.builder(
+                                                  itemCount: filterFavor.length,
+                                                  itemBuilder: (b, index) {
+                                                    return ListTile(
+                                                      onTap: () {
+                                                        // Get.dialog(Container(
+                                                        //     margin: EdgeInsets
+                                                        //         .symmetric(
+                                                        //       vertical:
+                                                        //           Get.height *
+                                                        //               0.2,
+                                                        //       horizontal:
+                                                        //           Get.width *
+                                                        //               0.25,
+                                                        //     ),
+                                                        //     child: Card(
+                                                        //         shape: RoundedRectangleBorder(
+                                                        //             borderRadius:
+                                                        //                 BorderRadius.circular(
+                                                        //                     20)),
+                                                        //         child: const Center(
+                                                        //             child: Text(
+                                                        //                 "No hay datos")))));
+                                                        sta.update([
+                                                          "verCompromisosView"
+                                                        ]);
+                                                        Get.back();
+                                                      },
+                                                      title: Text(
+                                                          "${filterFavor[index].nombre}: ${filterFavor[index].descripcion}" ??
+                                                              "-"),
+                                                      trailing: Text(
+                                                          filterFavor[index]
+                                                              .fechafavor!),
+                                                    );
+                                                  })),
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                Get.back();
+                                              },
+                                              style: TextButton.styleFrom(
+                                                fixedSize: const Size(120, 40),
+                                                backgroundColor:
+                                                    const Color(0xffff004e),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 20,
+                                                  horizontal: 10,
+                                                ),
+                                              ),
+                                              child: const SizedBox(
+                                                width: 200,
+                                                child: Text(
+                                                  'Cerrar',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          )
+                                        ],
+                                      );
+                                    }),
+                            ),
+                          ));
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color(0xff01b9ff),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 10,
+                          ),
+                        ),
+                        child: const Text(
+                          'Ver Compromisos registrados',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      );
+                    }),
+              ],
+            ),
             SizedBox(
                 width:
                     localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,

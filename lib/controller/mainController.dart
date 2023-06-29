@@ -586,7 +586,7 @@ class MainController extends GetxController {
     colection = FirebaseFirestore.instance.collection(collection!);
     return colection.doc('favores').snapshots().asyncMap((event) {
       List<Favores> favoresAux = [];
-      Map<dynamic, dynamic> data = event.data() as Map<dynamic, dynamic>;
+      Map<String, dynamic> data = event.data() as Map<String, dynamic>;
       data.forEach((key, value) {
         if (value['estado'] == 'activo') {
           Favores favor = Favores(
