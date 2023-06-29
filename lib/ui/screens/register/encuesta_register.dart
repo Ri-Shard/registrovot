@@ -170,7 +170,7 @@ class _EncuestaViewState extends State<EncuestaView> {
                       ),
                     );
                   }),
-              Spacer(),
+              const Spacer(),
               Text('Total Registros: ${filterVotanteAux.length}     ')
             ],
           ),

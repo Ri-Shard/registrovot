@@ -266,7 +266,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                             animType: AnimType.rightSlide,
                             headerAnimationLoop: false,
                             title: 'Registro exitoso',
-                            desc: 'El favor fue registrado correctamente',
+                            desc: 'El compromiso fue registrado correctamente',
                             btnOkOnPress: () {},
                             btnOkIcon: Icons.cancel,
                             btnOkColor: const Color(0xff01b9ff))
@@ -284,7 +284,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                     ),
                   ),
                   child: const Text(
-                    'Registrar Favor',
+                    'Registrar Compromiso',
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,

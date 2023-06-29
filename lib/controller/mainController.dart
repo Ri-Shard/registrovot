@@ -16,8 +16,10 @@ class MainController extends GetxController {
   final _auth = FirebaseAuth.instance;
   List<bool> listviews = [];
   String? collection;
+  String emailUser = '';
   RxList<Leader> filterLeader = <Leader>[].obs;
   RxList<Votante> filterVotante = <Votante>[].obs;
+  RxList<Favores> filterFavores = <Favores>[].obs;
   List<Votante> auxvot = [];
   RxList<Puesto> filterPuesto = <Puesto>[].obs;
   Future<User?> getFirebaseUser() async {
@@ -29,6 +31,7 @@ class MainController extends GetxController {
   }
 
   List<bool> defineViews(String email) {
+    emailUser = email;
     collection = email.split('@').last.split('.').first;
     if (email.contains('candidato')) {
       listviews = [
@@ -72,7 +75,7 @@ class MainController extends GetxController {
         false,
         false,
         true,
-        true
+        false
       ];
       return listviews;
     } else if (email.contains('gerente')) {
@@ -563,7 +566,7 @@ class MainController extends GetxController {
           'descripcion': favores.descripcion,
           'leaderID': favores.leaderID,
           'fecha': favores.fechafavor,
-          'estado': favores.estado,
+          'estado': 'activo',
         }
       },
       SetOptions(merge: true),
@@ -576,5 +579,27 @@ class MainController extends GetxController {
     });
 
     return response;
+  }
+
+  Stream<List<Favores>> getFavor() {
+    CollectionReference colection;
+    colection = FirebaseFirestore.instance.collection(collection!);
+    return colection.doc('favores').snapshots().asyncMap((event) {
+      List<Favores> favoresAux = [];
+      Map<dynamic, dynamic> data = event.data() as Map<dynamic, dynamic>;
+      data.forEach((key, value) {
+        if (value['estado'] == 'activo') {
+          Favores favor = Favores(
+              nombre: value['nombre'],
+              descripcion: value['descripcion'],
+              leaderID: value['leaderID'],
+              id: value['id'],
+              fechafavor: value['fecha'],
+              estado: value['estado']);
+          favoresAux.add(favor);
+        }
+      });
+      return favoresAux;
+    });
   }
 }

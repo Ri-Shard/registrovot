@@ -231,8 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     buttons[6]),
                 _materialButton('Rutas', Icons.route_outlined, 7, buttons[7]),
                 _materialButton('Mapas', Icons.map_outlined, 8, buttons[8]),
-                _materialButton(
-                    'Favores', Icons.featured_video_outlined, 9, buttons[9]),
+                _materialButton('Compromisos', Icons.featured_video_outlined, 9,
+                    buttons[9]),
                 _materialButton('Call Center', Icons.phone, 10, buttons[10]),
                 MaterialButton(
                   padding:

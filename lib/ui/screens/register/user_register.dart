@@ -49,6 +49,7 @@ class _UserRegisterState extends State<UserRegister> {
   RxBool haspuesto = false.obs;
   bool enable = false;
   bool update = false;
+  bool hasalcaldia = false;
   String? valueIDleader;
   Leader? valueLeader2;
   Puesto? valuePuesto2;
@@ -63,6 +64,10 @@ class _UserRegisterState extends State<UserRegister> {
 
   @override
   Widget build(BuildContext context) {
+    valuemunicipio.text =
+        mainController.emailUser.toLowerCase().contains('alcaldia')
+            ? 'Valledupar'
+            : '';
     filterPuestoPre.clear();
     for (var i = 0; i < mainController.filterPuesto.length; i++) {
       filterPuestoPre.add(mainController.filterPuesto[i]);
@@ -101,6 +106,7 @@ class _UserRegisterState extends State<UserRegister> {
                             builder: (state) {
                               return InkWell(
                                 onTap: () {
+                                  hasalcaldia = true;
                                   filterPuestoPre.clear();
                                   for (var i = 0;
                                       i < mainController.filterPuesto.length;
@@ -481,136 +487,135 @@ class _UserRegisterState extends State<UserRegister> {
                                                     width: 2.0,
                                                     style:
                                                         BorderStyle.solid)))),
-                                    onPressed: () {
-                                      // state.searchDomi("");
-                                      Get.dialog(Container(
-                                        margin: EdgeInsets.symmetric(
-                                          vertical: Get.height * 0.2,
-                                          horizontal: Get.width * 0.25,
-                                        ),
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: filterMunicipio.isEmpty
-                                              ? const Center(
-                                                  child: Text("No hay datos"),
-                                                )
-                                              : Obx(() {
-                                                  return Column(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(20),
-                                                        child: TextField(
-                                                          autofocus: true,
-                                                          decoration:
-                                                              const InputDecoration(
-                                                                  hintText:
-                                                                      "Nombre de.."),
-                                                          controller:
-                                                              valuemunicipio,
-                                                          onChanged: (_) {
-                                                            filterMunicipio.value = staticfields
-                                                                .getMunicipios()
-                                                                .where((element) => element
-                                                                    .nombre!
-                                                                    .toLowerCase()
-                                                                    .contains(_
-                                                                        .toLowerCase()))
-                                                                .toList();
-                                                            state.update([
-                                                              "dropMunicipioView"
-                                                            ]);
-                                                          },
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      const Text(
-                                                          'Seleccionar Resultado'),
-                                                      Expanded(
-                                                          child:
-                                                              ListView.builder(
-                                                                  itemCount:
-                                                                      filterMunicipio
-                                                                          .length,
-                                                                  itemBuilder:
-                                                                      (b, index) {
-                                                                    return ListTile(
-                                                                      onTap:
-                                                                          () {
-                                                                        valuemunicipio
-                                                                            .text = filterMunicipio[index]
-                                                                                .nombre ??
-                                                                            "-";
-                                                                        // valueLeader2 = filterMunicipio[index];
-                                                                        state
-                                                                            .update([
-                                                                          "dropMunicipioView"
-                                                                        ]);
-                                                                        valuepuesto
-                                                                            .clear();
-                                                                        haspuesto.value =
-                                                                            true;
-                                                                        setState(
-                                                                            () {});
-                                                                        Get.back();
-                                                                      },
-                                                                      title: Text(
-                                                                          filterMunicipio[index].nombre ??
-                                                                              "-"),
-                                                                    );
-                                                                  })),
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            Get.back();
-                                                          },
-                                                          style: TextButton
-                                                              .styleFrom(
-                                                            fixedSize:
-                                                                const Size(
-                                                                    120, 40),
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    0xffff004e),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              vertical: 20,
-                                                              horizontal: 10,
-                                                            ),
-                                                          ),
-                                                          child: const SizedBox(
-                                                            width: 200,
-                                                            child: Text(
-                                                              'Cerrar',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 20,
-                                                      )
-                                                    ],
-                                                  );
-                                                }),
-                                        ),
-                                      ));
-                                    },
+                                    onPressed:
+                                        mainController.emailUser
+                                                .toLowerCase()
+                                                .contains('alcaldia')
+                                            ? null
+                                            : () {
+                                                // state.searchDomi("");
+                                                Get.dialog(Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                    vertical: Get.height * 0.2,
+                                                    horizontal:
+                                                        Get.width * 0.25,
+                                                  ),
+                                                  child: Card(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child:
+                                                        filterMunicipio.isEmpty
+                                                            ? const Center(
+                                                                child: Text(
+                                                                    "No hay datos"),
+                                                              )
+                                                            : Obx(() {
+                                                                return Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              20),
+                                                                      child:
+                                                                          TextField(
+                                                                        autofocus:
+                                                                            true,
+                                                                        decoration:
+                                                                            const InputDecoration(hintText: "Nombre de.."),
+                                                                        controller:
+                                                                            valuemunicipio,
+                                                                        onChanged:
+                                                                            (_) {
+                                                                          filterMunicipio.value = staticfields
+                                                                              .getMunicipios()
+                                                                              .where((element) => element.nombre!.toLowerCase().contains(_.toLowerCase()))
+                                                                              .toList();
+                                                                          state
+                                                                              .update([
+                                                                            "dropMunicipioView"
+                                                                          ]);
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    const Text(
+                                                                        'Seleccionar Resultado'),
+                                                                    Expanded(
+                                                                        child: ListView.builder(
+                                                                            itemCount: filterMunicipio.length,
+                                                                            itemBuilder: (b, index) {
+                                                                              return ListTile(
+                                                                                onTap: () {
+                                                                                  valuemunicipio.text = filterMunicipio[index].nombre ?? "-";
+                                                                                  // valueLeader2 = filterMunicipio[index];
+                                                                                  state.update([
+                                                                                    "dropMunicipioView"
+                                                                                  ]);
+                                                                                  valuepuesto.clear();
+                                                                                  haspuesto.value = true;
+                                                                                  setState(() {});
+                                                                                  Get.back();
+                                                                                },
+                                                                                title: Text(filterMunicipio[index].nombre ?? "-"),
+                                                                              );
+                                                                            })),
+                                                                    Center(
+                                                                      child:
+                                                                          TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Get.back();
+                                                                        },
+                                                                        style: TextButton
+                                                                            .styleFrom(
+                                                                          fixedSize: const Size(
+                                                                              120,
+                                                                              40),
+                                                                          backgroundColor:
+                                                                              const Color(0xffff004e),
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                20,
+                                                                            horizontal:
+                                                                                10,
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            const SizedBox(
+                                                                          width:
+                                                                              200,
+                                                                          child:
+                                                                              Text(
+                                                                            'Cerrar',
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 15,
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              }),
+                                                  ),
+                                                ));
+                                              },
                                     child: Container(
                                         margin: const EdgeInsets.symmetric(
                                             vertical: 20),
@@ -627,7 +632,7 @@ class _UserRegisterState extends State<UserRegister> {
               const SizedBox(
                 height: 20,
               ),
-              valuemunicipio.text == 'Valledupar'
+              valuemunicipio.text == 'Valledupar' && hasalcaldia
                   ? Row(
                       children: [
                         const Text(
@@ -805,7 +810,7 @@ class _UserRegisterState extends State<UserRegister> {
                 width:
                     localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
                 child: _textFormField(
-                    'Nombres', TextInputType.text, nombre, enable),
+                    'Nombres y Apellidos', TextInputType.text, nombre, enable),
               ),
               SizedBox(
                 width:
