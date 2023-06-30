@@ -95,20 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 60,
                     child: Row(
                       children: [
-                        StreamBuilder(
-                            stream: mainController.getFavor(),
-                            builder: (_, snapshot) {
-                              if (snapshot.hasData) {
-                                mainController.filterFavores.clear();
-                                for (var i = 0;
-                                    i < snapshot.data!.length;
-                                    i++) {
-                                  mainController.filterFavores
-                                      .add(snapshot.data![i]);
-                                }
-                              }
-                              return const SizedBox();
-                            }),
                         GetBuilder<MainController>(
                             id: 'principalView',
                             builder: (context) {

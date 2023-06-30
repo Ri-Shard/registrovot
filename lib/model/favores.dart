@@ -7,13 +7,13 @@ class Favores extends Equatable {
       required this.descripcion,
       required this.leaderID,
       required this.fechafavor,
-      this.estado});
+      required this.estado});
   String? nombre;
   String? id;
   String? descripcion;
   String? leaderID;
   String? fechafavor;
-  String? estado = "activo";
+  bool estado = false;
 
   Favores.fromJson(Map<String, dynamic> json) {
     nombre = json['nombre'];

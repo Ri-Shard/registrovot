@@ -566,7 +566,7 @@ class MainController extends GetxController {
           'descripcion': favores.descripcion,
           'leaderID': favores.leaderID,
           'fecha': favores.fechafavor,
-          'estado': 'activo',
+          'estado': favores.estado,
         }
       },
       SetOptions(merge: true),
@@ -588,17 +588,16 @@ class MainController extends GetxController {
       List<Favores> favoresAux = [];
       Map<String, dynamic> data = event.data() as Map<String, dynamic>;
       data.forEach((key, value) {
-        if (value['estado'] == 'activo') {
-          Favores favor = Favores(
-              nombre: value['nombre'],
-              descripcion: value['descripcion'],
-              leaderID: value['leaderID'],
-              id: value['id'],
-              fechafavor: value['fecha'],
-              estado: value['estado']);
-          favoresAux.add(favor);
-        }
+        Favores favor = Favores(
+            nombre: value['nombre'],
+            descripcion: value['descripcion'],
+            leaderID: value['leaderID'],
+            id: value['id'],
+            fechafavor: value['fecha'],
+            estado: value['estado']);
+        favoresAux.add(favor);
       });
+      this.update(['testss']);
       return favoresAux;
     });
   }
