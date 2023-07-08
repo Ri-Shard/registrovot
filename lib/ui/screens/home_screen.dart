@@ -111,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             stream: mainController.getPuestos(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                mainController.getVotantes();
                                 mainController.filterPuesto.clear();
                                 for (var i = 0;
                                     i < snapshot.data!.length;
@@ -119,6 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainController.filterPuesto
                                       .add(snapshot.data![i]);
                                 }
+                                mainController.getVotantes();
                               }
                               return const SizedBox();
                             }),

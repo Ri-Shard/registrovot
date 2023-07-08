@@ -20,11 +20,12 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
   @override
   Widget build(BuildContext context) {
     double localwidth = MediaQuery.of(context).size.width;
-    double fontSize = localwidth >= 800 ? 20 : 14;
+    double fontSize = localwidth >= 800 ? 16 : 12;
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(10),
+          padding:
+              EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -65,7 +66,8 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                         cont = 0;
                       }
                       return Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: localwidth * 0.1, vertical: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -77,8 +79,8 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                             Padding(
                               padding: EdgeInsets.only(
                                   right: localwidth >= 800
-                                      ? localwidth * 0.3
-                                      : localwidth * 0.3),
+                                      ? localwidth * 0.2
+                                      : localwidth * 0.2),
                               child: Text(
                                 (aux[mainController.filterLeader[index].id!]
                                             ?.length ??

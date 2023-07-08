@@ -64,8 +64,12 @@ class _UserRegisterState extends State<UserRegister> {
 
   @override
   Widget build(BuildContext context) {
+    String colection =
+        mainController.emailUser.split('@').last.split('.').first;
     valuemunicipio.text =
-        mainController.emailUser.toLowerCase().contains('alcaldia')
+        mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                mainController.emailUser.toLowerCase().contains('consejo') ||
+                colection.toLowerCase().contains('registro')
             ? 'Valledupar'
             : '';
     filterPuestoPre.clear();
@@ -87,7 +91,8 @@ class _UserRegisterState extends State<UserRegister> {
     double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
+        padding:
+            EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
         child: Form(
           key: formkey,
           child: SingleChildScrollView(
@@ -445,10 +450,10 @@ class _UserRegisterState extends State<UserRegister> {
                                       return "Debe llenar este campo";
                                     }
 
-                                    if (_.length > 10) {
+                                    if (_.length >= 11) {
                                       return "número no válido";
                                     }
-                                    if (_.length < 7) {
+                                    if (_.length < 6) {
                                       return "número no válido";
                                     }
                                   },
@@ -500,8 +505,14 @@ class _UserRegisterState extends State<UserRegister> {
                                                         BorderStyle.solid)))),
                                     onPressed:
                                         mainController.emailUser
-                                                .toLowerCase()
-                                                .contains('alcaldia')
+                                                    .toLowerCase()
+                                                    .contains('alcaldia') ||
+                                                mainController.emailUser
+                                                    .toLowerCase()
+                                                    .contains('consejo') ||
+                                                colection
+                                                    .toLowerCase()
+                                                    .contains('registro')
                                             ? null
                                             : () {
                                                 // state.searchDomi("");
@@ -565,12 +576,26 @@ class _UserRegisterState extends State<UserRegister> {
                                                                                 onTap: () {
                                                                                   valuemunicipio.text = filterMunicipio[index].nombre ?? "-";
                                                                                   // valueLeader2 = filterMunicipio[index];
+                                                                                  filterPuestoPre.clear();
+                                                                                  for (var i = 0; i < mainController.filterPuesto.length; i++) {
+                                                                                    filterPuestoPre.add(mainController.filterPuesto[i]);
+                                                                                  }
+                                                                                  filterPuesto.clear();
+                                                                                  for (var i = 0; i < filterPuestoPre.length; i++) {
+                                                                                    if (filterPuestoPre[i].municipio!.toLowerCase() == valuemunicipio.text.toLowerCase()) {
+                                                                                      filterPuesto.add(filterPuestoPre[i]);
+                                                                                    }
+                                                                                  }
+                                                                                  filterPuestoSearch.clear();
+                                                                                  for (var element in filterPuesto) {
+                                                                                    filterPuestoSearch.add(element);
+                                                                                  }
+
                                                                                   state.update([
                                                                                     "dropMunicipioView"
                                                                                   ]);
                                                                                   valuepuesto.clear();
                                                                                   haspuesto.value = true;
-                                                                                  setState(() {});
                                                                                   Get.back();
                                                                                 },
                                                                                 title: Text(filterMunicipio[index].nombre ?? "-"),
@@ -1035,6 +1060,7 @@ class _UserRegisterState extends State<UserRegister> {
                 if (mainController.filterPuesto.isEmpty) {
                   return Container();
                 }
+
                 return Visibility(
                   visible: enable,
                   child: Row(
@@ -1228,7 +1254,9 @@ class _UserRegisterState extends State<UserRegister> {
                             id: cedula.text,
                             leaderID: valueLeader2!.id!,
                             phone: telefono.text,
-                            puestoID: valuePuesto2!.id!,
+                            puestoID: valuePuesto2 == null
+                                ? 'Sin Puesto'
+                                : valuePuesto2!.id!,
                             direccion: direccion.text,
                             municipio: valuemunicipio.text,
                             encuesta: false,
@@ -1345,25 +1373,25 @@ class _UserRegisterState extends State<UserRegister> {
       ),
       keyboardType: input,
       controller: controller,
-      validator: (_) {
-        if (_ == null || _.isEmpty && labelText != 'Edad') {
-          return "Debe llenar este campo";
-        }
-        if (labelText == 'Edad' && _.isNotEmpty) {
-          if (int.parse(_) > 110 || int.parse(_) < 18) {
-            return "número no válido";
-          }
-        }
+      // validator: (_) {
+      //   if (_ == null || _.isEmpty && labelText != 'Edad') {
+      //     return "Debe llenar este campo";
+      //   }
+      //   if (labelText == 'Edad' && _.isNotEmpty) {
+      //     if (int.parse(_) > 110 || int.parse(_) < 18) {
+      //       return "número no válido";
+      //     }
+      //   }
 
-        if (input == TextInputType.number && labelText != 'Edad') {
-          if (_.length > 10) {
-            return "número no válido";
-          }
-          if (_.length < 7) {
-            return "número no válido";
-          }
-        }
-      },
+      //   if (input == TextInputType.number && labelText != 'Edad') {
+      //     if (_.length > 10) {
+      //       return "número no válido";
+      //     }
+      //     if (_.length < 7) {
+      //       return "número no válido";
+      //     }
+      //   }
+      // },
       onChanged: (_) {},
     );
   }

@@ -2,6 +2,8 @@ import 'dart:js_interop';
 import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:charts_painter/chart.dart';
+import 'package:d_chart/d_chart.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 
 import '../../../controller/mainController.dart';
 import '../../../model/votante.dart';
+import 'dart:collection';
 
 class DownloadDBScreen extends StatefulWidget {
   const DownloadDBScreen({super.key});
@@ -22,19 +25,129 @@ class DownloadDBScreen extends StatefulWidget {
 
 class DownloadDBScreenState extends State<DownloadDBScreen> {
   final mainController = Get.find<MainController>();
+  List<String> barrios = [];
+  Map usuariosxBarrio = {};
+  List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> dataComuna = [];
+  @override
+  void initState() {
+    super.initState();
+    for (var element in mainController.filterVotante) {
+      if (!barrios.contains(element.barrio)) {
+        barrios.add(element.barrio ?? '-');
+      }
+    }
+    for (var barrio in barrios) {
+      int cont = 0;
+      for (var element in mainController.filterVotante) {
+        if (barrio == element.barrio) {
+          cont++;
+        }
+      }
+      usuariosxBarrio[barrio] = cont;
+    }
+    var sortedMap = SplayTreeMap.from(usuariosxBarrio,
+        (a, b) => usuariosxBarrio[b].compareTo(usuariosxBarrio[a]));
+    // usuariosxBarrio.forEach((key, value) {
+    //   data.add({'domain': key, 'measure': value});
+    // });
+    sortedMap.forEach((key, value) {
+      data.add({'domain': key, 'measure': value});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            _showloading();
-            await Future.delayed(const Duration(seconds: 1));
-            await exportToExcel();
-            Get.back();
-          },
-          child: const Text('Descargar Base de Datos'),
-        ),
+    double localwidth = MediaQuery.of(context).size.width;
+    String colection =
+        mainController.emailUser.split('@').last.split('.').first;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Cantidad Usuarios por Barrio',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text('Cantidad Usuarios por Comuna',
+                    style: TextStyle(fontSize: 20)),
+              ],
+            ),
+          ),
+          const Divider(
+            color: Color(0xffff004e),
+          ),
+          mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                  mainController.emailUser.toLowerCase().contains('consejo') ||
+                  colection.toLowerCase().contains('registro')
+              ? Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (_, index) {
+                              return ListTile(
+                                title: Text(data[index]['domain']),
+                                trailing:
+                                    Text(data[index]['measure'].toString()),
+                              );
+                            }),
+                      ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      Expanded(
+                        child: DChartBar(
+                          data: const [
+                            {
+                              'id': 'Bar',
+                              'data': [
+                                {'domain': '2020', 'measure': 3},
+                                {'domain': '2021', 'measure': 4},
+                                {'domain': '2022', 'measure': 6},
+                                {'domain': '2023', 'measure': 0.3},
+                              ],
+                            },
+                          ],
+                          domainLabelPaddingToAxisLine: 16,
+                          axisLineTick: 2,
+                          axisLinePointTick: 2,
+                          axisLinePointWidth: 10,
+                          axisLineColor: Colors.green,
+                          measureLabelPaddingToAxisLine: 16,
+                          barColor: (barData, index, id) => Colors.green,
+                          showBarValue: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+          const SizedBox(
+            height: 50,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                _showloading();
+                await Future.delayed(const Duration(seconds: 1));
+                await exportToExcel();
+                Get.back();
+              },
+              child: const Text('Descargar Base de Datos'),
+            ),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+        ],
       ),
     );
   }

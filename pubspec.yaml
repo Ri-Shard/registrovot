@@ -27,6 +27,8 @@ dependencies:
   flutter_localization: ^0.1.11
   excel: ^2.1.0
   excel_to_json: ^1.1.0
+  d_chart: ^2.3.0
+  charts_painter: ^3.1.1
   flutter:
     sdk: flutter
 

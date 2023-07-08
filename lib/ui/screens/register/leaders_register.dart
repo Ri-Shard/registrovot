@@ -27,7 +27,8 @@ class LeadersRegister extends StatelessWidget {
     double localHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
+        padding:
+            EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
         child: Form(
           key: formkey,
           child: Center(

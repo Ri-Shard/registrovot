@@ -78,6 +78,21 @@ class MainController extends GetxController {
         false
       ];
       return listviews;
+    } else if (email.contains('registro')) {
+      listviews = [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ];
+      return listviews;
     } else if (email.contains('gerente')) {
       listviews = [
         true,
@@ -281,8 +296,8 @@ class MainController extends GetxController {
     // return colection.doc('usuarios').snapshots().asyncMap((event)
     try {
       return ref.onValue.listen((event) {
-        Map<dynamic, dynamic> dataid =
-            event.snapshot.value as Map<dynamic, dynamic>;
+        Map<dynamic, dynamic>? dataid =
+            event.snapshot.value as Map<dynamic, dynamic>?;
         if (dataid != null) {
           filterVotante.clear();
           dataid.forEach((key, value) {
