@@ -99,16 +99,17 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
       padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Cantidad Registros por Barrio',
                   style: TextStyle(fontSize: 20),
                 ),
-                Text('Cantidad Registros por Comuna',
+                Text('Total Registros${mainController.filterVotante.length}'),
+                const Text('Cantidad Registros por Comuna',
                     style: TextStyle(fontSize: 20)),
               ],
             ),

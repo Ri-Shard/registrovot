@@ -37,7 +37,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                     fontSize: fontSize,
                   )),
               Text('Cantidad Registros', style: TextStyle(fontSize: fontSize)),
-              Text('Opcion ver', style: TextStyle(fontSize: fontSize)),
+              Text('Opciones', style: TextStyle(fontSize: fontSize)),
             ],
           ),
         ),
@@ -47,180 +47,182 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
         GetBuilder<MainController>(
             id: 'dropVotanteLeader',
             builder: (state) {
+              RxMap<String?, List<Votante>> aux = <String, List<Votante>>{}.obs;
+              int cont = 0;
+
+              for (Leader leader in mainController.filterLeader) {
+                List<Votante> listVotantesAux = [];
+                for (Votante votante in mainController.filterVotante) {
+                  if (leader.id == votante.leaderID) {
+                    listVotantesAux.add(votante);
+                  }
+                }
+                aux[leader.id] = listVotantesAux.toList();
+
+                cont = 0;
+              }
+              var sortedByValueMap = Map.fromEntries(aux.entries.toList()
+                ..sort((a, b) => b.value.length.compareTo(a.value.length)));
+              print(sortedByValueMap);
               return Expanded(
                 child: ListView.builder(
-                    itemCount: mainController.filterLeader.length,
+                    itemCount: sortedByValueMap.length,
                     itemBuilder: (_, index) {
-                      RxMap<String?, List<Votante>> aux =
-                          <String, List<Votante>>{}.obs;
-                      int cont = 0;
-
-                      for (Leader leader in mainController.filterLeader) {
-                        List<Votante> listVotantesAux = [];
-                        for (Votante votante in mainController.filterVotante) {
-                          if (leader.id == votante.leaderID) {
-                            listVotantesAux.add(votante);
-                          }
-                        }
-                        aux[leader.id] = listVotantesAux.toList();
-                        cont = 0;
-                      }
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: localwidth * 0.1, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              mainController.filterLeader[index].name!,
-                              textAlign: TextAlign.right,
+                        child: ListTile(
+                          leading: Container(
+                            width: localwidth * 0.2,
+                            child: Text(
+                              mainController.filterLeader
+                                  .firstWhere((element) =>
+                                      element.id ==
+                                      sortedByValueMap.keys.elementAt(index))
+                                  .name!,
+                              textAlign: TextAlign.start,
                             ),
-                            const Spacer(),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: localwidth >= 800
-                                      ? localwidth * 0.2
-                                      : localwidth * 0.2),
+                          ),
+                          title: Text(
+                            (sortedByValueMap[mainController.filterLeader
+                                            .firstWhere((element) =>
+                                                element.id ==
+                                                sortedByValueMap.keys
+                                                    .elementAt(index))
+                                            .id!]
+                                        ?.length ??
+                                    0)
+                                .toString(),
+                            textAlign: TextAlign.center,
+                          ),
+                          trailing: TextButton(
+                            onPressed: () {
+                              filterVotanteLeader.value = sortedByValueMap[
+                                  mainController.filterLeader[index].id!]!;
+                              Get.dialog(Container(
+                                margin: EdgeInsets.symmetric(
+                                  vertical: Get.height * 0.2,
+                                  horizontal: Get.width * 0.25,
+                                ),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: sortedByValueMap[mainController
+                                                  .filterLeader[index].id!]
+                                              ?.isEmpty ??
+                                          true
+                                      ? const Center(
+                                          child: Text("No hay datos"),
+                                        )
+                                      : Obx(() {
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                child: TextField(
+                                                  autofocus: true,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          hintText:
+                                                              "Nombre de.."),
+                                                  controller: valueleader,
+                                                  onChanged: (_) {
+                                                    filterVotanteLeader
+                                                        .value = sortedByValueMap[
+                                                            mainController
+                                                                .filterLeader[
+                                                                    index]
+                                                                .id!]!
+                                                        .where((element) => element
+                                                            .name
+                                                            .toLowerCase()
+                                                            .contains(_
+                                                                .toLowerCase()))
+                                                        .toList();
+                                                    state.update(
+                                                        ["dropVotanteLeader"]);
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                  'Seleccionar Resultado'),
+                                              Expanded(
+                                                  child: ListView.builder(
+                                                      itemCount:
+                                                          filterVotanteLeader
+                                                              .length,
+                                                      itemBuilder:
+                                                          (b, indexVotantes) {
+                                                        return ListTile(
+                                                            title: Text(
+                                                          filterVotanteLeader[
+                                                                  indexVotantes]
+                                                              .name,
+                                                        ));
+                                                      })),
+                                              Center(
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  style: TextButton.styleFrom(
+                                                    fixedSize:
+                                                        const Size(120, 40),
+                                                    backgroundColor:
+                                                        const Color(0xffff004e),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 10,
+                                                    ),
+                                                  ),
+                                                  child: const SizedBox(
+                                                    width: 200,
+                                                    child: Text(
+                                                      'Cerrar',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              )
+                                            ],
+                                          );
+                                        }),
+                                ),
+                              ));
+                            },
+                            style: TextButton.styleFrom(
+                              fixedSize: const Size(50, 40),
+                              backgroundColor: const Color(0xffff004e),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                                horizontal: 10,
+                              ),
+                            ),
+                            child: const SizedBox(
                               child: Text(
-                                (aux[mainController.filterLeader[index].id!]
-                                            ?.length ??
-                                        0)
-                                    .toString(),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                filterVotanteLeader.value = aux[
-                                    mainController.filterLeader[index].id!]!;
-                                Get.dialog(Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: Get.height * 0.2,
-                                    horizontal: Get.width * 0.25,
-                                  ),
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: aux[mainController
-                                                    .filterLeader[index].id!]
-                                                ?.isEmpty ??
-                                            true
-                                        ? const Center(
-                                            child: Text("No hay datos"),
-                                          )
-                                        : Obx(() {
-                                            return Column(
-                                              children: [
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  child: TextField(
-                                                    autofocus: true,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            hintText:
-                                                                "Nombre de.."),
-                                                    controller: valueleader,
-                                                    onChanged: (_) {
-                                                      filterVotanteLeader
-                                                          .value = aux[
-                                                              mainController
-                                                                  .filterLeader[
-                                                                      index]
-                                                                  .id!]!
-                                                          .where((element) =>
-                                                              element.name
-                                                                  .toLowerCase()
-                                                                  .contains(_
-                                                                      .toLowerCase()))
-                                                          .toList();
-                                                      state.update([
-                                                        "dropVotanteLeader"
-                                                      ]);
-                                                    },
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                const Text(
-                                                    'Seleccionar Resultado'),
-                                                Expanded(
-                                                    child: ListView.builder(
-                                                        itemCount:
-                                                            filterVotanteLeader
-                                                                .length,
-                                                        itemBuilder:
-                                                            (b, indexVotantes) {
-                                                          return ListTile(
-                                                              title: Text(
-                                                            filterVotanteLeader[
-                                                                    indexVotantes]
-                                                                .name,
-                                                          ));
-                                                        })),
-                                                Center(
-                                                  child: TextButton(
-                                                    onPressed: () {
-                                                      Get.back();
-                                                    },
-                                                    style: TextButton.styleFrom(
-                                                      fixedSize:
-                                                          const Size(120, 40),
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xffff004e),
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 20,
-                                                        horizontal: 10,
-                                                      ),
-                                                    ),
-                                                    child: const SizedBox(
-                                                      width: 200,
-                                                      child: Text(
-                                                        'Cerrar',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                )
-                                              ],
-                                            );
-                                          }),
-                                  ),
-                                ));
-                              },
-                              style: TextButton.styleFrom(
-                                fixedSize: const Size(50, 40),
-                                backgroundColor: const Color(0xffff004e),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 20,
-                                  horizontal: 10,
-                                ),
-                              ),
-                              child: const SizedBox(
-                                child: Text(
-                                  'Ver',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                'Ver',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       );
                     }),

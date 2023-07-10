@@ -14,6 +14,7 @@ import 'package:firebase_database/firebase_database.dart';
 class MainController extends GetxController {
   FirebaseDatabase database = FirebaseDatabase.instance;
   final _auth = FirebaseAuth.instance;
+  int indexMainPage = 0;
   List<bool> listviews = [];
   String? collection;
   String emailUser = '';

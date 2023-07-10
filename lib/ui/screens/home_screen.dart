@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     buttons = mainController.listviews;
-    index = buttons.indexWhere((element) => element);
+    // index = buttons.indexWhere((element) => element);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -131,9 +131,9 @@ class HomeScreen extends StatelessWidget {
                                   mobile = true;
                                   showDialog(
                                     context: context,
-                                    builder: (BuildContext context) {
+                                    builder: (BuildContext con) {
                                       return Dialog(
-                                        child: _menu(),
+                                        child: _menu(con),
                                       );
                                     },
                                   );
@@ -150,13 +150,14 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   MediaQuery.of(context).size.width >= 800
-                      ? Expanded(flex: 1, child: _menu())
+                      ? Expanded(flex: 1, child: _menu(context))
                       : const SizedBox(height: 10),
                   Expanded(
                     flex: 4,
                     child: GetBuilder<MainController>(
                         id: 'principalView',
                         builder: (context) {
+                          print('160 home');
                           return Center(
                             child: views[index],
                           );
@@ -207,7 +208,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _menu() {
+  _menu(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Colors.grey.shade100),
       width: 250,
@@ -235,54 +236,52 @@ class HomeScreen extends StatelessWidget {
                 _materialButton('Compromisos', Icons.featured_video_outlined, 9,
                     buttons[9]),
                 _materialButton('Call Center', Icons.phone, 10, buttons[10]),
-                StatefulBuilder(builder: (context, snapshot) {
-                  return MaterialButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 20),
-                    color: const Color(0xffff004e),
-                    onPressed: () {
-                      AwesomeDialog(
-                        width: 566,
-                        context: context,
-                        dialogType: DialogType.info,
-                        animType: AnimType.rightSlide,
-                        headerAnimationLoop: false,
-                        title: '¿Seguro que desea cerrar sesion?',
-                        btnCancelText: 'Cancelar',
-                        btnOkText: 'Salir',
-                        btnCancelOnPress: () {},
-                        btnOkOnPress: () {
-                          authentication.signOut();
-                          Navigator.pushReplacement(
-                            context,
-                            CupertinoPageRoute(builder: (_) {
-                              return const LoginScreen();
-                            }),
-                          );
-                        },
-                        btnOkIcon: Icons.cancel,
-                        btnOkColor: const Color(0xffff004e),
-                      ).show();
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.logout_outlined,
+                MaterialButton(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  color: const Color(0xffff004e),
+                  onPressed: () {
+                    AwesomeDialog(
+                      width: 566,
+                      context: context,
+                      dialogType: DialogType.info,
+                      animType: AnimType.rightSlide,
+                      headerAnimationLoop: false,
+                      title: '¿Seguro que desea cerrar sesion?',
+                      btnCancelText: 'Cancelar',
+                      btnOkText: 'Salir',
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () {
+                        authentication.signOut();
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(builder: (_) {
+                            return const LoginScreen();
+                          }),
+                        );
+                      },
+                      btnOkIcon: Icons.cancel,
+                      btnOkColor: const Color(0xffff004e),
+                    ).show();
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.logout_outlined,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Cerrar Sesion',
+                        style: TextStyle(
+                          fontSize: 16,
                           color: Colors.white,
-                          size: 20,
                         ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Cerrar Sesion',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                      ),
+                    ],
+                  ),
+                )
               ],
             );
           }),
