@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     mainController.getFirebaseUser().then((response) {
       if (response != null) {
         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) {
-          return const HomeScreen();
+          return HomeScreen();
         }));
       } else {
         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (_) {

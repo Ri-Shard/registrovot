@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/model/puesto.dart';
+import 'package:registrovot/ui/common/staticsFields.dart';
 import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 
 import '../../../controller/mainController.dart';
@@ -26,34 +27,66 @@ class DownloadDBScreen extends StatefulWidget {
 class DownloadDBScreenState extends State<DownloadDBScreen> {
   final mainController = Get.find<MainController>();
   List<String> barrios = [];
+  List<Barrio> comunas = [];
+
   Map usuariosxBarrio = {};
+  Map usuariosxComuna = {};
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> dataComuna = [];
+  StaticFields staticFields = StaticFields();
   @override
   void initState() {
     super.initState();
+
+    for (var barr in staticFields.getBarrios()) {
+      comunas.add(barr);
+    }
+
     for (var element in mainController.filterVotante) {
       if (!barrios.contains(element.barrio)) {
         barrios.add(element.barrio ?? '-');
       }
     }
+
     for (var barrio in barrios) {
       int cont = 0;
+
       for (var element in mainController.filterVotante) {
         if (barrio == element.barrio) {
           cont++;
         }
       }
+
       usuariosxBarrio[barrio] = cont;
     }
     var sortedMap = SplayTreeMap.from(usuariosxBarrio,
         (a, b) => usuariosxBarrio[b].compareTo(usuariosxBarrio[a]));
-    // usuariosxBarrio.forEach((key, value) {
-    //   data.add({'domain': key, 'measure': value});
-    // });
+
     sortedMap.forEach((key, value) {
       data.add({'domain': key, 'measure': value});
     });
+
+    for (var dat in data) {
+      for (var barriocomunas in comunas) {
+        if (dat['domain'] == barriocomunas.barrio) {
+          if (!usuariosxComuna.keys.contains(barriocomunas.comuna)) {
+            usuariosxComuna[barriocomunas.comuna] = dat['measure'];
+          } else {
+            usuariosxComuna[barriocomunas.comuna] += dat['measure'];
+          }
+        }
+      }
+    }
+    usuariosxComuna.forEach((key, value) {
+      dataComuna.add({'domain': 'Comuna ' + key, 'measure': value});
+    });
+    dataComuna.sort((a, b) => b['measure'].compareTo(a['measure']));
+    // var sortedMapComuna = SplayTreeMap.from(usuariosxComuna,
+    //     (a, b) => usuariosxComuna[b].compareTo(usuariosxComuna[a]));
+    // sortedMapComuna.forEach((key, value) {
+    //   dataComuna.add({'domain': key, 'measure': value});
+    // });
+    print(dataComuna);
   }
 
   @override
@@ -72,10 +105,10 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Cantidad Usuarios por Barrio',
+                  'Cantidad Registros por Barrio',
                   style: TextStyle(fontSize: 20),
                 ),
-                Text('Cantidad Usuarios por Comuna',
+                Text('Cantidad Registros por Comuna',
                     style: TextStyle(fontSize: 20)),
               ],
             ),
@@ -105,16 +138,8 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                       ),
                       Expanded(
                         child: DChartBar(
-                          data: const [
-                            {
-                              'id': 'Bar',
-                              'data': [
-                                {'domain': '2020', 'measure': 3},
-                                {'domain': '2021', 'measure': 4},
-                                {'domain': '2022', 'measure': 6},
-                                {'domain': '2023', 'measure': 0.3},
-                              ],
-                            },
+                          data: [
+                            {'id': 'Bar', 'data': dataComuna},
                           ],
                           domainLabelPaddingToAxisLine: 16,
                           axisLineTick: 2,
@@ -122,7 +147,12 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                           axisLinePointWidth: 10,
                           axisLineColor: Colors.green,
                           measureLabelPaddingToAxisLine: 16,
-                          barColor: (barData, index, id) => Colors.green,
+                          barColor: (barData, index, id) {
+                            int r = 0 + Random().nextInt((255 + 1) - 0);
+                            int g = 0 + Random().nextInt((255 + 1) - 0);
+                            int b = 0 + Random().nextInt((255 + 1) - 0);
+                            return Color.fromARGB(255, r, g, b);
+                          },
                           showBarValue: true,
                         ),
                       ),

@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomeScreen()));
+                                builder: (context) => HomeScreen()));
                       } else {
                         // ignore: use_build_context_synchronously
                         AwesomeDialog(

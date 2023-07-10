@@ -350,6 +350,8 @@ class MainController extends GetxController {
         'municipio': votante.municipio,
         'barrio': votante.barrio,
         'estado': 'activo',
+        'id': votante.id.toString(),
+        'encuesta': votante.encuesta,
       });
     } catch (e) {
       response = "Error al Actualizar el Usuario: $e";

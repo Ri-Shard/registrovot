@@ -19,20 +19,21 @@ import 'package:registrovot/ui/screens/register/user_register.dart';
 
 import '../../controller/mainController.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+
   bool mobile = false;
+
   MainController mainController = Get.find();
+
   String _label = 'Registro Base de Datos';
+
   Authentication authentication = Authentication();
+
   List<bool> buttons = [];
+
   List<Widget> views = [
     UserRegister(),
     const DownloadDBScreen(),
@@ -234,52 +235,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 _materialButton('Compromisos', Icons.featured_video_outlined, 9,
                     buttons[9]),
                 _materialButton('Call Center', Icons.phone, 10, buttons[10]),
-                MaterialButton(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  color: const Color(0xffff004e),
-                  onPressed: () {
-                    AwesomeDialog(
-                      width: 566,
-                      context: context,
-                      dialogType: DialogType.info,
-                      animType: AnimType.rightSlide,
-                      headerAnimationLoop: false,
-                      title: '¿Seguro que desea cerrar sesion?',
-                      btnCancelText: 'Cancelar',
-                      btnOkText: 'Salir',
-                      btnCancelOnPress: () {},
-                      btnOkOnPress: () {
-                        authentication.signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(builder: (_) {
-                            return const LoginScreen();
-                          }),
-                        );
-                      },
-                      btnOkIcon: Icons.cancel,
-                      btnOkColor: const Color(0xffff004e),
-                    ).show();
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.logout_outlined,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Cerrar Sesion',
-                        style: TextStyle(
-                          fontSize: 16,
+                StatefulBuilder(builder: (context, snapshot) {
+                  return MaterialButton(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    color: const Color(0xffff004e),
+                    onPressed: () {
+                      AwesomeDialog(
+                        width: 566,
+                        context: context,
+                        dialogType: DialogType.info,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: '¿Seguro que desea cerrar sesion?',
+                        btnCancelText: 'Cancelar',
+                        btnOkText: 'Salir',
+                        btnCancelOnPress: () {},
+                        btnOkOnPress: () {
+                          authentication.signOut();
+                          Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(builder: (_) {
+                              return const LoginScreen();
+                            }),
+                          );
+                        },
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: const Color(0xffff004e),
+                      ).show();
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.logout_outlined,
                           color: Colors.white,
+                          size: 20,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Cerrar Sesion',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
               ],
             );
           }),

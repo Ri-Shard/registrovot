@@ -5,19 +5,17 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:registrovot/controller/mainController.dart';
 import 'package:registrovot/model/votante.dart';
 
-class EncuestaView extends StatefulWidget {
+class EncuestaView extends StatelessWidget {
   EncuestaView({super.key});
 
-  @override
-  State<EncuestaView> createState() => _EncuestaViewState();
-}
-
-class _EncuestaViewState extends State<EncuestaView> {
   final mainController = Get.find<MainController>();
+
   TextEditingController cedula = TextEditingController();
+
   RxList<Votante> filterVotanteAux = <Votante>[].obs;
 
   String? valuefilter;
+
   @override
   Widget build(BuildContext context) {
     filterVotanteAux.value = mainController.filterVotante;

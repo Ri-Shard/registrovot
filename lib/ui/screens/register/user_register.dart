@@ -10,6 +10,8 @@ import 'package:registrovot/model/puesto.dart';
 import 'package:registrovot/model/votante.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
 
+import '../../common/custom_textfield.dart';
+
 class UserRegister extends StatefulWidget {
   UserRegister({Key? key}) : super(key: key);
 
@@ -219,6 +221,8 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         () {
                                                                       setState(
                                                                           () {
+                                                                        update =
+                                                                            false;
                                                                         enable =
                                                                             true;
                                                                         filterBarrio.value =
@@ -843,33 +847,37 @@ class _UserRegisterState extends State<UserRegister> {
                     )
                   : const SizedBox(),
               SizedBox(
-                width:
-                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                child: _textFormField(
-                    'Nombres y Apellidos', TextInputType.text, nombre, enable),
-              ),
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: CustomTextForm(
+                      labelText: 'Nombres y Apellidos',
+                      input: TextInputType.text,
+                      controller: nombre,
+                      enable: enable)),
               SizedBox(
-                width:
-                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                child: _textFormField(
-                    'Direccion', TextInputType.text, direccion, enable),
-              ),
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: CustomTextForm(
+                      labelText: 'Direccion',
+                      input: TextInputType.text,
+                      controller: direccion,
+                      enable: enable)),
               SizedBox(
-                width:
-                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                child: _textFormField(
-                    'Telefono', TextInputType.number, telefono, enable),
-              ),
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: CustomTextForm(
+                      labelText: 'Telefono',
+                      input: TextInputType.number,
+                      controller: telefono,
+                      enable: enable)),
               SizedBox(
-                width:
-                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                child: _textFormField(
-                  'Edad',
-                  TextInputType.number,
-                  edad,
-                  enable,
-                ),
-              ),
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: CustomTextForm(
+                      labelText: 'Edad',
+                      input: TextInputType.number,
+                      controller: edad,
+                      enable: enable)),
               Container(
                 height: 40,
               ),
@@ -1261,7 +1269,9 @@ class _UserRegisterState extends State<UserRegister> {
                             municipio: valuemunicipio.text,
                             encuesta: false,
                             estado: 'activo',
-                            barrio: valuebarrio.text,
+                            barrio: valuebarrio.text == ""
+                                ? 'Sin Barrio'
+                                : valuebarrio.text,
                             edad: edad.text);
                         if (update) {
                           if (valuemunicipio.text != 'Valledupar') {
@@ -1361,38 +1371,6 @@ class _UserRegisterState extends State<UserRegister> {
           )),
         ),
       ),
-    );
-  }
-
-  Widget _textFormField(String labelText, TextInputType input,
-      TextEditingController controller, bool enable) {
-    return TextFormField(
-      enabled: enable,
-      decoration: InputDecoration(
-        labelText: labelText,
-      ),
-      keyboardType: input,
-      controller: controller,
-      // validator: (_) {
-      //   if (_ == null || _.isEmpty && labelText != 'Edad') {
-      //     return "Debe llenar este campo";
-      //   }
-      //   if (labelText == 'Edad' && _.isNotEmpty) {
-      //     if (int.parse(_) > 110 || int.parse(_) < 18) {
-      //       return "número no válido";
-      //     }
-      //   }
-
-      //   if (input == TextInputType.number && labelText != 'Edad') {
-      //     if (_.length > 10) {
-      //       return "número no válido";
-      //     }
-      //     if (_.length < 7) {
-      //       return "número no válido";
-      //     }
-      //   }
-      // },
-      onChanged: (_) {},
     );
   }
 }
