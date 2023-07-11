@@ -19,9 +19,14 @@ import 'package:registrovot/ui/screens/register/user_register.dart';
 
 import '../../controller/mainController.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
   bool mobile = false;
@@ -47,11 +52,30 @@ class HomeScreen extends StatelessWidget {
     FavoresRegister(),
     EncuestaView()
   ];
+  List<String> labels = [
+    'Registro Base de Datos',
+    'Descargar Archivo BD',
+    'Agenda',
+    'Registro de Lideres',
+    'Informacion Lideres',
+    'Registro de Puestos',
+    'Informacion de Puestos',
+    'Rutas',
+    'Mapas',
+    'Compromisos',
+    'Call Center'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    buttons = mainController.listviews;
+    index = buttons.indexWhere((element) => element);
+    _label = labels[index];
+  }
 
   @override
   Widget build(BuildContext context) {
-    buttons = mainController.listviews;
-    // index = buttons.indexWhere((element) => element);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -218,24 +242,20 @@ class HomeScreen extends StatelessWidget {
             return ListView(
               children: [
                 const SizedBox(height: 30),
+                _materialButton(labels[0], Icons.person, 0, buttons[0]),
                 _materialButton(
-                    'Registro Base de Datos', Icons.person, 0, buttons[0]),
-                _materialButton('Descargar Archivo BD', Icons.download_outlined,
-                    1, buttons[1]),
-                _materialButton('Agenda', Icons.date_range, 2, buttons[2]),
-                _materialButton('Registro de Lideres',
-                    Icons.rocket_launch_outlined, 3, buttons[3]),
+                    labels[1], Icons.download_outlined, 1, buttons[1]),
+                _materialButton(labels[2], Icons.date_range, 2, buttons[2]),
                 _materialButton(
-                    'Informacion Lideres', Icons.info_outline, 4, buttons[4]),
+                    labels[3], Icons.rocket_launch_outlined, 3, buttons[3]),
+                _materialButton(labels[4], Icons.info_outline, 4, buttons[4]),
+                _materialButton(labels[5], Icons.place_outlined, 5, buttons[5]),
+                _materialButton(labels[6], Icons.info_outline, 6, buttons[6]),
+                _materialButton(labels[7], Icons.route_outlined, 7, buttons[7]),
+                _materialButton(labels[8], Icons.map_outlined, 8, buttons[8]),
                 _materialButton(
-                    'Registro de Puestos', Icons.place_outlined, 5, buttons[5]),
-                _materialButton('Informacion de Puestos', Icons.info_outline, 6,
-                    buttons[6]),
-                _materialButton('Rutas', Icons.route_outlined, 7, buttons[7]),
-                _materialButton('Mapas', Icons.map_outlined, 8, buttons[8]),
-                _materialButton('Compromisos', Icons.featured_video_outlined, 9,
-                    buttons[9]),
-                _materialButton('Call Center', Icons.phone, 10, buttons[10]),
+                    labels[9], Icons.featured_video_outlined, 9, buttons[9]),
+                _materialButton(labels[10], Icons.phone, 10, buttons[10]),
                 MaterialButton(
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 20),

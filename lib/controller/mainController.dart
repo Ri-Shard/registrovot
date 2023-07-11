@@ -139,6 +139,21 @@ class MainController extends GetxController {
         true
       ];
       return listviews;
+    } else if (email.contains('coordinador')) {
+      listviews = [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false
+      ];
+      return listviews;
     }
     return listviews;
   }

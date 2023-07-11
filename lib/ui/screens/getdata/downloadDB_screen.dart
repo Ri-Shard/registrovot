@@ -78,7 +78,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
       }
     }
     usuariosxComuna.forEach((key, value) {
-      dataComuna.add({'domain': 'Comuna ' + key, 'measure': value});
+      dataComuna.add({'domain': 'C ' + key, 'measure': value});
     });
     dataComuna.sort((a, b) => b['measure'].compareTo(a['measure']));
     // var sortedMapComuna = SplayTreeMap.from(usuariosxComuna,
