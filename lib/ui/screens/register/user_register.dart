@@ -870,14 +870,14 @@ class _UserRegisterState extends State<UserRegister> {
                       input: TextInputType.number,
                       controller: telefono,
                       enable: enable)),
-              SizedBox(
-                  width:
-                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                  child: CustomTextForm(
-                      labelText: 'Edad',
-                      input: TextInputType.number,
-                      controller: edad,
-                      enable: enable)),
+              // SizedBox(
+              //     width:
+              //         localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+              //     child: CustomTextForm(
+              //         labelText: 'Edad',
+              //         input: TextInputType.number,
+              //         controller: edad,
+              //         enable: enable)),
               Container(
                 height: 40,
               ),
