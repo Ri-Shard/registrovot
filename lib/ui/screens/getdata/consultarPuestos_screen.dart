@@ -62,8 +62,47 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Consulta Puestos'),
-    );
+    double localwidth = MediaQuery.of(context).size.width;
+    return Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Cantidad Registros por Puesto',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text('Total Registros: ${mainController.filterVotante.length}'),
+              ],
+            ),
+          ),
+          const Divider(
+            color: Color(0xffff004e),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: dataNombre.length,
+                      itemBuilder: (_, index) {
+                        return ListTile(
+                          title: Text(dataNombre[index]['domain']),
+                          trailing:
+                              Text(dataNombre[index]['measure'].toString()),
+                        );
+                      }),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+              ],
+            ),
+          )
+        ]));
   }
 }

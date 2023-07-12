@@ -103,7 +103,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                   'Cantidad Registros por Barrio',
                   style: TextStyle(fontSize: 20),
                 ),
-                Text('Total Registros${mainController.filterVotante.length}'),
+                Text('Total Registros: ${mainController.filterVotante.length}'),
                 const Text('Cantidad Registros por Comuna',
                     style: TextStyle(fontSize: 20)),
               ],
