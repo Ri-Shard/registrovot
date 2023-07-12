@@ -81,11 +81,6 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
       dataComuna.add({'domain': 'C ' + key, 'measure': value});
     });
     dataComuna.sort((a, b) => b['measure'].compareTo(a['measure']));
-    // var sortedMapComuna = SplayTreeMap.from(usuariosxComuna,
-    //     (a, b) => usuariosxComuna[b].compareTo(usuariosxComuna[a]));
-    // sortedMapComuna.forEach((key, value) {
-    //   dataComuna.add({'domain': key, 'measure': value});
-    // });
     print(dataComuna);
   }
 
