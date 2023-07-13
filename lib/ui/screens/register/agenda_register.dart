@@ -108,7 +108,7 @@ class _AgendaRegisterState extends State<AgendaRegister> {
                                                 true),
                                             _textFormField(
                                                 'Descripcion',
-                                                TextInputType.number,
+                                                TextInputType.text,
                                                 descripcion,
                                                 3,
                                                 false),

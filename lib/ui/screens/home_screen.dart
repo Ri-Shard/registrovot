@@ -181,7 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: GetBuilder<MainController>(
                         id: 'principalView',
                         builder: (context) {
-                          print('160 home');
                           return Center(
                             child: views[index],
                           );

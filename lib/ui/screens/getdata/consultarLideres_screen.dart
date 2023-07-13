@@ -66,7 +66,6 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
               }
               var sortedByValueMap = Map.fromEntries(aux.entries.toList()
                 ..sort((a, b) => b.value.length.compareTo(a.value.length)));
-              print(sortedByValueMap);
               return Expanded(
                 child: ListView.builder(
                     itemCount: sortedByValueMap.length,
