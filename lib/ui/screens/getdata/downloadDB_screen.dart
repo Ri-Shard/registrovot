@@ -30,7 +30,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
   List<Barrio> comunas = [];
 
   Map usuariosxBarrio = {};
-  Map usuariosxComuna = {};
+  Map<String, List<Votante>> usuariosxComuna = {};
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> dataComuna = [];
   StaticFields staticFields = StaticFields();
@@ -50,38 +50,45 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
 
     for (var barrio in barrios) {
       int cont = 0;
-
+      List<Votante> listavVotantexBarrios = [];
       for (var element in mainController.filterVotante) {
         if (barrio == element.barrio) {
           cont++;
+          listavVotantexBarrios.add(element);
         }
       }
 
-      usuariosxBarrio[barrio] = cont;
+      // usuariosxBarrio[barrio] = cont;
+      usuariosxBarrio[barrio] = listavVotantexBarrios;
     }
-    var sortedMap = SplayTreeMap.from(usuariosxBarrio,
-        (a, b) => usuariosxBarrio[b].compareTo(usuariosxBarrio[a]));
+    var sortedMap = Map.fromEntries(usuariosxBarrio.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length)));
+    // SplayTreeMap.from(
+    //     usuariosxBarrio,
+    //     (a, b) =>
+    //         usuariosxBarrio[b].length.compareTo(usuariosxBarrio[a].length));
 
     sortedMap.forEach((key, value) {
       data.add({'domain': key, 'measure': value});
     });
 
     for (var dat in data) {
+      List<Votante> listavVotantexComunas = [];
       for (var barriocomunas in comunas) {
         if (dat['domain'] == barriocomunas.barrio) {
           if (!usuariosxComuna.keys.contains(barriocomunas.comuna)) {
-            usuariosxComuna[barriocomunas.comuna] = dat['measure'];
+            usuariosxComuna[barriocomunas.comuna!] = <Votante>[];
+            usuariosxComuna[barriocomunas.comuna]!.addAll(dat['measure']);
           } else {
-            usuariosxComuna[barriocomunas.comuna] += dat['measure'];
+            usuariosxComuna[barriocomunas.comuna]!.addAll(dat['measure']);
           }
         }
       }
     }
     usuariosxComuna.forEach((key, value) {
-      dataComuna.add({'domain': 'C ' + key, 'measure': value});
+      dataComuna.add({'domain': 'C $key', 'measure': value.length});
     });
     dataComuna.sort((a, b) => b['measure'].compareTo(a['measure']));
-    print(dataComuna);
   }
 
   @override
@@ -124,8 +131,23 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                             itemBuilder: (_, index) {
                               return ListTile(
                                 title: Text(data[index]['domain']),
-                                trailing:
-                                    Text(data[index]['measure'].toString()),
+                                trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(data[index]['measure']
+                                          .length
+                                          .toString()),
+                                      IconButton(
+                                          onPressed: () async {
+                                            _showloading();
+                                            await Future.delayed(
+                                                const Duration(seconds: 1));
+                                            await exportToExcel(
+                                                data[index]['measure']);
+                                            Get.back();
+                                          },
+                                          icon: const Icon(Icons.download)),
+                                    ]),
                               );
                             }),
                       ),
@@ -133,23 +155,26 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                         width: 50,
                       ),
                       Expanded(
-                        child: DChartBar(
-                          data: [
-                            {'id': 'Bar', 'data': dataComuna},
-                          ],
-                          domainLabelPaddingToAxisLine: 16,
-                          axisLineTick: 2,
-                          axisLinePointTick: 2,
-                          axisLinePointWidth: 10,
-                          axisLineColor: Colors.green,
-                          measureLabelPaddingToAxisLine: 16,
-                          barColor: (barData, index, id) {
-                            int r = 0 + Random().nextInt((255 + 1) - 0);
-                            int g = 0 + Random().nextInt((255 + 1) - 0);
-                            int b = 0 + Random().nextInt((255 + 1) - 0);
-                            return Color.fromARGB(255, r, g, b);
-                          },
-                          showBarValue: true,
+                        child: InkWell(
+                          onTap: () {},
+                          child: DChartBar(
+                            data: [
+                              {'id': 'Bar', 'data': dataComuna},
+                            ],
+                            domainLabelPaddingToAxisLine: 16,
+                            axisLineTick: 2,
+                            axisLinePointTick: 2,
+                            axisLinePointWidth: 10,
+                            axisLineColor: Colors.green,
+                            measureLabelPaddingToAxisLine: 16,
+                            barColor: (barData, index, id) {
+                              int r = 0 + Random().nextInt((255 + 1) - 0);
+                              int g = 0 + Random().nextInt((255 + 1) - 0);
+                              int b = 0 + Random().nextInt((255 + 1) - 0);
+                              return Color.fromARGB(255, r, g, b);
+                            },
+                            showBarValue: true,
+                          ),
                         ),
                       ),
                     ],
@@ -164,7 +189,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
               onPressed: () async {
                 _showloading();
                 await Future.delayed(const Duration(seconds: 1));
-                await exportToExcel();
+                await exportToExcel(mainController.filterVotante);
                 Get.back();
               },
               child: const Text('Descargar Base de Datos'),
@@ -178,7 +203,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
     );
   }
 
-  Future<void> exportToExcel() async {
+  Future<void> exportToExcel(List<Votante> listVot) async {
     try {
       final excel = Excel.createExcel();
       final Sheet sheet = excel[excel.getDefaultSheet()!];
@@ -216,53 +241,49 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
           .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0))
           .value = 'Estado';
 
-      for (var row = 0; row < mainController.filterVotante.length; row++) {
+      for (var row = 0; row < listVot.length; row++) {
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].id;
+            .value = listVot[row].id;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].name;
+            .value = listVot[row].name;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].phone;
+            .value = listVot[row].phone;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].edad;
+            .value = listVot[row].edad;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].municipio;
+            .value = listVot[row].municipio;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].barrio;
+            .value = listVot[row].barrio;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].direccion;
-        Leader? leader = mainController
-            .getoneLeader(mainController.filterVotante[row].leaderID);
+            .value = listVot[row].direccion;
+        Leader? leader = mainController.getoneLeader(listVot[row].leaderID);
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
             .value = leader?.name ?? '';
         String? encuesta;
-        if (mainController.filterVotante[row].encuesta == true) {
+        if (listVot[row].encuesta == true) {
           encuesta = 'Si';
         } else {
-          encuesta = (mainController.filterVotante[row].encuesta == false
-              ? 'No'
-              : 'No responde');
+          encuesta = (listVot[row].encuesta == false ? 'No' : 'No responde');
         }
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
             .value = encuesta;
-        Puesto? puesto = mainController
-            .getonePuesto(mainController.filterVotante[row].puestoID);
+        Puesto? puesto = mainController.getonePuesto(listVot[row].puestoID);
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
             .value = puesto?.nombre ?? '';
         sheet
             .cell(
                 CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
-            .value = mainController.filterVotante[row].estado;
+            .value = listVot[row].estado;
       }
 
       excel.save(fileName: "ReporteDataBase.xlsx");

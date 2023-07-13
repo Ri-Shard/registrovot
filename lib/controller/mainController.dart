@@ -79,6 +79,21 @@ class MainController extends GetxController {
         false
       ];
       return listviews;
+    } else if (email.contains('griselda.registro@registro.com')) {
+      listviews = [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ];
+      return listviews;
     } else if (email.contains('registro')) {
       listviews = [
         true,
