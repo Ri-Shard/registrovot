@@ -33,6 +33,8 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
   Map<String, List<Votante>> usuariosxComuna = {};
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> dataComuna = [];
+  List<Map<String, dynamic>> dataComunaaux = [];
+
   StaticFields staticFields = StaticFields();
   @override
   void initState() {
@@ -86,9 +88,14 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
       }
     }
     usuariosxComuna.forEach((key, value) {
-      dataComuna.add({'domain': 'C $key', 'measure': value.length});
+      dataComuna.add({'domain': 'C $key', 'measure': value});
     });
-    dataComuna.sort((a, b) => b['measure'].compareTo(a['measure']));
+    dataComuna
+        .sort((a, b) => b['measure'].length.compareTo(a['measure'].length));
+    dataComuna.forEach((element) {
+      dataComunaaux.add(
+          {'domain': element['domain'], 'measure': element['measure'].length});
+    });
   }
 
   @override
@@ -155,95 +162,105 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                         width: 50,
                       ),
                       Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            print('data');
-                            // Get.dialog(Container(
-                            //   margin: EdgeInsets.symmetric(
-                            //     vertical: Get.height * 0.2,
-                            //     horizontal: Get.width * 0.25,
-                            //   ),
-                            //   child: Card(
-                            //     shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(20)),
-                            //     child: Obx(() {
-                            //       return Column(
-                            //         children: [
-                            //           const SizedBox(height: 10),
-                            //           const Text('Seleccionar Resultado'),
-                            //           Expanded(
-                            //               child: ListView.builder(
-                            //                   itemCount: dataComuna.length,
-                            //                   itemBuilder: (b, inx) {
-                            //                     return ListTile(
-                            //                       onTap: () {
-                            //                         Get.back();
-                            //                       },
-                            //                       title: Text(
-                            //                           'Comuna${dataComuna[inx]}'),
-                            //                     );
-                            //                   })),
-                            //           Center(
-                            //             child: TextButton(
-                            //               onPressed: () {
-                            //                 Get.back();
-                            //               },
-                            //               style: TextButton.styleFrom(
-                            //                 fixedSize: const Size(120, 40),
-                            //                 backgroundColor:
-                            //                     const Color(0xffff004e),
-                            //                 padding: const EdgeInsets.symmetric(
-                            //                   vertical: 20,
-                            //                   horizontal: 10,
-                            //                 ),
-                            //               ),
-                            //               child: const SizedBox(
-                            //                 width: 200,
-                            //                 child: Text(
-                            //                   'Cerrar',
-                            //                   textAlign: TextAlign.center,
-                            //                   style: TextStyle(
-                            //                     fontSize: 15,
-                            //                     color: Colors.white,
-                            //                     fontWeight: FontWeight.w600,
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           const SizedBox(
-                            //             height: 20,
-                            //           )
-                            //         ],
-                            //       );
-                            //     }),
-                            //   ),
-                            // ));
+                        child: DChartBar(
+                          data: [
+                            {'id': 'Bar', 'data': dataComunaaux},
+                          ],
+                          domainLabelPaddingToAxisLine: 16,
+                          axisLineTick: 2,
+                          axisLinePointTick: 2,
+                          axisLinePointWidth: 10,
+                          axisLineColor: Colors.green,
+                          measureLabelPaddingToAxisLine: 16,
+                          barColor: (barData, index, id) {
+                            int r = 0 + Random().nextInt((255 + 1) - 0);
+                            int g = 0 + Random().nextInt((255 + 1) - 0);
+                            int b = 0 + Random().nextInt((255 + 1) - 0);
+                            return Color.fromARGB(255, r, g, b);
                           },
-                          child: DChartBar(
-                            data: [
-                              {'id': 'Bar', 'data': dataComuna},
-                            ],
-                            domainLabelPaddingToAxisLine: 16,
-                            axisLineTick: 2,
-                            axisLinePointTick: 2,
-                            axisLinePointWidth: 10,
-                            axisLineColor: Colors.green,
-                            measureLabelPaddingToAxisLine: 16,
-                            barColor: (barData, index, id) {
-                              int r = 0 + Random().nextInt((255 + 1) - 0);
-                              int g = 0 + Random().nextInt((255 + 1) - 0);
-                              int b = 0 + Random().nextInt((255 + 1) - 0);
-                              return Color.fromARGB(255, r, g, b);
-                            },
-                            showBarValue: true,
-                          ),
+                          showBarValue: true,
                         ),
                       ),
                     ],
                   ),
                 )
               : const SizedBox(),
+          Row(
+            children: [
+              Spacer(),
+              TextButton(
+                  onPressed: () {
+                    Get.dialog(Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: Get.height * 0.2,
+                        horizontal: Get.width * 0.25,
+                      ),
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              const Text('Seleccionar Resultado'),
+                              Expanded(
+                                  child: ListView.builder(
+                                      itemCount: dataComuna.length,
+                                      itemBuilder: (b, inx) {
+                                        return ListTile(
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          title: Text(
+                                              'Comuna ${dataComuna[inx]['domain']}'),
+                                          trailing: IconButton(
+                                              onPressed: () async {
+                                                _showloading();
+                                                await Future.delayed(
+                                                    const Duration(seconds: 1));
+                                                await exportToExcel(
+                                                    dataComuna[inx]['measure']);
+                                                Get.back();
+                                              },
+                                              icon: const Icon(Icons.download)),
+                                        );
+                                      })),
+                              Center(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  style: TextButton.styleFrom(
+                                    fixedSize: const Size(120, 40),
+                                    backgroundColor: const Color(0xffff004e),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 20,
+                                      horizontal: 10,
+                                    ),
+                                  ),
+                                  child: const SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      'Cerrar',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              )
+                            ],
+                          )),
+                    ));
+                  },
+                  child: Text('Descargar Registros por comuna')),
+            ],
+          ),
           const SizedBox(
             height: 50,
           ),
