@@ -9,17 +9,36 @@ import 'package:registrovot/controller/mainController.dart';
 import 'package:registrovot/model/leader.dart';
 import 'package:registrovot/ui/common/staticsFields.dart';
 
-class LeadersRegister extends StatelessWidget {
+class LeadersRegister extends StatefulWidget {
   LeadersRegister({Key? key}) : super(key: key);
 
+  @override
+  State<LeadersRegister> createState() => _LeadersRegisterState();
+}
+
+class _LeadersRegisterState extends State<LeadersRegister> {
   TextEditingController cedula = TextEditingController();
+
   TextEditingController nombre = TextEditingController();
+
   TextEditingController phone = TextEditingController();
+
   TextEditingController textEditingController = TextEditingController();
+  RxList<Leader> filterLeader = <Leader>[].obs;
+
   MainController mainController = Get.find();
+
   StaticFields municipios = StaticFields();
+
   final formkey = GlobalKey<FormState>();
+
+  RxList<Leader> searchLeader = <Leader>[].obs;
+
   String? dropdownvalue;
+
+  bool hasalcaldia = false;
+
+  bool update = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +55,257 @@ class LeadersRegister extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width:
-                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-                child: _textFormField('Cedula', TextInputType.number, cedula),
-              ),
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: Container(
+                    child: GetBuilder<MainController>(
+                        id: 'CedulaLeader',
+                        builder: (state) {
+                          return InkWell(
+                            onTap: () {
+                              hasalcaldia = true;
+
+                              // searchvotante.clear();
+                              searchLeader.value = mainController.filterLeader;
+                              Get.dialog(
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: localHeigth * 0.2,
+                                      horizontal: localwidth * 0.1,
+                                    ),
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Obx(() {
+                                        return Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(20),
+                                              child: TextField(
+                                                autofocus: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText:
+                                                            "Nombre de.."),
+                                                controller: cedula,
+                                                onChanged: (_) {
+                                                  searchLeader.value = mainController
+                                                      .filterLeader
+                                                      .where((element) => element
+                                                          .toJson()
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              _.toLowerCase()))
+                                                      .toList();
+                                                  state
+                                                      .update(["CedulaLeader"]);
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            const Text('Seleccionar Resultado'),
+                                            Expanded(
+                                                child: ListView.builder(
+                                                    itemCount: (searchLeader
+                                                                .isEmpty &&
+                                                            cedula.text.isNum &&
+                                                            cedula.text
+                                                                    .length >=
+                                                                6 &&
+                                                            cedula.text
+                                                                    .length <=
+                                                                11)
+                                                        ? 1
+                                                        : searchLeader.length,
+                                                    itemBuilder: (b, index) {
+                                                      if (searchLeader
+                                                              .isEmpty &&
+                                                          cedula.text.isNum &&
+                                                          cedula.text.length >=
+                                                              6) {
+                                                        return Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 20),
+                                                              width: 200,
+                                                              child: TextButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    update =
+                                                                        false;
+                                                                    nombre
+                                                                        .clear();
+                                                                    phone
+                                                                        .clear();
+
+                                                                    Get.back();
+                                                                  });
+                                                                },
+                                                                style: TextButton
+                                                                    .styleFrom(
+                                                                  fixedSize:
+                                                                      const Size(
+                                                                          120,
+                                                                          40),
+                                                                  backgroundColor:
+                                                                      const Color(
+                                                                          0xffff004e),
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    vertical:
+                                                                        20,
+                                                                    horizontal:
+                                                                        10,
+                                                                  ),
+                                                                ),
+                                                                child:
+                                                                    const SizedBox(
+                                                                  width: 200,
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      'Agregar',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      }
+                                                      return ListTile(
+                                                        onTap: () {
+                                                          filterLeader.clear();
+                                                          for (var i = 0;
+                                                              i <
+                                                                  mainController
+                                                                      .filterLeader
+                                                                      .length;
+                                                              i++) {
+                                                            filterLeader.add(
+                                                                mainController
+                                                                    .filterLeader[i]);
+                                                          }
+                                                          cedula.text =
+                                                              searchLeader[
+                                                                      index]
+                                                                  .id!;
+                                                          // valueLeader2 = filterMunicipio[index];
+                                                          state.update(
+                                                              ["CedulaLeader"]);
+                                                          setState(() {
+                                                            update = true;
+
+                                                            nombre.text =
+                                                                searchLeader[
+                                                                        index]
+                                                                    .name!;
+                                                            cedula.text =
+                                                                searchLeader[
+                                                                        index]
+                                                                    .id!;
+                                                            dropdownvalue =
+                                                                searchLeader[
+                                                                        index]
+                                                                    .municipio!;
+                                                            phone.text =
+                                                                searchLeader[
+                                                                        index]
+                                                                    .phone!;
+                                                          });
+                                                          Get.back();
+                                                        },
+                                                        title: Text(
+                                                            "${searchLeader[index].id} ${searchLeader[index].name}"),
+                                                      );
+                                                    })),
+                                            Center(
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  nombre.clear();
+                                                  cedula.clear();
+                                                  phone.clear();
+                                                  dropdownvalue = null;
+                                                  setState(() {});
+                                                  Get.back();
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  fixedSize:
+                                                      const Size(120, 40),
+                                                  backgroundColor:
+                                                      const Color(0xffff004e),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 20,
+                                                    horizontal: 10,
+                                                  ),
+                                                ),
+                                                child: SizedBox(
+                                                  width: localwidth * 0.5,
+                                                  child: const Text(
+                                                    'Cerrar',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  ),
+                                  barrierDismissible: false);
+                            },
+                            child: TextFormField(
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                labelText: 'Cedula',
+                              ),
+                              keyboardType: TextInputType.number,
+                              controller: cedula,
+                              validator: (_) {
+                                if (_ == null || _.isEmpty) {
+                                  return "Debe llenar este campo";
+                                }
+
+                                if (_.length >= 11) {
+                                  return "número no válido";
+                                }
+                                if (_.length < 6) {
+                                  return "número no válido";
+                                }
+                              },
+                              onChanged: (_) {},
+                            ),
+                          );
+                        }),
+                  )),
               SizedBox(
                 width:
                     localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
@@ -207,36 +473,80 @@ class LeadersRegister extends StatelessWidget {
                             id: cedula.text,
                             phone: phone.text,
                             municipio: dropdownvalue!);
-                        final response = await mainController.addLeader(leader);
-                        if (response == 'Ya Existe') {
-                          AwesomeDialog(
-                                  width: 566,
-                                  context: context,
-                                  dialogType: DialogType.error,
-                                  animType: AnimType.rightSlide,
-                                  headerAnimationLoop: false,
-                                  title: response,
-                                  desc: 'El lider ya se encuentra creado',
-                                  btnOkOnPress: () {},
-                                  btnOkIcon: Icons.cancel,
-                                  btnOkColor: const Color(0xffff004e))
-                              .show();
+
+                        if (update) {
+                          final response =
+                              await mainController.updateLeader(leader);
+                          if (response == 'Lider Actualizado') {
+                            AwesomeDialog(
+                                    width: 566,
+                                    context: context,
+                                    dialogType: DialogType.success,
+                                    animType: AnimType.rightSlide,
+                                    headerAnimationLoop: false,
+                                    title: response,
+                                    desc:
+                                        'El lider fue actualizado correctamente',
+                                    btnOkOnPress: () {},
+                                    btnOkIcon: Icons.cancel,
+                                    btnOkColor: const Color(0xff01b9ff))
+                                .show();
+                            nombre.clear();
+                            cedula.clear();
+                            phone.clear();
+                            dropdownvalue = null;
+                            setState(() {});
+                          } else {
+                            AwesomeDialog(
+                                    width: 566,
+                                    context: context,
+                                    dialogType: DialogType.error,
+                                    animType: AnimType.rightSlide,
+                                    headerAnimationLoop: false,
+                                    title: response,
+                                    desc: 'Error al actualizar',
+                                    btnOkOnPress: () {},
+                                    btnOkIcon: Icons.cancel,
+                                    btnOkColor: const Color(0xffff004e))
+                                .show();
+                          }
                         } else {
-                          AwesomeDialog(
-                                  width: 566,
-                                  context: context,
-                                  dialogType: DialogType.success,
-                                  animType: AnimType.rightSlide,
-                                  headerAnimationLoop: false,
-                                  title: response,
-                                  desc: 'El lider fue registrado correctamente',
-                                  btnOkOnPress: () {},
-                                  btnOkIcon: Icons.cancel,
-                                  btnOkColor: const Color(0xff01b9ff))
-                              .show();
-                          nombre.clear();
-                          cedula.clear();
-                          phone.clear();
+                          final response =
+                              await mainController.addLeader(leader);
+
+                          if (response == 'Ya Existe') {
+                            AwesomeDialog(
+                                    width: 566,
+                                    context: context,
+                                    dialogType: DialogType.error,
+                                    animType: AnimType.rightSlide,
+                                    headerAnimationLoop: false,
+                                    title: response,
+                                    desc: 'El lider ya se encuentra creado',
+                                    btnOkOnPress: () {},
+                                    btnOkIcon: Icons.cancel,
+                                    btnOkColor: const Color(0xffff004e))
+                                .show();
+                          } else {
+                            AwesomeDialog(
+                                    width: 566,
+                                    context: context,
+                                    dialogType: DialogType.success,
+                                    animType: AnimType.rightSlide,
+                                    headerAnimationLoop: false,
+                                    title: response,
+                                    desc:
+                                        'El lider fue registrado correctamente',
+                                    btnOkOnPress: () {},
+                                    btnOkIcon: Icons.cancel,
+                                    btnOkColor: const Color(0xff01b9ff))
+                                .show();
+                            nombre.clear();
+                            cedula.clear();
+                            phone.clear();
+                            dropdownvalue = null;
+                            setState(() {});
+                          }
                         }
                       }
                     },
@@ -247,9 +557,9 @@ class LeadersRegister extends StatelessWidget {
                         horizontal: 10,
                       ),
                     ),
-                    child: const Text(
-                      'Registrar lider',
-                      style: TextStyle(
+                    child: Text(
+                      !update ? 'Registrar lider' : 'Actualizar Lider',
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,

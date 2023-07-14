@@ -206,6 +206,31 @@ class MainController extends GetxController {
     return response;
   }
 
+  Future<String?> updateLeader(Leader leader) async {
+    String response = '';
+    CollectionReference colection;
+    try {
+      colection = FirebaseFirestore.instance.collection(collection!);
+      colection.doc('lideres').set(
+        {
+          leader.id.toString(): {
+            'id': leader.id.toString(),
+            'name': leader.name,
+            'phone': leader.phone,
+            'municipio': leader.municipio,
+            'estado': 'activo'
+          }
+        },
+        SetOptions(merge: true),
+      );
+      response = "Lider Actualizado";
+      return response;
+    } catch (e) {
+      response = "Error al actualizar el lider: $e";
+      return response;
+    }
+  }
+
   Stream<List<Leader>> getLeaders() {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
