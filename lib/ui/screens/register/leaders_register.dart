@@ -33,12 +33,26 @@ class _LeadersRegisterState extends State<LeadersRegister> {
   final formkey = GlobalKey<FormState>();
 
   RxList<Leader> searchLeader = <Leader>[].obs;
-
+  List<String> valledupar = ['Valledupar'];
   String? dropdownvalue;
 
   bool hasalcaldia = false;
 
   bool update = false;
+  String colection = '';
+  @override
+  void initState() {
+    super.initState();
+    colection = mainController.emailUser.split('@').last.split('.').first;
+    if (mainController.emailUser.toLowerCase().contains('alcaldia') ||
+        mainController.emailUser.toLowerCase().contains('consejo') ||
+        colection.toLowerCase().contains('registro')) {
+      hasalcaldia = true;
+      dropdownvalue = 'Valledupar';
+    } else {
+      dropdownvalue = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +77,6 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                         builder: (state) {
                           return InkWell(
                             onTap: () {
-                              hasalcaldia = true;
-
                               // searchvotante.clear();
                               searchLeader.value = mainController.filterLeader;
                               Get.dialog(
@@ -357,21 +369,36 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                             ),
                           ],
                         ),
-                        items: municipios
-                            .getMunicipios()
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item.nombre,
-                                  child: Text(
-                                    item.nombre!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                            .toList(),
+                        items: hasalcaldia
+                            ? valledupar
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                .toList()
+                            : municipios
+                                .getMunicipios()
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item.nombre,
+                                      child: Text(
+                                        item.nombre!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                .toList(),
                         value: dropdownvalue,
                         onChanged: (value) {
                           setState(() {
