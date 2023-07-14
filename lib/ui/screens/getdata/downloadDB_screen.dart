@@ -156,7 +156,70 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                       ),
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            print('data');
+                            // Get.dialog(Container(
+                            //   margin: EdgeInsets.symmetric(
+                            //     vertical: Get.height * 0.2,
+                            //     horizontal: Get.width * 0.25,
+                            //   ),
+                            //   child: Card(
+                            //     shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(20)),
+                            //     child: Obx(() {
+                            //       return Column(
+                            //         children: [
+                            //           const SizedBox(height: 10),
+                            //           const Text('Seleccionar Resultado'),
+                            //           Expanded(
+                            //               child: ListView.builder(
+                            //                   itemCount: dataComuna.length,
+                            //                   itemBuilder: (b, inx) {
+                            //                     return ListTile(
+                            //                       onTap: () {
+                            //                         Get.back();
+                            //                       },
+                            //                       title: Text(
+                            //                           'Comuna${dataComuna[inx]}'),
+                            //                     );
+                            //                   })),
+                            //           Center(
+                            //             child: TextButton(
+                            //               onPressed: () {
+                            //                 Get.back();
+                            //               },
+                            //               style: TextButton.styleFrom(
+                            //                 fixedSize: const Size(120, 40),
+                            //                 backgroundColor:
+                            //                     const Color(0xffff004e),
+                            //                 padding: const EdgeInsets.symmetric(
+                            //                   vertical: 20,
+                            //                   horizontal: 10,
+                            //                 ),
+                            //               ),
+                            //               child: const SizedBox(
+                            //                 width: 200,
+                            //                 child: Text(
+                            //                   'Cerrar',
+                            //                   textAlign: TextAlign.center,
+                            //                   style: TextStyle(
+                            //                     fontSize: 15,
+                            //                     color: Colors.white,
+                            //                     fontWeight: FontWeight.w600,
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           const SizedBox(
+                            //             height: 20,
+                            //           )
+                            //         ],
+                            //       );
+                            //     }),
+                            //   ),
+                            // ));
+                          },
                           child: DChartBar(
                             data: [
                               {'id': 'Bar', 'data': dataComuna},
