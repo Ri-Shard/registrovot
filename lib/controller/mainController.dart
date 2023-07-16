@@ -297,7 +297,7 @@ class MainController extends GetxController {
               'municipio': votante.municipio,
               'barrio': votante.barrio,
               'estado': 'activo',
-              'encuesta': false,
+              'encuesta': 'No',
             }
           },
           SetOptions(merge: true),
@@ -414,7 +414,7 @@ class MainController extends GetxController {
     }
   }
 
-  updateEncuesta(String id, bool? encuesta) async {
+  updateEncuesta(String id, String encuesta) async {
     String response = '';
 
     try {
@@ -458,7 +458,7 @@ class MainController extends GetxController {
           'municipio': votante.municipio,
           'barrio': votante.barrio,
           'estado': 'activo',
-          'encuesta': false
+          'encuesta': 'No'
         });
 
         response = "Usuario registrado";

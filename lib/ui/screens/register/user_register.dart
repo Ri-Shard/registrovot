@@ -1267,7 +1267,7 @@ class _UserRegisterState extends State<UserRegister> {
                                 : valuePuesto2!.id!,
                             direccion: direccion.text,
                             municipio: valuemunicipio.text,
-                            encuesta: false,
+                            encuesta: 'No',
                             estado: 'activo',
                             barrio: valuebarrio.text == ""
                                 ? 'Sin Barrio'

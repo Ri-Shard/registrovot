@@ -198,13 +198,37 @@ class EncuestaView extends StatelessWidget {
                       itemCount: filterVotanteAux.length,
                       itemBuilder: (_, index) {
                         String? dropdownvalue;
-                        if (filterVotanteAux[index].encuesta == true) {
-                          dropdownvalue = 'Si';
+                        if (filterVotanteAux[index].encuesta == true ||
+                            filterVotanteAux[index].encuesta == false ||
+                            filterVotanteAux[index].encuesta == null) {
+                          if (filterVotanteAux[index].encuesta == true) {
+                            dropdownvalue = 'Si';
+                          } else {
+                            dropdownvalue =
+                                (filterVotanteAux[index].encuesta == false
+                                    ? 'No'
+                                    : 'No contesto');
+                          }
+                          print('es bool');
                         } else {
-                          dropdownvalue =
-                              (filterVotanteAux[index].encuesta == false
-                                  ? 'No'
-                                  : 'No responde');
+                          if (filterVotanteAux[index].encuesta == 'Si') {
+                            dropdownvalue = 'Si';
+                          } else if (filterVotanteAux[index].encuesta == 'No') {
+                            dropdownvalue = 'No';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'No contesto') {
+                            dropdownvalue = 'No contesto';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Apagado') {
+                            dropdownvalue = 'Apagado';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Numero no activo') {
+                            dropdownvalue = 'Numero no activo';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Numero incorrecto') {
+                            dropdownvalue = 'Numero incorrecto';
+                          }
+                          print('no es bool');
                         }
 
                         return ListTile(
@@ -243,7 +267,14 @@ class EncuestaView extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  items: ['Si', 'No', 'No responde']
+                                  items: [
+                                    'Si',
+                                    'No',
+                                    'No contesto',
+                                    'Apagado',
+                                    'Numero no activo',
+                                    'Numero incorrecto'
+                                  ]
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(
@@ -264,10 +295,7 @@ class EncuestaView extends StatelessWidget {
                                             color: Colors.pink, size: 100));
 
                                     await mainController.updateEncuesta(
-                                        filterVotanteAux[index].id,
-                                        value == 'Si'
-                                            ? true
-                                            : (value == 'No' ? false : null));
+                                        filterVotanteAux[index].id, value!);
                                     for (Votante element
                                         in mainController.filterVotante) {
                                       if (element.id ==
@@ -277,18 +305,14 @@ class EncuestaView extends StatelessWidget {
                                       }
                                     }
                                     if (valuefilter != null) {
-                                      bool? auxval = valuefilter == 'Si'
-                                          ? true
-                                          : (valuefilter == 'No'
-                                              ? false
-                                              : null);
+                                      String auxval = valuefilter!;
                                       filterVotanteAux.value = mainController
                                           .filterVotante
                                           .where((p0) => p0.encuesta == auxval)
                                           .toList();
                                     }
 
-                                    dropdownvalue = value!;
+                                    dropdownvalue = value;
                                     state.update(["dropCallcenter"]);
                                     Get.back();
                                   },

@@ -25,7 +25,7 @@ class Votante {
   late final String municipio;
   late String? barrio;
   String? estado = "activo";
-  bool? encuesta = false;
+  dynamic encuesta;
 
   Votante.fromJson(Map<String, dynamic> json) {
     name = json['name'];

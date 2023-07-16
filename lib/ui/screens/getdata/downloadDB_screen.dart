@@ -353,6 +353,30 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
         } else {
           encuesta = (listVot[row].encuesta == false ? 'No' : 'No responde');
         }
+
+        if (listVot[row].encuesta == true ||
+            listVot[row].encuesta == false ||
+            listVot[row].encuesta == null) {
+          if (listVot[row].encuesta == true) {
+            encuesta = 'Si';
+          } else {
+            encuesta = (listVot[row].encuesta == false ? 'No' : 'No contesto');
+          }
+        } else {
+          if (listVot[row].encuesta == 'Si') {
+            encuesta = 'Si';
+          } else if (listVot[row].encuesta == 'No') {
+            encuesta = 'No';
+          } else if (listVot[row].encuesta == 'No contesto') {
+            encuesta = 'No contesto';
+          } else if (listVot[row].encuesta == 'Apagado') {
+            encuesta = 'Apagado';
+          } else if (listVot[row].encuesta == 'Numero no activo') {
+            encuesta = 'Numero no activo';
+          } else if (listVot[row].encuesta == 'Numero incorrecto') {
+            encuesta = 'Numero incorrecto';
+          }
+        }
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
             .value = encuesta;
