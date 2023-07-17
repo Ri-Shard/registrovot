@@ -369,6 +369,8 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
             encuesta = 'No';
           } else if (listVot[row].encuesta == 'No contesto') {
             encuesta = 'No contesto';
+          } else if (listVot[row].encuesta == 'Llamar mas tarde') {
+            encuesta = 'Llamar mas tarde';
           } else if (listVot[row].encuesta == 'Apagado') {
             encuesta = 'Apagado';
           } else if (listVot[row].encuesta == 'Numero no activo') {

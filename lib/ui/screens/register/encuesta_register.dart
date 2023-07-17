@@ -103,7 +103,15 @@ class EncuestaView extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            items: ['Si', 'No', 'No responde']
+                            items: [
+                              'Si',
+                              'No',
+                              'No contesta',
+                              'Llamar mas tarde',
+                              'Apagado',
+                              'Numero no activo',
+                              'Numero incorrecto'
+                            ]
                                 .map((item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -121,12 +129,10 @@ class EncuestaView extends StatelessWidget {
                             onChanged: (value) async {
                               Get.dialog(LoadingAnimationWidget.newtonCradle(
                                   color: Colors.pink, size: 100));
-                              bool? auxval = value == 'Si'
-                                  ? true
-                                  : (value == 'No' ? false : null);
+
                               filterVotanteAux.value = mainController
                                   .filterVotante
-                                  .where((p0) => p0.encuesta == auxval)
+                                  .where((p0) => p0.encuesta == value)
                                   .toList();
 
                               valuefilter = value!;
@@ -207,20 +213,22 @@ class EncuestaView extends StatelessWidget {
                             dropdownvalue =
                                 (filterVotanteAux[index].encuesta == false
                                     ? 'No'
-                                    : 'No contesto');
+                                    : 'No contesta');
                           }
-                          print('es bool');
                         } else {
                           if (filterVotanteAux[index].encuesta == 'Si') {
                             dropdownvalue = 'Si';
                           } else if (filterVotanteAux[index].encuesta == 'No') {
                             dropdownvalue = 'No';
                           } else if (filterVotanteAux[index].encuesta ==
-                              'No contesto') {
-                            dropdownvalue = 'No contesto';
+                              'No contesta') {
+                            dropdownvalue = 'No contesta';
                           } else if (filterVotanteAux[index].encuesta ==
                               'Apagado') {
                             dropdownvalue = 'Apagado';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Llamar mas tarde') {
+                            dropdownvalue = 'Llamar mas tarde';
                           } else if (filterVotanteAux[index].encuesta ==
                               'Numero no activo') {
                             dropdownvalue = 'Numero no activo';
@@ -228,7 +236,6 @@ class EncuestaView extends StatelessWidget {
                               'Numero incorrecto') {
                             dropdownvalue = 'Numero incorrecto';
                           }
-                          print('no es bool');
                         }
 
                         return ListTile(
@@ -270,7 +277,8 @@ class EncuestaView extends StatelessWidget {
                                   items: [
                                     'Si',
                                     'No',
-                                    'No contesto',
+                                    'No contesta',
+                                    'Llamar mas tarde',
                                     'Apagado',
                                     'Numero no activo',
                                     'Numero incorrecto'
