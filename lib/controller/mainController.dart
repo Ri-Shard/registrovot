@@ -315,6 +315,7 @@ class MainController extends GetxController {
   Future<String?> updateVotante(Votante votante) async {
     String response = '';
     CollectionReference colection;
+
     colection = FirebaseFirestore.instance.collection(collection!);
     colection.doc('usuarios').set(
       {
@@ -369,7 +370,8 @@ class MainController extends GetxController {
                   barrio: value['barrio'],
                   puestoID: value['puestoID'],
                   estado: value['estado'],
-                  encuesta: value['encuesta']);
+                  encuesta: value['encuesta'],
+                  responsable: value['responsable']);
               filterVotante.add(votante);
             }
           });
@@ -408,6 +410,7 @@ class MainController extends GetxController {
         'estado': 'activo',
         'id': votante.id.toString(),
         'encuesta': votante.encuesta,
+        'responsable': getResponsable(votante.responsable),
       });
     } catch (e) {
       response = "Error al Actualizar el Usuario: $e";
@@ -438,6 +441,8 @@ class MainController extends GetxController {
 
   Future<String> addVotante2(Votante votante) async {
     String response = '';
+    String dateNow =
+        '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}-${DateTime.now().hour}:${DateTime.now().minute}';
     Votante? exist = getoneVotante(votante.id);
     if (exist != null) {
       response = 'Ya Existe';
@@ -458,7 +463,8 @@ class MainController extends GetxController {
           'municipio': votante.municipio,
           'barrio': votante.barrio,
           'estado': 'activo',
-          'encuesta': 'No'
+          'encuesta': 'No',
+          'responsable': '$emailUser#$dateNow)'
         });
 
         response = "Usuario registrado";
@@ -673,5 +679,33 @@ class MainController extends GetxController {
       this.update(['testss']);
       return favoresAux;
     });
+  }
+
+  String getResponsable(String? responsable) {
+    String response = '';
+    String dateNow =
+        '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}-${DateTime.now().hour}:${DateTime.now().minute}';
+    if (responsable == null) {
+      response = '$emailUser#$dateNow)';
+    } else if (responsable.split(')')[1].isEmpty) {
+      response = '$responsable$emailUser#$dateNow)';
+    } else if (responsable.split(')')[1].isNotEmpty) {
+      List<String> responsableAux = responsable.split(')');
+      responsableAux.removeAt(0);
+      int index = responsableAux.lastIndexWhere(
+          (element) => element.toLowerCase().contains(emailUser.toLowerCase()));
+      if (index == responsableAux.length) {
+        responsable += '$emailUser#$dateNow)';
+      } else {}
+      // for (var element in responsableAux) {
+      //   if (responsableAux.contains(element)) {
+      //     element.split('#').last = dateNow;
+      //     index=
+      //   }else{
+
+      //   }
+      // }
+    }
+    return response;
   }
 }

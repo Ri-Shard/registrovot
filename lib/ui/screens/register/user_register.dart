@@ -53,6 +53,7 @@ class _UserRegisterState extends State<UserRegister> {
   bool update = false;
   bool hasalcaldia = false;
   String? valueIDleader;
+  String? valueResponsable;
   Leader? valueLeader2;
   Puesto? valuePuesto2;
   TextEditingController valuemunicipio = TextEditingController();
@@ -360,6 +361,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             .puestoID)
                                                                     .nombre
                                                                     .toString();
+                                                                valueResponsable =
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .responsable;
                                                                 valuePuesto2 = filterPuestoPre.firstWhere((element) =>
                                                                     element
                                                                         .id ==
@@ -1272,7 +1277,8 @@ class _UserRegisterState extends State<UserRegister> {
                             barrio: valuebarrio.text == ""
                                 ? 'Sin Barrio'
                                 : valuebarrio.text,
-                            edad: edad.text);
+                            edad: edad.text,
+                            responsable: valueResponsable);
                         if (update) {
                           if (valuemunicipio.text != 'Valledupar') {
                             votante.barrio = null;
