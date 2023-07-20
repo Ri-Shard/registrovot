@@ -694,9 +694,20 @@ class MainController extends GetxController {
       responsableAux.removeAt(0);
       int index = responsableAux.lastIndexWhere(
           (element) => element.toLowerCase().contains(emailUser.toLowerCase()));
-      if (index == responsableAux.length) {
-        responsable += '$emailUser#$dateNow)';
-      } else {}
+      if (index == -1) {
+        responsable += (emailUser + '#' + dateNow + ')');
+        response = responsable;
+      } else {
+        String changeDate = responsableAux[index].split('#')[0];
+        changeDate += ('#' + dateNow);
+        responsableAux[index] = changeDate;
+        String auxaux = responsable.split(')')[0] + ')';
+
+        for (var element in responsableAux) {
+          auxaux += (element + ')');
+        }
+        response = auxaux;
+      }
       // for (var element in responsableAux) {
       //   if (responsableAux.contains(element)) {
       //     element.split('#').last = dateNow;
