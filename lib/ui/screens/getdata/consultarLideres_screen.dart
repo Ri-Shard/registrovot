@@ -257,8 +257,9 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                                     _showloading();
                                     await Future.delayed(
                                         const Duration(seconds: 1));
-                                    await exportToExcel(sortedByValueMap[
-                                        mainController.filterLeader
+                                    await mainController.exportToExcel(
+                                        sortedByValueMap[mainController
+                                            .filterLeader
                                             .firstWhere((element) =>
                                                 element.id ==
                                                 sortedByValueMap.keys
@@ -276,131 +277,6 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
             }),
       ],
     );
-  }
-
-  Future<void> exportToExcel(List<Votante> listVot) async {
-    try {
-      final excel = Excel.createExcel();
-      final Sheet sheet = excel[excel.getDefaultSheet()!];
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
-          .value = 'Cedula';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
-          .value = 'Nombre';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
-          .value = 'Telefono';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
-          .value = 'Edad';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0))
-          .value = 'Municipio';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0))
-          .value = 'Barrio';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0))
-          .value = 'Direccion';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0))
-          .value = 'Lider';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 0))
-          .value = 'Encuesta';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: 0))
-          .value = 'Puesto de Votacion';
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0))
-          .value = 'Estado';
-
-      for (var row = 0; row < listVot.length; row++) {
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row + 1))
-            .value = listVot[row].id;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row + 1))
-            .value = listVot[row].name;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row + 1))
-            .value = listVot[row].phone;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row + 1))
-            .value = listVot[row].edad;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row + 1))
-            .value = listVot[row].municipio;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row + 1))
-            .value = listVot[row].barrio;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: row + 1))
-            .value = listVot[row].direccion;
-        Leader? leader = mainController.getoneLeader(listVot[row].leaderID);
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
-            .value = leader?.name ?? '';
-        String? encuesta;
-        if (listVot[row].encuesta == true) {
-          encuesta = 'Si';
-        } else {
-          encuesta = (listVot[row].encuesta == false ? 'No' : 'No responde');
-        }
-
-        if (listVot[row].encuesta == true ||
-            listVot[row].encuesta == false ||
-            listVot[row].encuesta == null) {
-          if (listVot[row].encuesta == true) {
-            encuesta = 'Si';
-          } else {
-            encuesta = (listVot[row].encuesta == false ? 'No' : 'No contesto');
-          }
-        } else {
-          if (listVot[row].encuesta == 'Si') {
-            encuesta = 'Si';
-          } else if (listVot[row].encuesta == 'No') {
-            encuesta = 'No';
-          } else if (listVot[row].encuesta == 'No contesto') {
-            encuesta = 'No contesto';
-          } else if (listVot[row].encuesta == 'Apagado') {
-            encuesta = 'Apagado';
-          } else if (listVot[row].encuesta == 'Numero no activo') {
-            encuesta = 'Numero no activo';
-          } else if (listVot[row].encuesta == 'Numero incorrecto') {
-            encuesta = 'Numero incorrecto';
-          }
-        }
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
-            .value = encuesta;
-        Puesto? puesto = mainController.getonePuesto(listVot[row].puestoID);
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
-            .value = puesto?.nombre ?? '';
-        sheet
-            .cell(
-                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
-            .value = listVot[row].estado;
-      }
-
-      excel.save(fileName: "ReporteDataBase.xlsx");
-    } catch (e) {
-      Get.back();
-      AwesomeDialog(
-              width: 566,
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Error',
-              desc: 'Ocurrio un error al generar el archivo $e',
-              btnOkOnPress: () {},
-              btnOkIcon: Icons.cancel,
-              btnOkColor: const Color(0xff01b9ff))
-          .show();
-    }
   }
 
   void _showloading() {

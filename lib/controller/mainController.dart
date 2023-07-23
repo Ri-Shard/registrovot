@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:registrovot/model/favores.dart';
@@ -683,30 +684,35 @@ class MainController extends GetxController {
 
   String getResponsable(String? responsable) {
     String response = '';
-    String dateNow =
-        '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}-${DateTime.now().hour}:${DateTime.now().minute}';
+    String dateNow = DateTime.now().toString();
+    // '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}-${DateTime.now().hour}:${DateTime.now().minute}';
     if (responsable == null) {
-      response = '$emailUser#$dateNow)';
+      response = '$emailUser#$dateNow';
+    } else if (responsable.length > 4 && !responsable.contains(')')) {
+      response = '$responsable)$emailUser#$dateNow';
     } else if (responsable.split(')')[1].isEmpty) {
-      response = '$responsable$emailUser#$dateNow)';
+      response = '$responsable$emailUser#$dateNow';
     } else if (responsable.split(')')[1].isNotEmpty) {
       List<String> responsableAux = responsable.split(')');
       responsableAux.removeAt(0);
       int index = responsableAux.lastIndexWhere(
           (element) => element.toLowerCase().contains(emailUser.toLowerCase()));
       if (index == -1) {
-        responsable += (emailUser + '#' + dateNow + ')');
+        responsable += (')' + emailUser + '#' + dateNow);
         response = responsable;
       } else {
         String changeDate = responsableAux[index].split('#')[0];
         changeDate += ('#' + dateNow);
-        responsableAux[index] = changeDate;
+        responsableAux.removeAt(index);
+        responsableAux.add(changeDate);
         String auxaux = responsable.split(')')[0] + ')';
-
+        print(auxaux);
         for (var element in responsableAux) {
           auxaux += (element + ')');
         }
-        response = auxaux;
+        print(auxaux);
+
+        response = auxaux.replaceFirst(')', '', auxaux.length - 2);
       }
       // for (var element in responsableAux) {
       //   if (responsableAux.contains(element)) {
@@ -718,5 +724,142 @@ class MainController extends GetxController {
       // }
     }
     return response;
+  }
+
+  Future<void> exportToExcel(List<Votante> listVot) async {
+    try {
+      final excel = Excel.createExcel();
+      final Sheet sheet = excel[excel.getDefaultSheet()!];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = 'Cedula';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = 'Nombre';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
+          .value = 'Telefono';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
+          .value = 'Edad';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0))
+          .value = 'Municipio';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0))
+          .value = 'Barrio';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0))
+          .value = 'Direccion';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0))
+          .value = 'Lider';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 0))
+          .value = 'Encuesta';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: 0))
+          .value = 'Puesto de Votacion';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0))
+          .value = 'Estado';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: 0))
+          .value = 'Creador';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: 0))
+          .value = 'Editor';
+      for (var row = 0; row < listVot.length; row++) {
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row + 1))
+            .value = listVot[row].id;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row + 1))
+            .value = listVot[row].name;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row + 1))
+            .value = listVot[row].phone;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row + 1))
+            .value = listVot[row].edad;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row + 1))
+            .value = listVot[row].municipio;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row + 1))
+            .value = listVot[row].barrio;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: row + 1))
+            .value = listVot[row].direccion;
+        Leader? leader = getoneLeader(listVot[row].leaderID);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
+            .value = leader?.name ?? '';
+        String? encuesta;
+        if (listVot[row].encuesta == true) {
+          encuesta = 'Si';
+        } else {
+          encuesta = (listVot[row].encuesta == false ? 'No' : 'No responde');
+        }
+
+        if (listVot[row].encuesta == true ||
+            listVot[row].encuesta == false ||
+            listVot[row].encuesta == null) {
+          if (listVot[row].encuesta == true) {
+            encuesta = 'Si';
+          } else {
+            encuesta = (listVot[row].encuesta == false ? 'No' : 'No contesto');
+          }
+        } else {
+          if (listVot[row].encuesta == 'Si') {
+            encuesta = 'Si';
+          } else if (listVot[row].encuesta == 'No') {
+            encuesta = 'No';
+          } else if (listVot[row].encuesta == 'No contesto') {
+            encuesta = 'No contesto';
+          } else if (listVot[row].encuesta == 'Llamar mas tarde') {
+            encuesta = 'Llamar mas tarde';
+          } else if (listVot[row].encuesta == 'Apagado') {
+            encuesta = 'Apagado';
+          } else if (listVot[row].encuesta == 'Numero no activo') {
+            encuesta = 'Numero no activo';
+          } else if (listVot[row].encuesta == 'Numero incorrecto') {
+            encuesta = 'Numero incorrecto';
+          }
+        }
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
+            .value = encuesta;
+        Puesto? puesto = getonePuesto(listVot[row].puestoID);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
+            .value = puesto?.nombre ?? '';
+        sheet
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
+            .value = listVot[row].estado;
+        sheet
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
+            .value = (listVot[row]
+                .responsable
+                ?.split(')')[0]
+                .replaceAll('#', '-')) ??
+            "-";
+        sheet
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: row + 1))
+            .value = (listVot[row]
+                .responsable
+                ?.split(')')
+                .last
+                .replaceAll('#', '-')) ??
+            "-";
+      }
+
+      excel.save(fileName: "ReporteDataBase.xlsx");
+    } catch (e) {
+      Get.back();
+    }
   }
 }
