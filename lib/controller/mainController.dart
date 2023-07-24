@@ -142,7 +142,7 @@ class MainController extends GetxController {
       return listviews;
     } else if (email.contains('callcenter')) {
       listviews = [
-        false,
+        true,
         false,
         false,
         false,
