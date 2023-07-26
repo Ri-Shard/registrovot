@@ -170,6 +170,21 @@ class MainController extends GetxController {
         false
       ];
       return listviews;
+    } else if (email.contains('agenda')) {
+      listviews = [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ];
+      return listviews;
     }
     return listviews;
   }
