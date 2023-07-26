@@ -7,18 +7,33 @@ import 'package:registrovot/ui/common/staticsFields.dart';
 
 import '../../../controller/mainController.dart';
 
-class PlacesRegister extends StatelessWidget {
+class PlacesRegister extends StatefulWidget {
   PlacesRegister({Key? key}) : super(key: key);
 
+  @override
+  State<PlacesRegister> createState() => _PlacesRegisterState();
+}
+
+class _PlacesRegisterState extends State<PlacesRegister> {
   TextEditingController nombre = TextEditingController();
+
   TextEditingController direccion = TextEditingController();
+
   TextEditingController latitud = TextEditingController();
+
   TextEditingController longitud = TextEditingController();
+
   TextEditingController textEditingController = TextEditingController();
+
   StaticFields staticfields = StaticFields();
+
   MainController mainController = Get.find();
 
+  RxList<Puesto> searchPuesto = <Puesto>[].obs;
+  RxList<Puesto> filterPuesto = <Puesto>[].obs;
+
   String? dropdownvalue;
+  bool update = false;
 
   final formkey = GlobalKey<FormState>();
 
@@ -35,20 +50,270 @@ class PlacesRegister extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-              child: _textFormField('Nombre', TextInputType.text, nombre),
-            ),
+                width:
+                    localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                child: Container(
+                  child: GetBuilder<MainController>(
+                      id: 'searchpuesto',
+                      builder: (state) {
+                        return InkWell(
+                          onTap: () {
+                            // searchvotante.clear();
+                            searchPuesto.value = mainController.filterPuesto;
+                            Get.dialog(
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: localHeigth * 0.2,
+                                    horizontal: localwidth * 0.1,
+                                  ),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Obx(() {
+                                      return Column(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(20),
+                                            child: TextField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                  hintText: "Nombre de.."),
+                                              controller: nombre,
+                                              onChanged: (_) {
+                                                searchPuesto.value = mainController
+                                                    .filterPuesto
+                                                    .where((element) => element
+                                                        .toJson()
+                                                        .toString()
+                                                        .toLowerCase()
+                                                        .contains(
+                                                            _.toLowerCase()))
+                                                    .toList();
+                                                state.update(["searchpuesto"]);
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          const Text('Seleccionar Resultado'),
+                                          Expanded(
+                                              child: ListView.builder(
+                                                  itemCount: (searchPuesto
+                                                              .isEmpty &&
+                                                          nombre.text.isNum &&
+                                                          nombre.text.length >=
+                                                              6 &&
+                                                          nombre.text.length <=
+                                                              11)
+                                                      ? 1
+                                                      : searchPuesto.length,
+                                                  itemBuilder: (b, index) {
+                                                    if (searchPuesto.isEmpty &&
+                                                        nombre.text.isNum &&
+                                                        nombre.text.length >=
+                                                            6) {
+                                                      return Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 20),
+                                                            width: 200,
+                                                            child: TextButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  update =
+                                                                      false;
+                                                                  nombre
+                                                                      .clear();
+                                                                  Get.back();
+                                                                });
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                fixedSize:
+                                                                    const Size(
+                                                                        120,
+                                                                        40),
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xffff004e),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  vertical: 20,
+                                                                  horizontal:
+                                                                      10,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  const SizedBox(
+                                                                width: 200,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    'Agregar',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    return ListTile(
+                                                      onTap: () {
+                                                        filterPuesto.clear();
+                                                        for (var i = 0;
+                                                            i <
+                                                                mainController
+                                                                    .filterLeader
+                                                                    .length;
+                                                            i++) {
+                                                          filterPuesto.add(
+                                                              mainController
+                                                                  .filterPuesto[i]);
+                                                        }
+                                                        nombre.text =
+                                                            searchPuesto[index]
+                                                                .id!;
+                                                        // valueLeader2 = filterMunicipio[index];
+                                                        state.update(
+                                                            ["searchpuesto"]);
+                                                        setState(() {
+                                                          update = true;
+
+                                                          nombre.text =
+                                                              searchPuesto[
+                                                                      index]
+                                                                  .nombre!;
+
+                                                          dropdownvalue =
+                                                              searchPuesto[
+                                                                      index]
+                                                                  .municipio!;
+                                                        });
+                                                        Get.back();
+                                                      },
+                                                      title: Text(
+                                                          "${searchPuesto[index].nombre} - ${searchPuesto[index].municipio} - Cesar "),
+                                                    );
+                                                  })),
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                nombre.clear();
+                                                dropdownvalue = null;
+                                                setState(() {});
+                                                Get.back();
+                                              },
+                                              style: TextButton.styleFrom(
+                                                fixedSize: const Size(120, 40),
+                                                backgroundColor:
+                                                    const Color(0xffff004e),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 20,
+                                                  horizontal: 10,
+                                                ),
+                                              ),
+                                              child: SizedBox(
+                                                width: localwidth * 0.5,
+                                                child: const Text(
+                                                  'Cerrar',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          )
+                                        ],
+                                      );
+                                    }),
+                                  ),
+                                ),
+                                barrierDismissible: false);
+                          },
+                          child: TextFormField(
+                            enabled: false,
+                            decoration: const InputDecoration(
+                              labelText: 'Nombre',
+                            ),
+                            keyboardType: TextInputType.number,
+                            controller: nombre,
+                            validator: (_) {
+                              if (_ == null || _.isEmpty) {
+                                return "Debe llenar este campo";
+                              }
+
+                              if (_.length >= 11) {
+                                return "número no válido";
+                              }
+                              if (_.length < 6) {
+                                return "número no válido";
+                              }
+                            },
+                            onChanged: (_) {},
+                          ),
+                        );
+                      }),
+                )),
+            // SizedBox(
+            //   width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+            //   child: _textFormField('Nombre', TextInputType.text, nombre),
+            // ),
             SizedBox(
               width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
               child: _textFormField('Dirección', TextInputType.text, direccion),
             ),
             SizedBox(
               width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-              child: _textFormField('Latitud', TextInputType.number, latitud),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _textFormField('Latitud', TextInputType.number, latitud),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    'Campo No obligatorio',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               width: localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-              child: _textFormField('Longitud', TextInputType.number, longitud),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _textFormField('Longitud', TextInputType.number, longitud),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text('Campo No obligatorio', style: TextStyle(fontSize: 10)),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,

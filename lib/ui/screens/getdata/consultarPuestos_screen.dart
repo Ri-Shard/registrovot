@@ -55,7 +55,7 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
       }
     }
     usuariosxPuestoName.forEach((key, value) {
-      dataNombre.add({'domain': 'C ' + key, 'measure': value});
+      dataNombre.add({'domain': key, 'measure': value});
     });
     dataNombre.sort((a, b) => b['measure'].compareTo(a['measure']));
   }

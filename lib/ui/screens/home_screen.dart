@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Text(
                                   _label,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
                               );
@@ -163,7 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                                 icon: const Icon(Icons.menu))
-                            : const SizedBox()
+                            : const SizedBox(),
+                        Text('Usuario: ${mainController.emailUser}',
+                            style: const TextStyle(color: Colors.white)),
+                        const Spacer(),
                       ],
                     ),
                   ),

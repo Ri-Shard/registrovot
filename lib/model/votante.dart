@@ -14,6 +14,7 @@ class Votante {
     this.estado,
     this.encuesta,
     this.responsable,
+    this.mesa,
   });
 
   late final String name;
@@ -28,6 +29,7 @@ class Votante {
   String? estado = "activo";
   dynamic encuesta;
   String? responsable;
+  String? mesa;
 
   Votante.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -42,6 +44,7 @@ class Votante {
     estado = json['estado'];
     encuesta = json['encuesta'];
     responsable = json['responsable'];
+    mesa = json['mesa'];
   }
   Votante.fromJsonExcel(Map<String, dynamic> json) {
     name = json['Nombre'];
@@ -56,6 +59,7 @@ class Votante {
     estado = 'Activo';
     encuesta = false;
     responsable = json['responsable'];
+    mesa = json['mesa'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +76,8 @@ class Votante {
     _data['estado'] = estado;
     _data['encuesta'] = encuesta;
     _data['responsable'] = responsable;
+    _data['mesa'] = mesa;
+
     return _data;
   }
 }
