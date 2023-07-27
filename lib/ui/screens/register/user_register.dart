@@ -380,10 +380,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .direccion;
-                                                                mesa.text =
-                                                                    searchvotante[
+                                                                mesa.text = searchvotante[
                                                                             index]
-                                                                        .mesa!;
+                                                                        .mesa ??
+                                                                    'Sin Mesa';
                                                                 if (searchvotante[
                                                                             index]
                                                                         .municipio !=
