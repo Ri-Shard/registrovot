@@ -126,65 +126,63 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
           const Divider(
             color: Color(0xffff004e),
           ),
-          mainController.emailUser.toLowerCase().contains('alcaldia') ||
-                  mainController.emailUser.toLowerCase().contains('consejo') ||
-                  colection.toLowerCase().contains('registro')
-              ? Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (_, index) {
-                              return ListTile(
-                                title: Text(data[index]['domain']),
-                                trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(data[index]['measure']
-                                          .length
-                                          .toString()),
-                                      IconButton(
-                                          onPressed: () async {
-                                            _showloading();
-                                            await Future.delayed(
-                                                const Duration(seconds: 1));
-                                            await mainController.exportToExcel(
-                                                data[index]['measure']);
-                                            Get.back();
-                                          },
-                                          icon: const Icon(Icons.download)),
-                                    ]),
-                              );
-                            }),
-                      ),
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      Expanded(
-                        child: DChartBar(
-                          data: [
-                            {'id': 'Bar', 'data': dataComunaaux},
-                          ],
-                          domainLabelPaddingToAxisLine: 16,
-                          axisLineTick: 2,
-                          axisLinePointTick: 2,
-                          axisLinePointWidth: 10,
-                          axisLineColor: Colors.green,
-                          measureLabelPaddingToAxisLine: 16,
-                          barColor: (barData, index, id) {
-                            int r = 0 + Random().nextInt((255 + 1) - 0);
-                            int g = 0 + Random().nextInt((255 + 1) - 0);
-                            int b = 0 + Random().nextInt((255 + 1) - 0);
-                            return Color.fromARGB(255, r, g, b);
-                          },
-                          showBarValue: true,
-                        ),
-                      ),
+          // mainController.emailUser.toLowerCase().contains('alcaldia') ||
+          //         mainController.emailUser.toLowerCase().contains('consejo') ||
+          //         colection.toLowerCase().contains('registro')
+          //     ?
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (_, index) {
+                        return ListTile(
+                          title: Text(data[index]['domain']),
+                          trailing:
+                              Row(mainAxisSize: MainAxisSize.min, children: [
+                            Text(data[index]['measure'].length.toString()),
+                            IconButton(
+                                onPressed: () async {
+                                  _showloading();
+                                  await Future.delayed(
+                                      const Duration(seconds: 1));
+                                  await mainController
+                                      .exportToExcel(data[index]['measure']);
+                                  Get.back();
+                                },
+                                icon: const Icon(Icons.download)),
+                          ]),
+                        );
+                      }),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                Expanded(
+                  child: DChartBar(
+                    data: [
+                      {'id': 'Bar', 'data': dataComunaaux},
                     ],
+                    domainLabelPaddingToAxisLine: 16,
+                    axisLineTick: 2,
+                    axisLinePointTick: 2,
+                    axisLinePointWidth: 10,
+                    axisLineColor: Colors.green,
+                    measureLabelPaddingToAxisLine: 16,
+                    barColor: (barData, index, id) {
+                      int r = 0 + Random().nextInt((255 + 1) - 0);
+                      int g = 0 + Random().nextInt((255 + 1) - 0);
+                      int b = 0 + Random().nextInt((255 + 1) - 0);
+                      return Color.fromARGB(255, r, g, b);
+                    },
+                    showBarValue: true,
                   ),
-                )
-              : const SizedBox(),
+                ),
+              ],
+            ),
+          ),
+          // : const SizedBox(),
           Row(
             children: [
               Spacer(),
