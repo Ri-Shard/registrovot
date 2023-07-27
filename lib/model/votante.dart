@@ -8,7 +8,7 @@ class Votante {
     required this.phone,
     required this.puestoID,
     required this.direccion,
-    required this.edad,
+    this.edad,
     required this.municipio,
     this.barrio,
     this.estado,
@@ -23,7 +23,7 @@ class Votante {
   late final String phone;
   late final String puestoID;
   late final String direccion;
-  late final String edad;
+  String? edad;
   late final String municipio;
   late String? barrio;
   String? estado = "activo";

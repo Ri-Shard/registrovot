@@ -23,7 +23,7 @@ class _UserRegisterState extends State<UserRegister> {
   TextEditingController cedula = TextEditingController();
   TextEditingController nombre = TextEditingController();
   TextEditingController direccion = TextEditingController();
-  TextEditingController edad = TextEditingController();
+  TextEditingController mesa = TextEditingController();
   TextEditingController telefono = TextEditingController();
   TextEditingController municipioTextEditingController =
       TextEditingController();
@@ -236,7 +236,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             .clear();
                                                                         direccion
                                                                             .clear();
-                                                                        edad.clear();
+                                                                        mesa.clear();
                                                                         valuebarrio
                                                                             .clear();
                                                                         valueleader
@@ -380,10 +380,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .direccion;
-                                                                edad.text =
+                                                                mesa.text =
                                                                     searchvotante[
                                                                             index]
-                                                                        .edad;
+                                                                        .mesa!;
                                                                 if (searchvotante[
                                                                             index]
                                                                         .municipio !=
@@ -875,14 +875,6 @@ class _UserRegisterState extends State<UserRegister> {
                       input: TextInputType.number,
                       controller: telefono,
                       enable: enable)),
-              // SizedBox(
-              //     width:
-              //         localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
-              //     child: CustomTextForm(
-              //         labelText: 'Edad',
-              //         input: TextInputType.number,
-              //         controller: edad,
-              //         enable: enable)),
               Container(
                 height: 40,
               ),
@@ -1243,11 +1235,19 @@ class _UserRegisterState extends State<UserRegister> {
                                         )));
                               }),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 );
               }),
+              SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: CustomTextForm(
+                      labelText: 'Mesa',
+                      input: TextInputType.number,
+                      controller: mesa,
+                      enable: enable)),
               const SizedBox(
                 height: 20,
               ),
@@ -1277,7 +1277,7 @@ class _UserRegisterState extends State<UserRegister> {
                             barrio: valuebarrio.text == ""
                                 ? 'Sin Barrio'
                                 : valuebarrio.text,
-                            edad: edad.text,
+                            mesa: mesa.text,
                             responsable: valueResponsable);
                         if (update) {
                           if (valuemunicipio.text != 'Valledupar') {
@@ -1302,7 +1302,7 @@ class _UserRegisterState extends State<UserRegister> {
                           cedula.clear();
                           telefono.clear();
                           direccion.clear();
-                          edad.clear();
+                          mesa.clear();
                           valuebarrio.clear();
                           valueleader.clear();
                           valuemunicipio.clear();
@@ -1342,7 +1342,7 @@ class _UserRegisterState extends State<UserRegister> {
                             cedula.clear();
                             telefono.clear();
                             direccion.clear();
-                            edad.clear();
+                            mesa.clear();
                             valuebarrio.clear();
                             valueleader.clear();
                             valuemunicipio.clear();
