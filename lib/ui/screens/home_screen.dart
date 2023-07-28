@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 _label,
                                                 style: const TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 20),
+                                                    fontSize: 15),
                                               ),
                                             ),
                                             Text(
