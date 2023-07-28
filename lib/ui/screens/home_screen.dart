@@ -76,6 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double localwidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -124,13 +126,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             id: 'principalView',
                             builder: (context) {
                               return Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: Text(
-                                  _label,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                              );
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: localwidth >= 800
+                                      ? Text(
+                                          _label,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                _label,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                            Text(
+                                                'Usuario: ${mainController.emailUser}',
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 10))
+                                          ],
+                                        ));
                             }),
                         StreamBuilder(
                             stream: mainController.getPuestos(),
@@ -164,8 +187,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 icon: const Icon(Icons.menu))
                             : const SizedBox(),
-                        Text('Usuario: ${mainController.emailUser}',
-                            style: const TextStyle(color: Colors.white)),
+                        localwidth >= 800
+                            ? Text('Usuario: ${mainController.emailUser}',
+                                style: const TextStyle(color: Colors.white))
+                            : const SizedBox(),
                         const Spacer(),
                       ],
                     ),
