@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:registrovot/model/favores.dart';
 import 'package:registrovot/model/leader.dart';
@@ -23,6 +24,7 @@ class MainController extends GetxController {
   RxList<Votante> filterVotante = <Votante>[].obs;
   RxList<Favores> filterFavores = <Favores>[].obs;
   List<Votante> auxvot = [];
+
   RxList<Puesto> filterPuesto = <Puesto>[].obs;
   Future<User?> getFirebaseUser() async {
     User? firebaseUser = _auth.currentUser;

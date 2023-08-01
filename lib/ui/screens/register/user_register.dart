@@ -60,21 +60,22 @@ class _UserRegisterState extends State<UserRegister> {
   TextEditingController valuebarrio = TextEditingController();
   TextEditingController valueleader = TextEditingController();
   TextEditingController valuepuesto = TextEditingController();
+  String colection = '';
   @override
   void initState() {
     super.initState();
+    colection = mainController.emailUser.split('@').last.split('.').first;
+    valuemunicipio.text =
+        mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                mainController.emailUser.toLowerCase().contains('consejo') ||
+                colection.toLowerCase().contains('registro') &&
+                    !colection.toLowerCase().contains('asambleapana')
+            ? 'Valledupar'
+            : '';
   }
 
   @override
   Widget build(BuildContext context) {
-    String colection =
-        mainController.emailUser.split('@').last.split('.').first;
-    valuemunicipio.text =
-        mainController.emailUser.toLowerCase().contains('alcaldia') ||
-                mainController.emailUser.toLowerCase().contains('consejo') ||
-                mainController.emailUser.toLowerCase().contains('asambleapana')
-            ? 'Valledupar'
-            : '';
     filterPuestoPre.clear();
     for (var i = 0; i < mainController.filterPuesto.length; i++) {
       filterPuestoPre.add(mainController.filterPuesto[i]);
@@ -241,6 +242,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             .clear();
                                                                         valueleader
                                                                             .clear();
+
                                                                         valuemunicipio
                                                                             .clear();
                                                                         valuepuesto
@@ -311,9 +313,11 @@ class _UserRegisterState extends State<UserRegister> {
                                                                           index]
                                                                       .id;
                                                               // valueLeader2 = filterMunicipio[index];
+
                                                               state.update([
                                                                 "dropCedulaView"
                                                               ]);
+
                                                               setState(() {
                                                                 enable = true;
                                                                 update = true;
@@ -326,11 +330,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .id;
-                                                                valuemunicipio
-                                                                        .text =
-                                                                    searchvotante[
-                                                                            index]
-                                                                        .municipio;
                                                                 filterBarrio
                                                                         .value =
                                                                     staticfields
@@ -339,6 +338,13 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         .value =
                                                                     staticfields
                                                                         .getMunicipios();
+
+                                                                valuemunicipio
+                                                                        .text =
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .municipio;
+
                                                                 valueleader.text = filterLeader
                                                                     .firstWhere((element) =>
                                                                         element
@@ -390,8 +396,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     'Valledupar') {
                                                                   valuebarrio
                                                                       .clear();
-                                                                  setState(
-                                                                      () {});
                                                                 } else {
                                                                   valuebarrio
                                                                       .text = searchvotante[
@@ -399,6 +403,8 @@ class _UserRegisterState extends State<UserRegister> {
                                                                       .barrio!;
                                                                 }
                                                               });
+                                                              setState(() {});
+
                                                               Get.back();
                                                             },
                                                             title: Text(
@@ -522,8 +528,12 @@ class _UserRegisterState extends State<UserRegister> {
                                                     .toLowerCase()
                                                     .contains('consejo') ||
                                                 colection
-                                                    .toLowerCase()
-                                                    .contains('registro')
+                                                        .toLowerCase()
+                                                        .contains('registro') &&
+                                                    !colection
+                                                        .toLowerCase()
+                                                        .contains(
+                                                            'asambleapana')
                                             ? null
                                             : () {
                                                 // state.searchDomi("");

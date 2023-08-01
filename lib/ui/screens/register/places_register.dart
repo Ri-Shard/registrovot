@@ -100,16 +100,14 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                                               child: ListView.builder(
                                                   itemCount: (searchPuesto
                                                               .isEmpty &&
-                                                          nombre.text.isNum &&
                                                           nombre.text.length >=
                                                               6 &&
                                                           nombre.text.length <=
-                                                              11)
+                                                              30)
                                                       ? 1
                                                       : searchPuesto.length,
                                                   itemBuilder: (b, index) {
                                                     if (searchPuesto.isEmpty &&
-                                                        nombre.text.isNum &&
                                                         nombre.text.length >=
                                                             6) {
                                                       return Row(
@@ -128,8 +126,8 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                                                                 setState(() {
                                                                   update =
                                                                       false;
-                                                                  nombre
-                                                                      .clear();
+                                                                  // nombre
+                                                                  //     .clear();
                                                                   Get.back();
                                                                 });
                                                               },
@@ -189,7 +187,7 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                                                         }
                                                         nombre.text =
                                                             searchPuesto[index]
-                                                                .id!;
+                                                                .nombre!;
                                                         // valueLeader2 = filterMunicipio[index];
                                                         state.update(
                                                             ["searchpuesto"]);
@@ -259,14 +257,13 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                             decoration: const InputDecoration(
                               labelText: 'Nombre',
                             ),
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             controller: nombre,
                             validator: (_) {
                               if (_ == null || _.isEmpty) {
                                 return "Debe llenar este campo";
                               }
-
-                              if (_.length >= 11) {
+                              if (_.length > 30) {
                                 return "número no válido";
                               }
                               if (_.length < 6) {

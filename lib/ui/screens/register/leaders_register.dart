@@ -46,7 +46,8 @@ class _LeadersRegisterState extends State<LeadersRegister> {
     colection = mainController.emailUser.split('@').last.split('.').first;
     if (mainController.emailUser.toLowerCase().contains('alcaldia') ||
         mainController.emailUser.toLowerCase().contains('consejo') ||
-        colection.toLowerCase().contains('registro')) {
+        colection.toLowerCase().contains('registro') &&
+            !colection.toLowerCase().contains('asambleapana')) {
       hasalcaldia = true;
       dropdownvalue = 'Valledupar';
     } else {
