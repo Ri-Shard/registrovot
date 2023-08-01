@@ -243,8 +243,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         valueleader
                                                                             .clear();
 
-                                                                        valuemunicipio
-                                                                            .clear();
                                                                         valuepuesto
                                                                             .clear();
                                                                         Get.back();
