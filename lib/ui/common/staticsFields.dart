@@ -2211,6 +2211,16 @@ class StaticFields {
       },
       {
         "municipio": "Valledupar",
+        "barrio": "Conjunto Cerrado Parque La Primavera",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Casa Carmelo - Etapa 1",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Valledupar",
         "barrio": "Urb. Parques de Bolivar - Leandro Diaz Etapa 1",
         "comuna": "3"
       },
