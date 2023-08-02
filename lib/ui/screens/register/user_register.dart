@@ -64,14 +64,7 @@ class _UserRegisterState extends State<UserRegister> {
   @override
   void initState() {
     super.initState();
-    colection = mainController.emailUser.split('@').last.split('.').first;
-    valuemunicipio.text =
-        mainController.emailUser.toLowerCase().contains('alcaldia') ||
-                mainController.emailUser.toLowerCase().contains('consejo') ||
-                colection.toLowerCase().contains('registro') &&
-                    !colection.toLowerCase().contains('asambleapana')
-            ? 'Valledupar'
-            : '';
+    setMunicipio();
   }
 
   @override
@@ -190,8 +183,8 @@ class _UserRegisterState extends State<UserRegister> {
                                                                 cedula.text
                                                                     .isNum &&
                                                                 cedula.text
-                                                                        .length >=
-                                                                    6 &&
+                                                                        .length >
+                                                                    5 &&
                                                                 cedula.text
                                                                         .length <=
                                                                     11)
@@ -206,7 +199,7 @@ class _UserRegisterState extends State<UserRegister> {
                                                                   .text.isNum &&
                                                               cedula.text
                                                                       .length >=
-                                                                  6) {
+                                                                  3) {
                                                             return Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -245,6 +238,7 @@ class _UserRegisterState extends State<UserRegister> {
 
                                                                         valuepuesto
                                                                             .clear();
+                                                                        setMunicipio();
                                                                         Get.back();
                                                                       });
                                                                     },
@@ -338,8 +332,17 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         .getMunicipios();
 
                                                                 valuemunicipio
-                                                                        .text =
-                                                                    searchvotante[
+                                                                    .text = mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                                                                        mainController
+                                                                            .emailUser
+                                                                            .toLowerCase()
+                                                                            .contains(
+                                                                                'consejo') ||
+                                                                        colection.toLowerCase().contains('registro') &&
+                                                                            !colection.toLowerCase().contains(
+                                                                                'asambleapana')
+                                                                    ? 'Valledupar'
+                                                                    : searchvotante[
                                                                             index]
                                                                         .municipio;
 
@@ -1396,5 +1399,16 @@ class _UserRegisterState extends State<UserRegister> {
         ),
       ),
     );
+  }
+
+  void setMunicipio() {
+    colection = mainController.emailUser.split('@').last.split('.').first;
+    valuemunicipio.text =
+        mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                mainController.emailUser.toLowerCase().contains('consejo') ||
+                colection.toLowerCase().contains('registro') &&
+                    !colection.toLowerCase().contains('asambleapana')
+            ? 'Valledupar'
+            : '';
   }
 }
