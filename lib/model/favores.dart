@@ -1,19 +1,22 @@
 import 'package:equatable/equatable.dart';
 
 class Favores extends Equatable {
-  Favores(
-      {required this.nombre,
-      required this.id,
-      required this.descripcion,
-      required this.leaderID,
-      required this.fechafavor,
-      required this.estado});
+  Favores({
+    required this.nombre,
+    required this.id,
+    required this.descripcion,
+    required this.leaderID,
+    required this.fechafavor,
+    required this.estado,
+    required this.telefonoContacto,
+  });
   String? nombre;
   String? id;
   String? descripcion;
   String? leaderID;
   String? fechafavor;
   bool estado = false;
+  String? telefonoContacto;
 
   Favores.fromJson(Map<String, dynamic> json) {
     nombre = json['nombre'];
@@ -22,6 +25,7 @@ class Favores extends Equatable {
     leaderID = json['leaderID'];
     fechafavor = json['fechafavor'];
     estado = json['estado'];
+    telefonoContacto = json['telefonoContacto'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +36,8 @@ class Favores extends Equatable {
     _data['leaderID'] = leaderID;
     _data['fechafavor'] = fechafavor;
     _data['estado'] = estado;
+    _data['telefonoContacto'] = telefonoContacto;
+
     return _data;
   }
 

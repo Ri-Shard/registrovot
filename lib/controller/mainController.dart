@@ -680,7 +680,8 @@ class MainController extends GetxController {
             leaderID: value['leaderID'],
             id: value['id'],
             fechafavor: value['fecha'],
-            estado: value['estado']);
+            estado: value['estado'],
+            telefonoContacto: value['telefonoContacto']);
         favoresAux.add(favor);
       });
       this.update(['testss']);

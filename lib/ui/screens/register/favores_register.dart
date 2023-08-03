@@ -23,6 +23,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
 
   TextEditingController valueleader = TextEditingController();
   TextEditingController valuefavor = TextEditingController();
+  TextEditingController telefonoContacto = TextEditingController();
 
   TextEditingController fecha = TextEditingController();
 
@@ -103,6 +104,12 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                           : localwidth * 0.67,
                       child: _textFormField(
                           'Descripcion', TextInputType.text, descripcion, 3)),
+                  SizedBox(
+                      width: localwidth >= 800
+                          ? localwidth * 0.24
+                          : localwidth * 0.67,
+                      child: _textFormField('Telefono de Contacto',
+                          TextInputType.number, telefonoContacto, 1)),
                   const SizedBox(
                     height: 20,
                   ),
@@ -210,10 +217,12 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                                                               filterLeader[index].name ?? "-";
                                                                           valueLeader2 =
                                                                               filterLeader[index];
+
                                                                           state
                                                                               .update([
                                                                             "dropLeaderView"
                                                                           ]);
+
                                                                           Get.back();
                                                                         },
                                                                         title: Text(filterLeader[index].name ??
@@ -223,6 +232,25 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                                         Center(
                                                           child: TextButton(
                                                             onPressed: () {
+                                                              valueleader
+                                                                  .clear();
+                                                              valueLeader2 =
+                                                                  null;
+                                                              state.update([
+                                                                "dropLeaderView"
+                                                              ]);
+                                                              filterLeader
+                                                                  .clear();
+                                                              for (var i = 0;
+                                                                  i <
+                                                                      mainController
+                                                                          .filterLeader
+                                                                          .length;
+                                                                  i++) {
+                                                                filterLeader.add(
+                                                                    mainController
+                                                                        .filterLeader[i]);
+                                                              }
                                                               Get.back();
                                                             },
                                                             style: TextButton
@@ -319,6 +347,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                 descripcion: descripcion.text,
                                 fechafavor: fecha.text,
                                 estado: statusupdate,
+                                telefonoContacto: telefonoContacto.text,
                                 leaderID: valueLeader2!.id!);
                             mainController.addFavor(favor);
                           } else {
@@ -329,6 +358,7 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                 descripcion: descripcion.text,
                                 fechafavor: fecha.text,
                                 estado: false,
+                                telefonoContacto: telefonoContacto.text,
                                 leaderID: valueLeader2!.id!);
                             mainController.addFavor(favor);
                           }
@@ -507,17 +537,20 @@ class _FavoresRegisterState extends State<FavoresRegister> {
                                             value: filterFavor[index].estado,
                                             onChanged: (_) async {
                                               Favores favor = Favores(
-                                                  nombre:
-                                                      filterFavor[index].nombre,
-                                                  id: filterFavor[index].id,
-                                                  descripcion:
-                                                      filterFavor[index]
-                                                          .descripcion,
-                                                  leaderID: filterFavor[index]
-                                                      .leaderID,
-                                                  fechafavor: filterFavor[index]
-                                                      .fechafavor,
-                                                  estado: _!);
+                                                nombre:
+                                                    filterFavor[index].nombre,
+                                                id: filterFavor[index].id,
+                                                descripcion: filterFavor[index]
+                                                    .descripcion,
+                                                leaderID:
+                                                    filterFavor[index].leaderID,
+                                                fechafavor: filterFavor[index]
+                                                    .fechafavor,
+                                                estado: _!,
+                                                telefonoContacto:
+                                                    filterFavor[index]
+                                                        .telefonoContacto,
+                                              );
                                               await mainController
                                                   .addFavor(favor);
                                               __.update(['testss']);
