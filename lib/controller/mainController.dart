@@ -83,7 +83,7 @@ class MainController extends GetxController {
       ];
       return listviews;
     } else if (email.contains('griselda.registro@registro.com') ||
-        email.contains('melissa.registro@registroq.com') ||
+        email.contains('melissa.registro@quiroz.com') ||
         email.contains('paola.registro@asambleapana.com')) {
       listviews = [
         true,
@@ -97,6 +97,21 @@ class MainController extends GetxController {
         false,
         false,
         false
+      ];
+      return listviews;
+    } else if (email.contains('regcall')) {
+      listviews = [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
       ];
       return listviews;
     } else if (email.contains('registro')) {
