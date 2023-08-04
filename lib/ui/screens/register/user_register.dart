@@ -1405,6 +1405,7 @@ class _UserRegisterState extends State<UserRegister> {
     colection = mainController.emailUser.split('@').last.split('.').first;
     valuemunicipio.text =
         mainController.emailUser.toLowerCase().contains('alcaldia') ||
+                mainController.emailUser.toLowerCase().contains('quiroz') ||
                 mainController.emailUser.toLowerCase().contains('consejo') ||
                 colection.toLowerCase().contains('registro') &&
                     !colection.toLowerCase().contains('asambleapana')
