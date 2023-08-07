@@ -6,19 +6,21 @@ class Leader extends Equatable {
       required this.id,
       required this.phone,
       required this.municipio,
-      this.estado});
+      this.estado,
+      this.coordinador});
   String? name;
   String? id;
   String? phone;
   String? municipio;
   String? estado = "activo";
-
+  String? coordinador;
   Leader.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     phone = json['phone'];
     municipio = json['municipio'];
     estado = json['estado'];
+    coordinador = json['coordinador'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Leader extends Equatable {
     _data['phone'] = phone;
     _data['municipio'] = municipio;
     _data['estado'] = estado;
+    _data['coordinador'] = coordinador;
     return _data;
   }
 

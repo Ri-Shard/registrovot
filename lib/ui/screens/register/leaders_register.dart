@@ -22,6 +22,7 @@ class _LeadersRegisterState extends State<LeadersRegister> {
   TextEditingController nombre = TextEditingController();
 
   TextEditingController phone = TextEditingController();
+  TextEditingController coordinador = TextEditingController();
 
   TextEditingController textEditingController = TextEditingController();
   RxList<Leader> filterLeader = <Leader>[].obs;
@@ -38,6 +39,7 @@ class _LeadersRegisterState extends State<LeadersRegister> {
 
   bool hasalcaldia = false;
 
+  bool hascoordinador = false;
   bool update = false;
   String colection = '';
   @override
@@ -242,6 +244,11 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                                                                 searchLeader[
                                                                         index]
                                                                     .phone!;
+                                                            coordinador
+                                                                .text = searchLeader[
+                                                                        index]
+                                                                    .coordinador ??
+                                                                "";
                                                           });
                                                           Get.back();
                                                         },
@@ -488,6 +495,33 @@ class _LeadersRegisterState extends State<LeadersRegister> {
               ),
               Row(
                 children: [
+                  const Text('¿Coordinador?',
+                      style: TextStyle(
+                        fontSize: 15,
+                      )),
+                  Checkbox(
+                      value: hascoordinador,
+                      onChanged: (_) {
+                        setState(() {
+                          hascoordinador = !hascoordinador;
+                        });
+                      }),
+                ],
+              ),
+              Visibility(
+                visible: hascoordinador,
+                child: SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: _textFormField(
+                      'Coordinador', TextInputType.text, coordinador),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
                   SizedBox(
                     width: localwidth >= 800
                         ? localwidth * 0.24
@@ -500,7 +534,8 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                             name: nombre.text,
                             id: cedula.text,
                             phone: phone.text,
-                            municipio: dropdownvalue!);
+                            municipio: dropdownvalue!,
+                            coordinador: coordinador.text);
 
                         if (update) {
                           final response =
@@ -522,6 +557,9 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                             nombre.clear();
                             cedula.clear();
                             phone.clear();
+                            coordinador.clear();
+                            hascoordinador = false;
+
                             dropdownvalue = null;
                             setState(() {});
                           } else {
@@ -573,6 +611,8 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                             cedula.clear();
                             phone.clear();
                             dropdownvalue = null;
+                            coordinador.clear();
+                            hascoordinador = false;
                             setState(() {});
                           }
                         }

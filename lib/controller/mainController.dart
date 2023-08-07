@@ -210,6 +210,7 @@ class MainController extends GetxController {
             'name': leader.name,
             'phone': leader.phone,
             'municipio': leader.municipio,
+            'coordinador': leader.coordinador,
             'estado': 'activo'
           }
         },
@@ -238,7 +239,8 @@ class MainController extends GetxController {
             'name': leader.name,
             'phone': leader.phone,
             'municipio': leader.municipio,
-            'estado': 'activo'
+            'estado': 'activo',
+            'coordinador': leader.coordinador,
           }
         },
         SetOptions(merge: true),
@@ -264,6 +266,7 @@ class MainController extends GetxController {
               id: value['id'],
               phone: value['phone'],
               municipio: value['municipio'],
+              coordinador: value['coordinador'],
               estado: value['estado']);
           leaderAux.add(leader);
         }
@@ -779,21 +782,24 @@ class MainController extends GetxController {
           .value = 'Lider';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 0))
-          .value = 'Encuesta';
+          .value = 'Coordinador';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: 0))
-          .value = 'Puesto de Votacion';
+          .value = 'Encuesta';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0))
-          .value = 'Mesa';
+          .value = 'Puesto de Votacion';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: 0))
-          .value = 'Estado';
+          .value = 'Mesa';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: 0))
-          .value = 'Creador';
+          .value = 'Estado';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: 0))
+          .value = 'Creador';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 14, rowIndex: 0))
           .value = 'Editor';
       for (var row = 0; row < listVot.length; row++) {
         sheet
@@ -821,6 +827,9 @@ class MainController extends GetxController {
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
             .value = leader?.name ?? '';
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
+            .value = leader?.coordinador ?? '';
         String? encuesta;
         if (listVot[row].encuesta == true) {
           encuesta = 'Si';
@@ -854,24 +863,25 @@ class MainController extends GetxController {
           }
         }
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
             .value = encuesta;
         Puesto? puesto = getonePuesto(listVot[row].puestoID);
 
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
             .value = puesto?.nombre ?? '';
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
             .value = listVot[row].mesa ?? '';
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: row + 1))
             .value = listVot[row].estado;
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: row + 1))
             .value = (listVot[row]
                 .responsable
                 ?.split(')')[0]
@@ -879,7 +889,7 @@ class MainController extends GetxController {
             "-";
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 14, rowIndex: row + 1))
             .value = (listVot[row]
                 .responsable
                 ?.split(')')
