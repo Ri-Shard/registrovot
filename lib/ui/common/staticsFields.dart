@@ -2329,6 +2329,7 @@ class StaticFields {
         "barrio": "Pedro Nel Martinez",
         "comuna": "5"
       },
+      {"municipio": "Valledupar", "barrio": "Francisco Javier", "comuna": "5"},
       {"municipio": "Valledupar", "barrio": "Los Guasimales", "comuna": "5"},
       {"municipio": "Valledupar", "barrio": "Arizona", "comuna": "5"},
       {"municipio": "Valledupar", "barrio": "San Isidro", "comuna": "5"},

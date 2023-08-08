@@ -160,7 +160,8 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                                                                         .clear();
                                                                     phone
                                                                         .clear();
-
+                                                                    coordinador
+                                                                        .clear();
                                                                     Get.back();
                                                                   });
                                                                 },
