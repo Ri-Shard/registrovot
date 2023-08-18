@@ -19,13 +19,59 @@ MainController mainController = Get.find();
 
 class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
   TextEditingController valueleader = TextEditingController();
+  TextEditingController nombre = TextEditingController();
+
   RxList<Votante> filterVotanteLeader = <Votante>[].obs;
+  RxList<Leader> leadersAux = <Leader>[].obs;
+
   @override
   Widget build(BuildContext context) {
     double localwidth = MediaQuery.of(context).size.width;
     double fontSize = localwidth >= 800 ? 16 : 12;
+    leadersAux.value = mainController.filterLeader;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: SizedBox(
+            width: localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
+            child: TextFormField(
+              enabled: true,
+              decoration: const InputDecoration(
+                labelText: 'Buscar',
+              ),
+              controller: nombre,
+              validator: (_) {
+                if (_ == null || _.isEmpty) {
+                  return "Debe llenar este campo";
+                }
+
+                if (_.length > 10) {
+                  return "número no válido";
+                }
+                if (_.length < 7) {
+                  return "número no válido";
+                }
+              },
+              onChanged: (_) {
+                if (_.isEmpty) {
+                  leadersAux.value = mainController.filterLeader;
+                } else {
+                  leadersAux.value = mainController.filterLeader
+                      .where((p0) => p0
+                          .toJson()
+                          .toString()
+                          .toLowerCase()
+                          .contains(_.toLowerCase()))
+                      .toList();
+                }
+                mainController.update(['dropVotanteLeader']);
+              },
+            ),
+          ),
+        ),
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
@@ -53,7 +99,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
               RxMap<String?, List<Votante>> aux = <String, List<Votante>>{}.obs;
               int cont = 0;
 
-              for (Leader leader in mainController.filterLeader) {
+              for (Leader leader in leadersAux) {
                 List<Votante> listVotantesAux = [];
                 for (Votante votante in mainController.filterVotante) {
                   if (leader.id == votante.leaderID) {
@@ -71,11 +117,13 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                     itemCount: sortedByValueMap.length,
                     itemBuilder: (_, index) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: localwidth * 0.1, vertical: 20),
+                        padding: EdgeInsets.only(
+                            left: localwidth * 0.1,
+                            right: localwidth * 0.07,
+                            top: 5),
                         child: ListTile(
                           leading: Container(
-                            width: localwidth * 0.2,
+                            width: localwidth * 0.13,
                             child: Text(
                               mainController.filterLeader
                                   .firstWhere((element) =>
@@ -99,6 +147,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
                                 onPressed: () {
@@ -132,6 +181,8 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                                             )
                                           : Obx(() {
                                               return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
                                                 children: [
                                                   Container(
                                                     padding:
@@ -169,8 +220,17 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                                                     ),
                                                   ),
                                                   const SizedBox(height: 10),
-                                                  const Text(
-                                                      'Seleccionar Resultado'),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 40),
+                                                    child: Text(
+                                                      'Total Respuestas SI: ${mainController.getEncuesta().length}',
+                                                      style: const TextStyle(
+                                                          color: Color(
+                                                              0xffff004e)),
+                                                    ),
+                                                  ),
                                                   Expanded(
                                                       child: ListView.builder(
                                                           itemCount:
@@ -180,10 +240,31 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                                                               indexVotantes) {
                                                             return ListTile(
                                                                 title: Text(
-                                                              filterVotanteLeader[
-                                                                      indexVotantes]
-                                                                  .name,
-                                                            ));
+                                                                  filterVotanteLeader[
+                                                                          indexVotantes]
+                                                                      .name,
+                                                                ),
+                                                                trailing:
+                                                                    Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          30.0),
+                                                                  child: filterVotanteLeader[indexVotantes]
+                                                                              .encuesta ==
+                                                                          true
+                                                                      ? const Text(
+                                                                          'Si')
+                                                                      : filterVotanteLeader[indexVotantes].encuesta ==
+                                                                              false
+                                                                          ? const Text(
+                                                                              'No')
+                                                                          : filterVotanteLeader[indexVotantes].encuesta == null
+                                                                              ? const Text('No contesto')
+                                                                              : Text(
+                                                                                  filterVotanteLeader[indexVotantes].encuesta,
+                                                                                ),
+                                                                ));
                                                           })),
                                                   Center(
                                                     child: TextButton(

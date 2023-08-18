@@ -1,21 +1,22 @@
 import 'dart:math';
 
 class Votante {
-  Votante({
-    required this.name,
-    required this.id,
-    required this.leaderID,
-    required this.phone,
-    required this.puestoID,
-    required this.direccion,
-    this.edad,
-    required this.municipio,
-    this.barrio,
-    this.estado,
-    this.encuesta,
-    this.responsable,
-    this.mesa,
-  });
+  Votante(
+      {required this.name,
+      required this.id,
+      required this.leaderID,
+      required this.phone,
+      required this.puestoID,
+      required this.direccion,
+      this.edad,
+      required this.municipio,
+      this.barrio,
+      this.estado,
+      this.encuesta,
+      this.responsable,
+      this.mesa,
+      this.sexo,
+      this.segmento});
 
   late final String name;
   late final String id;
@@ -24,6 +25,10 @@ class Votante {
   late final String puestoID;
   late final String direccion;
   String? edad;
+  String? sexo;
+
+  String? segmento;
+
   late final String municipio;
   late String? barrio;
   String? estado = "activo";
@@ -45,6 +50,8 @@ class Votante {
     encuesta = json['encuesta'];
     responsable = json['responsable'];
     mesa = json['mesa'];
+    sexo = json['sexo'];
+    segmento = json['segmento'];
   }
   Votante.fromJsonExcel(Map<String, dynamic> json) {
     name = json['Nombre'];
@@ -60,6 +67,8 @@ class Votante {
     encuesta = false;
     responsable = json['responsable'];
     mesa = json['mesa'];
+    sexo = json['sexo'];
+    segmento = json['segmento'];
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +86,8 @@ class Votante {
     _data['encuesta'] = encuesta;
     _data['responsable'] = responsable;
     _data['mesa'] = mesa;
+    _data['sexo'] = sexo;
+    _data['segmento'] = segmento;
 
     return _data;
   }

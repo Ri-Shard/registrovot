@@ -26,12 +26,23 @@ class MainController extends GetxController {
   List<Votante> auxvot = [];
 
   RxList<Puesto> filterPuesto = <Puesto>[].obs;
+
   Future<User?> getFirebaseUser() async {
     User? firebaseUser = _auth.currentUser;
     firebaseUser ??= await _auth.authStateChanges().first;
 
     if (firebaseUser != null) defineViews(firebaseUser.email!);
     return firebaseUser;
+  }
+
+  List<Votante> getEncuesta() {
+    List<Votante> auxContSI = [];
+    filterVotante.forEach((element) {
+      if (element.encuesta == 'Si') {
+        auxContSI.add(element);
+      }
+    });
+    return auxContSI;
   }
 
   List<bool> defineViews(String email) {
@@ -191,17 +202,17 @@ class MainController extends GetxController {
       return listviews;
     } else if (email.contains('coordinador')) {
       listviews = [
-        false,
         true,
-        false,
-        false,
         true,
         false,
         true,
-        false,
-        false,
         true,
-        false
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
       ];
       return listviews;
     }
@@ -410,6 +421,8 @@ class MainController extends GetxController {
                   estado: value['estado'],
                   encuesta: value['encuesta'],
                   mesa: value['mesa'],
+                  sexo: value['sexo'],
+                  segmento: value['segmento'],
                   responsable: value['responsable']);
               filterVotante.add(votante);
             }
@@ -451,6 +464,8 @@ class MainController extends GetxController {
         'encuesta': votante.encuesta,
         'responsable': getResponsable(votante.responsable),
         'mesa': votante.mesa,
+        'sexo': votante.sexo,
+        'segmento': votante.segmento,
       });
     } catch (e) {
       response = "Error al Actualizar el Usuario: $e";
@@ -506,6 +521,8 @@ class MainController extends GetxController {
           'encuesta': 'No',
           'responsable': '$emailUser#$dateNow)',
           'mesa': votante.mesa,
+          'sexo': votante.sexo,
+          'segmento': votante.segmento,
         });
 
         response = "Usuario registrado";

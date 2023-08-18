@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +25,8 @@ class _UserRegisterState extends State<UserRegister> {
   TextEditingController nombre = TextEditingController();
   TextEditingController direccion = TextEditingController();
   TextEditingController mesa = TextEditingController();
+  TextEditingController edad = TextEditingController();
+
   TextEditingController telefono = TextEditingController();
   TextEditingController municipioTextEditingController =
       TextEditingController();
@@ -50,9 +53,15 @@ class _UserRegisterState extends State<UserRegister> {
 
   RxBool haspuesto = false.obs;
   bool enable = false;
+  bool hasaditional = false;
+
   bool update = false;
   bool hasalcaldia = true;
   String? valueIDleader;
+
+  String? sexo;
+  String? segmento;
+
   String? valueResponsable;
   Leader? valueLeader2;
   Puesto? valuePuesto2;
@@ -235,7 +244,11 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             .clear();
                                                                         valueleader
                                                                             .clear();
-
+                                                                        edad.clear();
+                                                                        sexo =
+                                                                            null;
+                                                                        segmento =
+                                                                            null;
                                                                         valuepuesto
                                                                             .clear();
                                                                         setMunicipio();
@@ -378,6 +391,25 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .puestoID);
+                                                                if (searchvotante[index]
+                                                                            .edad !=
+                                                                        null ||
+                                                                    searchvotante[index]
+                                                                            .edad ==
+                                                                        '') {
+                                                                  hasaditional =
+                                                                      true;
+                                                                  edad.text =
+                                                                      searchvotante[index]
+                                                                              .edad ??
+                                                                          '-';
+                                                                  sexo = searchvotante[
+                                                                          index]
+                                                                      .sexo;
+                                                                  segmento = searchvotante[
+                                                                          index]
+                                                                      .segmento;
+                                                                }
 
                                                                 telefono.text =
                                                                     searchvotante[
@@ -896,7 +928,260 @@ class _UserRegisterState extends State<UserRegister> {
                       input: TextInputType.number,
                       controller: telefono,
                       enable: enable)),
-              Container(
+              Visibility(
+                // visible: enable,
+                child: Row(
+                  children: [
+                    Checkbox(
+                        value: hasaditional,
+                        onChanged: (_) {
+                          setState(() {
+                            hasaditional = !hasaditional;
+                          });
+                        }),
+                    const Text('Informacion Adicional',
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: hasaditional,
+                child: SizedBox(
+                  width:
+                      localwidth >= 800 ? localwidth * 0.24 : localwidth * 0.67,
+                  child: TextFormField(
+                      enabled: enable,
+                      decoration: InputDecoration(
+                        labelText: 'Edad',
+                      ),
+                      keyboardType: TextInputType.number,
+                      controller: edad,
+                      validator: (_) {
+                        if (_!.isNotEmpty) {
+                          if (int.parse(_) > 110 || int.parse(_) < 18) {
+                            return "número no válido";
+                          }
+                        }
+                      }),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: hasaditional,
+                child: Row(
+                  children: [
+                    const Text('Sexo: '),
+                    SizedBox(
+                      width: localwidth >= 800
+                          ? localwidth * 0.05
+                          : localwidth * 0.05,
+                    ),
+                    SizedBox(
+                        width: localwidth >= 800
+                            ? localwidth * 0.10
+                            : localwidth * 0.50,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Icon(
+                                  Icons.list,
+                                  size: 16,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Seleccione',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            items: [
+                              'F',
+                              'M',
+                            ]
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                .toList(),
+                            value: sexo,
+                            onChanged: (value) {
+                              setState(() {
+                                sexo = value as String;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.grey,
+                            iconDisabledColor: Colors.grey,
+                            buttonHeight: 50,
+                            buttonWidth: localwidth >= 800
+                                ? localwidth * 0.18
+                                : localwidth * 0.39,
+                            buttonPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                            buttonDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: Colors.black26,
+                              ),
+                              color: Colors.white,
+                            ),
+                            buttonElevation: 2,
+                            itemHeight: 40,
+                            itemPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                            dropdownMaxHeight: 200,
+                            dropdownWidth: 200,
+                            dropdownPadding: null,
+                            dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.white,
+                            ),
+                            dropdownElevation: 8,
+                            scrollbarRadius: const Radius.circular(40),
+                            scrollbarThickness: 6,
+                            scrollbarAlwaysShow: true,
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: hasaditional,
+                child: Row(
+                  children: [
+                    const Text('Segmento: '),
+                    SizedBox(
+                      width: localwidth >= 800
+                          ? localwidth * 0.028
+                          : localwidth * 0.028,
+                    ),
+                    SizedBox(
+                        width: localwidth >= 800
+                            ? localwidth * 0.10
+                            : localwidth * 0.50,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Icon(
+                                  Icons.list,
+                                  size: 16,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Seleccione',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            items: [
+                              'Mujeres',
+                              'Hombres',
+                              'Jovenes',
+                              'Adulto mayor',
+                              'Empresarios',
+                              'Otros',
+                            ]
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                .toList(),
+                            value: segmento,
+                            onChanged: (value) {
+                              setState(() {
+                                segmento = value as String;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.grey,
+                            iconDisabledColor: Colors.grey,
+                            buttonHeight: 50,
+                            buttonWidth: localwidth >= 800
+                                ? localwidth * 0.18
+                                : localwidth * 0.39,
+                            buttonPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                            buttonDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: Colors.black26,
+                              ),
+                              color: Colors.white,
+                            ),
+                            buttonElevation: 2,
+                            itemHeight: 40,
+                            itemPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                            dropdownMaxHeight: 200,
+                            dropdownWidth: 200,
+                            dropdownPadding: null,
+                            dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.white,
+                            ),
+                            dropdownElevation: 8,
+                            scrollbarRadius: const Radius.circular(40),
+                            scrollbarThickness: 6,
+                            scrollbarAlwaysShow: true,
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              const SizedBox(
                 height: 40,
               ),
               Builder(builder: (_) {
@@ -1299,6 +1584,9 @@ class _UserRegisterState extends State<UserRegister> {
                                 ? 'Sin Barrio'
                                 : valuebarrio.text,
                             mesa: mesa.text,
+                            edad: edad.text,
+                            sexo: sexo,
+                            segmento: segmento,
                             responsable: valueResponsable);
                         if (update) {
                           if (valuemunicipio.text != 'Valledupar') {
@@ -1328,6 +1616,10 @@ class _UserRegisterState extends State<UserRegister> {
                           valueleader.clear();
                           valuemunicipio.clear();
                           valuepuesto.clear();
+                          edad.clear();
+                          sexo = null;
+                          segmento = null;
+                          hasaditional = false;
                           setState(() {});
                         } else {
                           final response =
@@ -1368,6 +1660,10 @@ class _UserRegisterState extends State<UserRegister> {
                             valueleader.clear();
                             valuemunicipio.clear();
                             valuepuesto.clear();
+                            edad.clear();
+                            sexo = null;
+                            segmento = null;
+                            hasaditional = false;
                             setState(() {});
                           }
                         }

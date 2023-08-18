@@ -444,7 +444,6 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                       scrollbarRadius: const Radius.circular(40),
                       scrollbarThickness: 6,
                       scrollbarAlwaysShow: true,
-                      offset: const Offset(-20, 0),
                     ),
                   );
                 }),

@@ -170,13 +170,18 @@ class EncuestaView extends StatelessWidget {
                             scrollbarRadius: const Radius.circular(40),
                             scrollbarThickness: 6,
                             scrollbarAlwaysShow: true,
-                            offset: const Offset(-20, 0),
                           ),
                         ),
                       );
                     }),
                 const Spacer(),
-                Text('Total Registros: ${filterVotanteAux.length}     ')
+                Column(
+                  children: [
+                    Text('Total Registros: ${filterVotanteAux.length}     '),
+                    Text(
+                        'Total Respuestas SI: ${mainController.getEncuesta().length}'),
+                  ],
+                )
               ],
             ),
             Padding(
@@ -355,7 +360,6 @@ class EncuestaView extends StatelessWidget {
                                   scrollbarRadius: const Radius.circular(40),
                                   scrollbarThickness: 6,
                                   scrollbarAlwaysShow: true,
-                                  offset: const Offset(-20, 0),
                                 ),
                               ),
                             ));

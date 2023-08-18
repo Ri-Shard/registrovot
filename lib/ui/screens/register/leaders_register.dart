@@ -485,7 +485,6 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                         scrollbarRadius: const Radius.circular(40),
                         scrollbarThickness: 6,
                         scrollbarAlwaysShow: true,
-                        offset: const Offset(-20, 0),
                       ),
                     );
                   }),
