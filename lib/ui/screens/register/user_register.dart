@@ -929,7 +929,7 @@ class _UserRegisterState extends State<UserRegister> {
                       controller: telefono,
                       enable: enable)),
               Visibility(
-                // visible: enable,
+                visible: enable,
                 child: Row(
                   children: [
                     Checkbox(

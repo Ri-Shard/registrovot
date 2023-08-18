@@ -2253,6 +2253,7 @@ class StaticFields {
         "barrio": "Urb. Maria Camila Sur",
         "comuna": "4"
       },
+      {"municipio": "Valledupar", "barrio": "La Fortaleza", "comuna": "4"},
       {"municipio": "Valledupar", "barrio": "Villa Miriam", "comuna": "4"},
       {
         "municipio": "Valledupar",
