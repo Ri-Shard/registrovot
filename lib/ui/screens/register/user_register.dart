@@ -1121,6 +1121,7 @@ class _UserRegisterState extends State<UserRegister> {
                               'Jovenes',
                               'Adulto mayor',
                               'Empresarios',
+                              'Comerciantes',
                               'Otros',
                             ]
                                 .map((item) => DropdownMenuItem<String>(
