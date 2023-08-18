@@ -2259,6 +2259,16 @@ class StaticFields {
         "barrio": "Francisco de Paula Santander",
         "comuna": "4"
       },
+      {
+        "municipio": "Valledupar",
+        "barrio": "El Rincon del Amparo",
+        "comuna": "5"
+      },
+      {
+        "municipio": "Valledupar",
+        "barrio": "Casa Carmelo - Etapa 1",
+        "comuna": "3"
+      },
       {"municipio": "Valledupar", "barrio": "Villa Luz", "comuna": "4"},
       {"municipio": "Valledupar", "barrio": "Villa Arcadia", "comuna": "4"},
       {"municipio": "Valledupar", "barrio": "El Hogar", "comuna": "4"},
@@ -2735,7 +2745,30 @@ class StaticFields {
         "barrio": "Urb. Altos de Ziruma 6",
         "comuna": "3"
       },
-      {"municipio": "Valledupar", "barrio": "El Cielo", "comuna": "0"}
+      {"municipio": "Valledupar", "barrio": "El Cielo", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Atanquez", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Chemesquemena", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "La Mina", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Los Haticos", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Badillo", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Alto de la Vuelta", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Guacoche", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Guacochito", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "El Jabo", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Las Raices", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Los Corazones", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Patillal", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "La Vega", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Aguas Blancas", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Valencia de Jesus", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Guaimaral", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Caracoli", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Los Venados", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "El Perro", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Mariangola", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Sabana Crespo", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Azucar Buena", "comuna": "0"},
+      {"municipio": "Valledupar", "barrio": "Las Casitas", "comuna": "0"},
     ];
 
     List<Barrio> response = [];

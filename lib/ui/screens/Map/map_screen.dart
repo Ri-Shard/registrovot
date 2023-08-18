@@ -17,8 +17,8 @@ class MapScreenState extends State<MapScreen> {
       child: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          center: LatLng(10.477445, -73.246214),
-          zoom: 12,
+          center: LatLng(10.463445, -73.246214),
+          zoom: 13.6,
         ),
         nonRotatedChildren: [
           SizedBox(

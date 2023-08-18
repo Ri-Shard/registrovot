@@ -41,7 +41,7 @@ class MainController extends GetxController {
       listviews = [
         true,
         true,
-        true,
+        false,
         true,
         true,
         true,
@@ -56,7 +56,7 @@ class MainController extends GetxController {
       listviews = [
         true,
         true,
-        true,
+        false,
         true,
         true,
         true,
@@ -71,7 +71,7 @@ class MainController extends GetxController {
       listviews = [
         true,
         false,
-        true,
+        false,
         false,
         false,
         false,
@@ -97,6 +97,21 @@ class MainController extends GetxController {
         false,
         false,
         false
+      ];
+      return listviews;
+    } else if (email.contains('regcallcom')) {
+      listviews = [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
       ];
       return listviews;
     } else if (email.contains('regcall')) {
@@ -133,7 +148,7 @@ class MainController extends GetxController {
       listviews = [
         true,
         true,
-        true,
+        false,
         true,
         true,
         true,

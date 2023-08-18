@@ -2,6 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:registrovot/model/puesto.dart';
+import 'package:registrovot/model/votante.dart';
 
 import '../../../controller/mainController.dart';
 
@@ -31,18 +33,21 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
 
     for (var puesto in puestos) {
       int cont = 0;
+      List<Votante> listavVotantexPuestos = [];
 
       for (var element in mainController.filterVotante) {
         if (puesto == element.puestoID) {
           cont++;
+          listavVotantexPuestos.add(element);
         }
       }
 
-      usuariosxPuesto[puesto] = cont;
+      usuariosxPuesto[puesto] = listavVotantexPuestos;
     }
-    var sortedMap = SplayTreeMap.from(usuariosxPuesto,
-        (a, b) => usuariosxPuesto[b].compareTo(usuariosxPuesto[a]));
-
+    // var sortedMap = SplayTreeMap.from(usuariosxPuesto,
+    //     (a, b) => usuariosxPuesto[b].compareTo(usuariosxPuesto[a]));
+    var sortedMap = Map.fromEntries(usuariosxPuesto.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length)));
     sortedMap.forEach((key, value) {
       data.add({'domain': key, 'measure': value});
     });
@@ -55,9 +60,9 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
       }
     }
     usuariosxPuestoName.forEach((key, value) {
-      dataNombre.add({'domain': key, 'measure': value});
+      dataNombre.add({'domain': key, 'measure': value.length});
     });
-    dataNombre.sort((a, b) => b['measure'].compareTo(a['measure']));
+    // dataNombre.sort((a, b) => b['measure'].compareTo(a['measure']));
   }
 
   @override
