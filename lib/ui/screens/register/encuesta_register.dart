@@ -179,8 +179,7 @@ class EncuestaView extends StatelessWidget {
                   children: [
                     Text('Total Registros: ${filterVotanteAux.length}     '),
                     Text(
-                        'Total Respuestas SI: ${mainController.getEncuesta().length}',
-                        style: const TextStyle(color: Color(0xffff004e))),
+                        'Total Respuestas SI: ${mainController.getEncuesta().length}'),
                   ],
                 )
               ],
