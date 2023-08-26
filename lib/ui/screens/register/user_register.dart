@@ -500,7 +500,7 @@ class _UserRegisterState extends State<UserRegister> {
                                       return "Debe llenar este campo";
                                     }
 
-                                    if (_.length >= 11) {
+                                    if (_.length >= 13) {
                                       return "número no válido";
                                     }
                                     if (_.length < 6) {
