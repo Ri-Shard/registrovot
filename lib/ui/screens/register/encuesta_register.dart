@@ -175,14 +175,19 @@ class EncuestaView extends StatelessWidget {
                       );
                     }),
                 const Spacer(),
-                Column(
-                  children: [
-                    Text('Total Registros: ${filterVotanteAux.length}     '),
-                    Text(
-                        'Total Respuestas SI: ${mainController.getEncuesta().length}',
-                        style: const TextStyle(color: Color(0xffff004e))),
-                  ],
-                )
+                GetBuilder<MainController>(
+                    id: 'textCount',
+                    builder: (context) {
+                      return Column(
+                        children: [
+                          Text(
+                              'Total Registros: ${filterVotanteAux.length}     '),
+                          Text(
+                              'Total Respuestas SI: ${mainController.getEncuesta().length}',
+                              style: const TextStyle(color: Color(0xffff004e))),
+                        ],
+                      );
+                    })
               ],
             ),
             Padding(
@@ -309,7 +314,9 @@ class EncuestaView extends StatelessWidget {
                                             color: Colors.pink, size: 100));
 
                                     await mainController.updateEncuesta(
-                                        filterVotanteAux[index].id, value!);
+                                        filterVotanteAux[index].id,
+                                        value!,
+                                        filterVotanteAux[index]);
                                     for (Votante element
                                         in mainController.filterVotante) {
                                       if (element.id ==
@@ -328,6 +335,8 @@ class EncuestaView extends StatelessWidget {
 
                                     dropdownvalue = value;
                                     state.update(["dropCallcenter"]);
+                                    state.update(["textCount"]);
+
                                     Get.back();
                                   },
                                   icon: const Icon(

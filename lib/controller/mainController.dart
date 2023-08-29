@@ -472,13 +472,16 @@ class MainController extends GetxController {
     }
   }
 
-  updateEncuesta(String id, String encuesta) async {
+  updateEncuesta(String id, String encuesta, Votante votante) async {
     String response = '';
 
     try {
       DatabaseReference ref =
           FirebaseDatabase.instance.ref().child('$collection/${id.toString()}');
-      await ref.update({'encuesta': encuesta});
+      await ref.update({
+        'encuesta': encuesta,
+        'responsable': getResponsable(votante.responsable),
+      });
 
       response = "Encuesta actualizada";
     } catch (e) {
