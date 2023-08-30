@@ -28,10 +28,13 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
   final mainController = Get.find<MainController>();
   List<String> barrios = [];
   List<Barrio> comunas = [];
+  TextEditingController nombre = TextEditingController();
 
   Map usuariosxBarrio = {};
   Map<String, List<Votante>> usuariosxComuna = {};
   List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> dataFilter = [];
+
   List<Map<String, dynamic>> dataComuna = [];
   List<Map<String, dynamic>> dataComunaaux = [];
 
@@ -73,7 +76,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
     sortedMap.forEach((key, value) {
       data.add({'domain': key, 'measure': value});
     });
-
+    dataFilter = data;
     for (var dat in data) {
       List<Votante> listavVotantexComunas = [];
       for (var barriocomunas in comunas) {
@@ -109,6 +112,7 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: localwidth * 0.1, vertical: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -126,6 +130,45 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: SizedBox(
+                    width:
+                        localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
+                    child: TextFormField(
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Buscar Barrio',
+                      ),
+                      controller: nombre,
+                      validator: (_) {
+                        if (_ == null || _.isEmpty) {
+                          return "Debe llenar este campo";
+                        }
+
+                        if (_.length > 10) {
+                          return "número no válido";
+                        }
+                        if (_.length < 7) {
+                          return "número no válido";
+                        }
+                      },
+                      onChanged: (_) {
+                        if (_.isEmpty) {
+                          dataFilter = data;
+                        } else {
+                          dataFilter = data
+                              .where((p0) => p0
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(_.toLowerCase()))
+                              .toList();
+                        }
+                        mainController.update(['dropBarrios']);
+                      },
+                    ),
+                  ),
+                ),
                 const Divider(
                   color: Color(0xffff004e),
                 ),
@@ -137,32 +180,40 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                 Expanded(
                   child: Row(
                     children: [
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (_, index) {
-                              return ListTile(
-                                title: Text(data[index]['domain']),
-                                trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(data[index]['measure']
-                                          .length
-                                          .toString()),
-                                      IconButton(
-                                          onPressed: () async {
-                                            _showloading();
-                                            await Future.delayed(
-                                                const Duration(seconds: 1));
-                                            await mainController.exportToExcel(
-                                                data[index]['measure']);
-                                            Get.back();
-                                          },
-                                          icon: const Icon(Icons.download)),
-                                    ]),
-                              );
-                            }),
-                      ),
+                      GetBuilder<MainController>(
+                          id: 'dropBarrios',
+                          builder: (context) {
+                            return Expanded(
+                              child: ListView.builder(
+                                  itemCount: dataFilter.length,
+                                  itemBuilder: (_, index) {
+                                    return ListTile(
+                                      title: Text(dataFilter[index]['domain']),
+                                      trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(dataFilter[index]['measure']
+                                                .length
+                                                .toString()),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  _showloading();
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          seconds: 1));
+                                                  await mainController
+                                                      .exportToExcel(
+                                                          dataFilter[index]
+                                                              ['measure']);
+                                                  Get.back();
+                                                },
+                                                icon:
+                                                    const Icon(Icons.download)),
+                                          ]),
+                                    );
+                                  }),
+                            );
+                          }),
                       const SizedBox(
                         width: 50,
                       ),
@@ -317,32 +368,40 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
                         'Cantidad Registros por Barrio',
                         style: TextStyle(fontSize: 16),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (_, index) {
-                              return ListTile(
-                                title: Text(data[index]['domain']),
-                                trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(data[index]['measure']
-                                          .length
-                                          .toString()),
-                                      IconButton(
-                                          onPressed: () async {
-                                            _showloading();
-                                            await Future.delayed(
-                                                const Duration(seconds: 1));
-                                            await mainController.exportToExcel(
-                                                data[index]['measure']);
-                                            Get.back();
-                                          },
-                                          icon: const Icon(Icons.download)),
-                                    ]),
-                              );
-                            }),
-                      ),
+                      GetBuilder<MainController>(
+                          id: 'dropBarrios',
+                          builder: (context) {
+                            return Expanded(
+                              child: ListView.builder(
+                                  itemCount: dataFilter.length,
+                                  itemBuilder: (_, index) {
+                                    return ListTile(
+                                      title: Text(dataFilter[index]['domain']),
+                                      trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(dataFilter[index]['measure']
+                                                .length
+                                                .toString()),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  _showloading();
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          seconds: 1));
+                                                  await mainController
+                                                      .exportToExcel(
+                                                          dataFilter[index]
+                                                              ['measure']);
+                                                  Get.back();
+                                                },
+                                                icon:
+                                                    const Icon(Icons.download)),
+                                          ]),
+                                    );
+                                  }),
+                            );
+                          }),
                       const SizedBox(
                         width: 50,
                       ),

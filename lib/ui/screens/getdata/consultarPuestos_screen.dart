@@ -16,16 +16,23 @@ class ConsultarPuestosScreen extends StatefulWidget {
 
 class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
   final mainController = Get.find<MainController>();
+  TextEditingController nombre = TextEditingController();
+
   List<String> puestos = [];
   Map usuariosxPuesto = {};
   Map usuariosxPuestoName = {};
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> dataNombre = [];
+  List<Map<String, dynamic>> dataNombrefilter = [];
+
+  RxList<Votante> votanteAux = <Votante>[].obs;
+
   @override
   void initState() {
     super.initState();
+    votanteAux.value = mainController.filterVotante;
 
-    for (var element in mainController.filterVotante) {
+    for (var element in votanteAux) {
       if (!puestos.contains(element.puestoID)) {
         puestos.add(element.puestoID);
       }
@@ -35,7 +42,7 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
       int cont = 0;
       List<Votante> listavVotantexPuestos = [];
 
-      for (var element in mainController.filterVotante) {
+      for (var element in votanteAux) {
         if (puesto == element.puestoID) {
           cont++;
           listavVotantexPuestos.add(element);
@@ -63,51 +70,92 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
       dataNombre.add({'domain': key, 'measure': value.length});
     });
     // dataNombre.sort((a, b) => b['measure'].compareTo(a['measure']));
+    dataNombrefilter = dataNombre;
+
+    mainController.update(['dropPuesto']);
   }
 
   @override
   Widget build(BuildContext context) {
     double localwidth = MediaQuery.of(context).size.width;
-    return Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Cantidad Registros por Puesto',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text('Total Registros: ${mainController.filterVotante.length}'),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: SizedBox(
+            width: localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
+            child: TextFormField(
+              enabled: true,
+              decoration: const InputDecoration(
+                labelText: 'Buscar',
+              ),
+              controller: nombre,
+              validator: (_) {
+                if (_ == null || _.isEmpty) {
+                  return "Debe llenar este campo";
+                }
+
+                if (_.length > 10) {
+                  return "número no válido";
+                }
+                if (_.length < 7) {
+                  return "número no válido";
+                }
+              },
+              onChanged: (_) {
+                if (_.isEmpty) {
+                  dataNombrefilter = dataNombre;
+                } else {
+                  dataNombrefilter = dataNombre
+                      .where((p0) =>
+                          p0.toString().toLowerCase().contains(_.toLowerCase()))
+                      .toList();
+                }
+                mainController.update(['dropPuesto']);
+              },
             ),
           ),
-          const Divider(
-            color: Color(0xffff004e),
+        ),
+        Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: localwidth * 0.1, vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Cantidad Registros por Puesto',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text('Total Registros: ${mainController.filterVotante.length}'),
+            ],
           ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: dataNombre.length,
-                      itemBuilder: (_, index) {
-                        return ListTile(
-                          title: Text(dataNombre[index]['domain']),
-                          trailing:
-                              Text(dataNombre[index]['measure'].toString()),
-                        );
-                      }),
-                ),
-                const SizedBox(
-                  width: 50,
-                ),
-              ],
-            ),
-          )
-        ]));
+        ),
+        const Divider(
+          color: Color(0xffff004e),
+        ),
+        GetBuilder<MainController>(
+            id: 'dropPuesto',
+            builder: (state) {
+              return Expanded(
+                child: ListView.builder(
+                    itemCount: dataNombrefilter.length,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            left: localwidth * 0.1,
+                            right: localwidth * 0.07,
+                            top: 5),
+                        child: ListTile(
+                          title: Text(dataNombrefilter[index]['domain']),
+                          trailing: Text(
+                              dataNombrefilter[index]['measure'].toString()),
+                        ),
+                      );
+                    }),
+              );
+            })
+      ],
+    );
   }
 }
