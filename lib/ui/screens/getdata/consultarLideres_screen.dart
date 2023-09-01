@@ -116,6 +116,15 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                 child: ListView.builder(
                     itemCount: sortedByValueMap.length,
                     itemBuilder: (_, index) {
+                      List<Votante> leaderauxSI = [];
+                      var leaderId = sortedByValueMap.keys.elementAt(index);
+                      mainController.getEncuesta().forEach((element) {
+                        if (element.leaderID == leaderId) {
+                          leaderauxSI.add(element);
+                        }
+                      });
+                      var leaderSicount = leaderauxSI.length.toString();
+
                       return Padding(
                         padding: EdgeInsets.only(
                             left: localwidth * 0.1,
@@ -225,7 +234,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                                                         const EdgeInsets.only(
                                                             right: 40),
                                                     child: Text(
-                                                      'Total Respuestas SI: ${mainController.getEncuesta().length}',
+                                                      'Total Respuestas SI: ${leaderSicount}',
                                                       style: const TextStyle(
                                                           color: Color(
                                                               0xffff004e)),
