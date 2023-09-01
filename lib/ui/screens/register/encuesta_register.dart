@@ -106,7 +106,9 @@ class EncuestaView extends StatelessWidget {
                             items: [
                               'Si',
                               'No',
+                              'Sin llamar',
                               'No contesta',
+                              'Rechazado',
                               'Llamar mas tarde',
                               'Apagado',
                               'Numero no activo',
@@ -246,6 +248,12 @@ class EncuestaView extends StatelessWidget {
                           } else if (filterVotanteAux[index].encuesta ==
                               'Numero incorrecto') {
                             dropdownvalue = 'Numero incorrecto';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Sin llamar') {
+                            dropdownvalue = 'Sin llamar';
+                          } else if (filterVotanteAux[index].encuesta ==
+                              'Rechazado') {
+                            dropdownvalue = 'Rechazado';
                           }
                         }
 
@@ -288,7 +296,9 @@ class EncuestaView extends StatelessWidget {
                                   items: [
                                     'Si',
                                     'No',
+                                    'Sin llamar',
                                     'No contesta',
+                                    'Rechazado',
                                     'Llamar mas tarde',
                                     'Apagado',
                                     'Numero no activo',

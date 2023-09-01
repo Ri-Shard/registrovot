@@ -60,6 +60,7 @@ class MainController extends GetxController {
         true,
         true,
         true,
+        true,
         true
       ];
       return listviews;
@@ -74,6 +75,7 @@ class MainController extends GetxController {
         false,
         true,
         false,
+        true,
         true,
         true
       ];
@@ -90,6 +92,7 @@ class MainController extends GetxController {
         false,
         false,
         true,
+        false,
         false
       ];
       return listviews;
@@ -105,6 +108,7 @@ class MainController extends GetxController {
         false,
         false,
         false,
+        true,
         true
       ];
       return listviews;
@@ -122,7 +126,8 @@ class MainController extends GetxController {
         false,
         false,
         false,
-        false
+        false,
+        true
       ];
       return listviews;
     } else if (email.contains('regcallcom')) {
@@ -137,7 +142,8 @@ class MainController extends GetxController {
         false,
         false,
         true,
-        true
+        true,
+        false
       ];
       return listviews;
     } else if (email.contains('regcall')) {
@@ -152,7 +158,8 @@ class MainController extends GetxController {
         false,
         false,
         false,
-        true
+        true,
+        false
       ];
       return listviews;
     } else if (email.contains('registro')) {
@@ -163,6 +170,7 @@ class MainController extends GetxController {
         true,
         false,
         true,
+        false,
         false,
         false,
         false,
@@ -182,6 +190,7 @@ class MainController extends GetxController {
         true,
         false,
         true,
+        true,
         true
       ];
       return listviews;
@@ -197,6 +206,7 @@ class MainController extends GetxController {
         false,
         false,
         true,
+        false,
         false
       ];
       return listviews;
@@ -212,7 +222,8 @@ class MainController extends GetxController {
         false,
         false,
         false,
-        true
+        true,
+        false
       ];
       return listviews;
     } else if (email.contains('coordinador')) {
@@ -220,6 +231,7 @@ class MainController extends GetxController {
         true,
         true,
         false,
+        true,
         true,
         true,
         true,
@@ -536,7 +548,7 @@ class MainController extends GetxController {
           'municipio': votante.municipio,
           'barrio': votante.barrio,
           'estado': 'activo',
-          'encuesta': 'No',
+          'encuesta': votante.encuesta,
           'responsable': '$emailUser#$dateNow)',
           'mesa': votante.mesa,
           'sexo': votante.sexo,

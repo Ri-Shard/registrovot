@@ -7,6 +7,7 @@ import 'package:registrovot/service/authentication.dart';
 import 'package:registrovot/ui/common/layouts/logindesktop_screen.dart';
 import 'package:registrovot/ui/screens/Map/map_screen.dart';
 import 'package:registrovot/ui/screens/Map/routes_screen.dart';
+import 'package:registrovot/ui/screens/getdata/callCenterDB_Screen.dart';
 import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 import 'package:registrovot/ui/screens/getdata/consultarPuestos_screen.dart';
 import 'package:registrovot/ui/screens/getdata/downloadDB_screen.dart';
@@ -50,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const RoutesScreen(),
     const MapScreen(),
     FavoresRegister(),
-    EncuestaView()
+    EncuestaView(),
+    const CallCenterDBScreen()
   ];
   List<String> labels = [
     'Registro Base de Datos',
@@ -63,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
     'Rutas',
     'Mapas',
     'Compromisos',
-    'Call Center'
+    'Call Center',
+    'Informacion Call Center'
   ];
 
   @override
@@ -283,6 +286,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 _materialButton(
                     labels[9], Icons.featured_video_outlined, 9, buttons[9]),
                 _materialButton(labels[10], Icons.phone, 10, buttons[10]),
+                _materialButton(
+                    labels[11], Icons.info_outline, 11, buttons[11]),
                 MaterialButton(
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
