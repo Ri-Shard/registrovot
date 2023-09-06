@@ -2721,6 +2721,8 @@ class StaticFields {
         "barrio": "Conjunto Cerrado Vive Alto - San Fernando",
         "comuna": "2"
       },
+      {"municipio": "Valledupar", "barrio": "El Porvenir", "comuna": "3"},
+      {"municipio": "Valledupar", "barrio": "La Roca", "comuna": "5"},
       {
         "municipio": "Valledupar",
         "barrio": "Urb. Altos de Ziruma 2",
