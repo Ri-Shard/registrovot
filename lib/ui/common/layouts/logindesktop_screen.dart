@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //...
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-
+  bool _obscureText = true;
   final authservice = Authentication();
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.cover,
                       ),
                     ))
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
           Expanded(
@@ -100,25 +100,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   TextField(
                     controller: password,
-                    obscureText: true,
-                    decoration: const InputDecoration(
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
                       labelText: 'Contraseña',
                       hintText: '********',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 14,
                         color: Colors.black,
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 1,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 1,
                         ),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscureText
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
                       ),
                     ),
                   ),

@@ -61,6 +61,7 @@ class _UserRegisterState extends State<UserRegister> {
 
   String? sexo;
   String? segmento;
+  String? encuesta;
 
   String? valueResponsable;
   Leader? valueLeader2;
@@ -343,7 +344,10 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         .value =
                                                                     staticfields
                                                                         .getMunicipios();
-
+                                                                encuesta =
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .encuesta;
                                                                 valuemunicipio
                                                                     .text = mainController.emailUser.toLowerCase().contains('alcaldia') ||
                                                                         mainController
@@ -1593,6 +1597,7 @@ class _UserRegisterState extends State<UserRegister> {
                           if (valuemunicipio.text != 'Valledupar') {
                             votante.barrio = null;
                           }
+                          votante.encuesta = encuesta;
                           final response =
                               await mainController.updateVotante2(votante);
                           AwesomeDialog(
