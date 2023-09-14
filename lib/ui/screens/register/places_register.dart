@@ -31,11 +31,28 @@ class _PlacesRegisterState extends State<PlacesRegister> {
 
   RxList<Puesto> searchPuesto = <Puesto>[].obs;
   RxList<Puesto> filterPuesto = <Puesto>[].obs;
+  List<String> cartagena = ['Distrito de Cartagena de Indias'];
+  String colection = '';
 
   String? dropdownvalue;
   bool update = false;
 
   final formkey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    colection = mainController.emailUser.split('@').last.split('.').first;
+    if (mainController.emailUser.toLowerCase().contains('alcaldia') ||
+        mainController.emailUser.toLowerCase().contains('consejo') ||
+        colection.toLowerCase().contains('registro') &&
+            !colection.toLowerCase().contains('asambleapana')) {
+      dropdownvalue = 'Valledupar';
+    } else if (mainController.emailUser.toLowerCase().contains('edil')) {
+      dropdownvalue = 'Distrito de Cartagena de Indias';
+    } else {
+      dropdownvalue = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -353,21 +370,36 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                           ),
                         ],
                       ),
-                      items: staticfields
-                          .getMunicipios()
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item.nombre,
-                                child: Text(
-                                  item.nombre!,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
-                          .toList(),
+                      items: mainController.emailUser.contains('edil')
+                          ? cartagena
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList()
+                          : staticfields
+                              .getMunicipios()
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item.nombre,
+                                    child: Text(
+                                      item.nombre!,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
                       value: dropdownvalue,
                       onChanged: (value) {
                         setState(() {
