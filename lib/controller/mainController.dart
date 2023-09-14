@@ -635,7 +635,7 @@ class MainController extends GetxController {
   void anotheraddpuesto(String id, Map puesto) async {
     CollectionReference colection;
 
-    colection = FirebaseFirestore.instance.collection('location');
+    colection = FirebaseFirestore.instance.collection('locationCarta');
     colection
         .doc('puestos')
         .set(

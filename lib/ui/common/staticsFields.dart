@@ -1,4 +1,308 @@
 class StaticFields {
+  var listaPuestosCarta = [
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "CENTRO COMERCIAL BOCAGRANDE",
+      "direccion": "CR 2 NO 8-146 BOCAGRANDE AV SAN MARTIN",
+      "latitud": "10.40436390638633",
+      "longitud": "-75.5538636445999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "UNIV. TECNOLG. DE BOLIVAR - MANGA",
+      "direccion": "CLL DEL BOUQUET CR 21 NO. 25-92 MANGA",
+      "latitud": "10.41315751288616",
+      "longitud": "-75.5382160371619"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "LUDOTECA PARQUE CENTENARIO",
+      "direccion": "GETSEMANI, CLL 32 No 7-120, PQ CENTENARIO",
+      "latitud": "10.42230252063896",
+      "longitud": "-75.5472064018248"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COL. EUCARÍSTICO DE SANTA TERESA",
+      "direccion": "Manga, Calle 27 No. 24-21",
+      "latitud": "10.41402714404831",
+      "longitud": "-75.5363863706588"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "CENTRO COMERCIAL PLAZA BOCAGRANDE",
+      "direccion": "CRA 1 No 12 - 118",
+      "latitud": "10.41117900000000",
+      "longitud": "-75.5557926999999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO DE LA ESPERANZA",
+      "direccion": "CLL 63 NO 02-04 CRESPO",
+      "latitud": "10.44396202000000",
+      "longitud": "-75.5238982500000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO NAVAL DE CRESPO",
+      "direccion": "AV 9A CLL 72 BARRIO MILITAR CRESPO",
+      "latitud": "10.45030906",
+      "longitud": "-75.5139366199998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO EL CARMELO",
+      "direccion": "CLL 66 NO 4-73 CRESPO",
+      "latitud": "10.44643645",
+      "longitud": "-75.5207429799999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO BERVELLY HILLS",
+      "direccion": "CRESPO CRA 2 No 77-71",
+      "latitud": "10.44417040435454",
+      "longitud": "-75.5213338136671"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO LICEO BOLIVAR",
+      "direccion": "CR 17 NO 71-25 DANIEL LEMAITRE",
+      "latitud": "10.43785018",
+      "longitud": "-75.5182516600000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE STA MARIA SEDE SAGRADO CORAZON",
+      "direccion": "CR 16 No 67-50 DANIEL LEMAITRE",
+      "latitud": "10.43774531",
+      "longitud": "-75.5171121700000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "I.E.CORAZON DE MARIA",
+      "direccion": "SAN FRANCISCO FRENTE AL CAI CRA 19 No 77-29",
+      "latitud": "10.43492421",
+      "longitud": "-75.5156354399998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE CORAZON DE MARIA S S J CLAVER",
+      "direccion": "SAN FRANCISCO CRA 19 No 77-30",
+      "latitud": "10.43450926",
+      "longitud": "-75.5157775800000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "I.E. SANTA MARIA",
+      "direccion": "Lemaitre Cra 17 Nro 70 B -119",
+      "latitud": "10.43821953780602",
+      "longitud": "-75.5172836780547"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLISEO CUBIERTO BERNARDO CARABALLO",
+      "direccion": "CRA 17 No 35-119",
+      "latitud": "10.577886269614199",
+      "longitud": "-75.46549055544025"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO JOSE DE LA VEGA",
+      "direccion": "CLL 54 NO 17 - 102 TORICES",
+      "latitud": "10.43514908999999",
+      "longitud": "-75.5281532799998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE HER. ANTONIO RAMOS DE LA SALLE",
+      "direccion": "CLL NUEVA DEL ESPINAL NO 34-392 ESPINAL",
+      "latitud": "10.42416343999999",
+      "longitud": "-75.5358254899998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "INST. ED. ANA MARIA VELEZ DE TRUJILLO",
+      "direccion": "TORICES, SECTOR SANTA RITA CRA 16 # 17-53",
+      "latitud": "10.43508579103233",
+      "longitud": "-75.5280822515486"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "C.ECON. PIEDRA DE BOL UNIV. C/GENA",
+      "direccion": "AV CONSULADO CLL 30 NO 48-152 PIEDRA DE BOLIVAR",
+      "latitud": "10.40265293",
+      "longitud": "-75.5058222999999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO COMFENALCO SEDE CEDESARROLLO",
+      "direccion": "DG 30 No 50-187 ZARAGOCILLA SECTOR EL CAIRO",
+      "latitud": "10.40512592",
+      "longitud": "-75.5035093200000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "INST. ED. MADRE LAURA",
+      "direccion": "PIEDRA BOLIVAR CLL 30 NRO. 50 - 136",
+      "latitud": "10.4046488218533",
+      "longitud": "-75.5079442262648"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "SENA 4 VIENTOS",
+      "direccion": "AV. PEDRO DE HEREDIA SECTOR TESCA",
+      "latitud": "10.4063160997406",
+      "longitud": "-75.5033254623412"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE CASD MANUELA BELTRAN",
+      "direccion": "AV PEDRO DE HEREDIA CLL 31 No 57-106",
+      "latitud": "10.40077160000000",
+      "longitud": "-75.4944828"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE NUEVO BOSQUE",
+      "direccion": "TR 53 NO 23A-104 MZ I URB BARLOVENTO",
+      "latitud": "10.39128242",
+      "longitud": "-75.5008280299998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COL ALBERTO ELIAS FERNANDEZ",
+      "direccion": "DG 21A 47-49 AV BUENOS AIRES BOSQUE",
+      "latitud": "10.39785747",
+      "longitud": "-75.5201670099999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "I.E NUEVO BOSQUE SEDE JOSE MARIA CORDOBA",
+      "direccion": "NUEVO BOSQUE 1RA ETAPA TRANSV 47A NRO 29E - 12",
+      "latitud": "10.391",
+      "longitud": "-75.5"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "INST. ED. FERNANDO DE LA VEGA",
+      "direccion": "BOSQUE DIAG. 21C NRO 53-40",
+      "latitud": "10.3894991364793",
+      "longitud": "-75.5223651230334"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "ESCUELA NORMAL SUPERIOR DE CARTAGENA De INDIAS",
+      "direccion": "NUEVO BOSQUE KRA 51 #23-35",
+      "latitud": "10.39103590340056",
+      "longitud": "-75.5095723271368"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "UNIVERSIDAD DEL SINU SEDE PLAZA COLON",
+      "direccion": "AV EL BOSQUE TRANSVERSAL 54 No 30 729",
+      "latitud": "10.39002",
+      "longitud": "-75.49653"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE SAN JUAN DE DAMASCO",
+      "direccion": "AMBERES 1ER CALLEJON CR 41 NO 26C 38",
+      "latitud": "10.40532269999999",
+      "longitud": "-75.5140030400000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE OLGA GONZALEZ ARRAUT",
+      "direccion": "DG 22 NO 52-14 AV CRISANTO LUQUE",
+      "latitud": "10.39135667999999",
+      "longitud": "-75.5165453999998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE MANUELA BELTRAN - SEDE HIJOS",
+      "direccion": "BARRIO CHILE MZ 75 LOTE 1",
+      "latitud": "10.39273247",
+      "longitud": "-75.5133176399998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "SEMINARIO CARTAGENA",
+      "direccion": "ALCIBIA CLL 38 NRO 29 - 60",
+      "latitud": "10.40830521391846",
+      "longitud": "-75.5163314938544"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "UNIVERSIDAD ANTONIO NARIÑO",
+      "direccion": "AV CRISANTO LUQUE DIAG 22",
+      "latitud": "10.395",
+      "longitud": "-75.5169999999998"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COLEGIO LATINOAMERICANO",
+      "direccion": "B. PARAGUAY TRANS 45 No 26A 116 AV DEL ACUEDUCTO",
+      "latitud": "10.39971",
+      "longitud": "-75.51454"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "UNIV DE CARTAGENA CLAUSTRO SAN AGUSTIN",
+      "direccion": "CR 6 36-100 CTRO CLL DE LA UNIVERSIDAD",
+      "latitud": "10.42551017000000",
+      "longitud": "-75.5500561199999"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "COL SALESIANOS SAN PEDRO CLAVER",
+      "direccion": "CLL 40 NO 09-80 LAS BOVEDAS BARRIO SAN DIEGO",
+      "latitud": "10.42935552",
+      "longitud": "-75.5463830900000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "IE ANTONIA SANTOS",
+      "direccion": "CLL 31 NO 18B 131 PLAYON GRANDE PIE DE LA POPA",
+      "latitud": "10.42127224",
+      "longitud": "-75.5358469500000"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "UNIV. DE CARTAGENA CLAUSTRO LA MERCED",
+      "direccion": "KR 5 # 38-40 - CENTRO",
+      "latitud": "10.42702917792472",
+      "longitud": "-75.5511253171492"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "FUNDACION UNIVERSITARIA LOS LIBERTADORES",
+      "direccion": "PIE DE LA POPA, CALLE 31 No 19 -51",
+      "latitud": "10.42132383757628",
+      "longitud": "-75.5344256758689"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "INST UNIVERSITARIA MAYOR DE CARTAGENA",
+      "direccion": "CENTRO KR 3 #34 -29 CL DE LA FACTORIA",
+      "latitud": "10.42609734579576",
+      "longitud": "-75.5519900806076"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "INST UNI BELLAS ARTES Y CIENCIAS DE BOLIVAR",
+      "direccion": "KR 9 #39-12 SAN DIEGO",
+      "latitud": "10.42811716717295",
+      "longitud": "-75.5472698847600"
+    },
+    {
+      "municipio": "Distrito de Cartagena de Indias",
+      "nombre": "ESCUELAS PROFESIONALES SALESIANAS",
+      "direccion": "Cra 9 # 39-60 CALLE DE LAS BOVEDAS CENTRO",
+      "latitud": "10.42843810385103",
+      "longitud": "-75.5472401198471"
+    }
+  ];
+
   var listapuestos = [
     {
       "municipio": "Valledupar",

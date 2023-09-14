@@ -460,37 +460,40 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    Puesto puesto = Puesto(
-                        nombre: nombre.text,
-                        id: dropdownvalue! + nombre.text,
-                        latitud: latitud.text,
-                        longitud: latitud.text,
-                        municipio: dropdownvalue,
-                        direccion: direccion.text);
-                    await mainController.addPuesto(puesto);
-                    AwesomeDialog(
-                            width: 566,
-                            context: context,
-                            dialogType: DialogType.success,
-                            animType: AnimType.rightSlide,
-                            headerAnimationLoop: false,
-                            title: 'Registro exitoso',
-                            desc: 'El puesto fue registrado correctamente',
-                            btnOkOnPress: () {},
-                            btnOkIcon: Icons.cancel,
-                            btnOkColor: const Color(0xff01b9ff))
-                        .show();
-                    nombre.clear();
-                    latitud.clear();
-                    longitud.clear();
-                    direccion.clear();
+                    // Puesto puesto = Puesto(
+                    //     nombre: nombre.text,
+                    //     id: dropdownvalue! + nombre.text,
+                    //     latitud: latitud.text,
+                    //     longitud: latitud.text,
+                    //     municipio: dropdownvalue,
+                    //     direccion: direccion.text);
+                    // await mainController.addPuesto(puesto);
+                    // AwesomeDialog(
+                    //         width: 566,
+                    //         context: context,
+                    //         dialogType: DialogType.success,
+                    //         animType: AnimType.rightSlide,
+                    //         headerAnimationLoop: false,
+                    //         title: 'Registro exitoso',
+                    //         desc: 'El puesto fue registrado correctamente',
+                    //         btnOkOnPress: () {},
+                    //         btnOkIcon: Icons.cancel,
+                    //         btnOkColor: const Color(0xff01b9ff))
+                    //     .show();
+                    // nombre.clear();
+                    // latitud.clear();
+                    // longitud.clear();
+                    // direccion.clear();
 
-                    // for (var i = 0; i < staticfields.listapuestos.length; i++) {
-                    //   mainController.anotheraddpuesto(
-                    //       staticfields.listapuestos[i]['municipio']! +
-                    //           staticfields.listapuestos[i]['nombre']!,
-                    //       staticfields.listapuestos[i] as Map<String, String>);
-                    // }
+                    for (var i = 0;
+                        i < staticfields.listaPuestosCarta.length;
+                        i++) {
+                      mainController.anotheraddpuesto(
+                          staticfields.listaPuestosCarta[i]['municipio']! +
+                              staticfields.listaPuestosCarta[i]['nombre']!,
+                          staticfields.listaPuestosCarta[i]
+                              as Map<String, String>);
+                    }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xff01b9ff),
