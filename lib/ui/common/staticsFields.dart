@@ -1,4 +1,385 @@
 class StaticFields {
+  List<Barrio> getBarriosCarta() {
+    var listabarriosCarta = [
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Buenos Aires",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Calamares",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Camagüey",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Carmen",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Country",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Escallon Villa",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "La Campiña",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "La Troncal",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Las Delicias",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Los Angeles",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Los Ejecutivos",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Rubi",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Tacarigua",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Villa Sandra",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Zaragocilla",
+        "comuna": "8"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Amberes",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Armenia",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Barrio Chino",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Bruselas",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Prado",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "España",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Jose Antonio Galan",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Juan XXIII",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Junin",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Las Brisas",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Martinez Martelo",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Nueva Granada",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Nueve de Abril",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Paraguay",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Piedra de Bolivar",
+        "comuna": "9"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Alto Bosque",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Altos de San Isisdro",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Bosquecito",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Bosque",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Los Cerros",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Nuevo Bosque",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Republica de Chile",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "San Isidro",
+        "comuna": "10"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Bocagrande",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Castillogrande",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Centro",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Chambacu",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Crespo",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Cabrero",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "El Laguito",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Getsemani",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "La Matuna",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Manga",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Marbella",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Pie de la Popa",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "San Diego",
+        "comuna": "1"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Cerro de la Popa",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Espinal",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "La Paz",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Loma Fresca",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Los Comuneros",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Nariño",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Pablo VI - 1",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Pablo VI - 2",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Palestina",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Paraiso Li",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Pedro Salazar",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Petares",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Pie del Cerro",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Republica del Caribe",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "San Pedro y Libertad",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Torices",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Lo Amador",
+        "comuna": "2"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Canapote",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Daniel Lemaitre",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "San Bernardo",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "San Francisco",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Santa Maria",
+        "comuna": "3"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Siete de agosto",
+        "comuna": "3"
+      }
+    ];
+
+    List<Barrio> response = [];
+    for (var element in listabarriosCarta) {
+      response.add(Barrio.fromJson(element));
+    }
+    return response;
+  }
+
   var listaPuestosCarta = [
     {
       "municipio": "Distrito de Cartagena de Indias",

@@ -230,8 +230,12 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             false;
                                                                         enable =
                                                                             true;
-                                                                        filterBarrio.value =
-                                                                            staticfields.getBarrios();
+                                                                        filterBarrio
+                                                                            .value = valuemunicipio.text ==
+                                                                                'Valledupar'
+                                                                            ? staticfields.getBarrios()
+                                                                            : staticfields.getBarriosCarta();
+
                                                                         filterMunicipio.value =
                                                                             staticfields.getMunicipios();
                                                                         nombre
@@ -336,10 +340,13 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .id;
-                                                                filterBarrio
-                                                                        .value =
-                                                                    staticfields
-                                                                        .getBarrios();
+                                                                filterBarrio.value = valuemunicipio
+                                                                            .text ==
+                                                                        'Valledupar'
+                                                                    ? staticfields
+                                                                        .getBarrios()
+                                                                    : staticfields
+                                                                        .getBarriosCarta();
                                                                 filterMunicipio
                                                                         .value =
                                                                     staticfields
@@ -359,9 +366,14 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             !colection.toLowerCase().contains(
                                                                                 'asambleapana')
                                                                     ? 'Valledupar'
-                                                                    : searchvotante[
-                                                                            index]
-                                                                        .municipio;
+                                                                    : mainController
+                                                                            .emailUser
+                                                                            .toLowerCase()
+                                                                            .contains(
+                                                                                'edil')
+                                                                        ? 'Distrito de Cartagena de Indias'
+                                                                        : searchvotante[index]
+                                                                            .municipio;
 
                                                                 valueleader.text = filterLeader
                                                                     .firstWhere((element) =>
@@ -565,8 +577,11 @@ class _UserRegisterState extends State<UserRegister> {
                                                     .toLowerCase()
                                                     .contains('consejo') ||
                                                 colection
+                                                    .toLowerCase()
+                                                    .contains('registro') ||
+                                                mainController.emailUser
                                                         .toLowerCase()
-                                                        .contains('registro') &&
+                                                        .contains('edil') &&
                                                     !colection
                                                         .toLowerCase()
                                                         .contains(
@@ -730,7 +745,10 @@ class _UserRegisterState extends State<UserRegister> {
               GetBuilder<MainController>(
                   id: "dropMunicipioView",
                   builder: (statebarrio) {
-                    return valuemunicipio.text == 'Valledupar' && enable
+                    return valuemunicipio.text == 'Valledupar' ||
+                            valuemunicipio.text ==
+                                    'Distrito de Cartagena de Indias' &&
+                                enable
                         ? Row(
                             children: [
                               const Text(
@@ -802,13 +820,18 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         valuebarrio,
                                                                     onChanged:
                                                                         (_) {
-                                                                      filterBarrio.value = staticfields
-                                                                          .getBarrios()
-                                                                          .where((element) => element
-                                                                              .barrio!
-                                                                              .toLowerCase()
-                                                                              .contains(_.toLowerCase()))
-                                                                          .toList();
+                                                                      filterBarrio
+                                                                          .value = valuemunicipio.text ==
+                                                                              'Valledupar'
+                                                                          ? staticfields
+                                                                              .getBarrios()
+                                                                              .where((element) => element.barrio!.toLowerCase().contains(_
+                                                                                  .toLowerCase()))
+                                                                              .toList()
+                                                                          : staticfields
+                                                                              .getBarriosCarta()
+                                                                              .where((element) => element.barrio!.toLowerCase().contains(_.toLowerCase()))
+                                                                              .toList();
                                                                       state
                                                                           .update([
                                                                         "dropBarrioView"
@@ -1712,6 +1735,8 @@ class _UserRegisterState extends State<UserRegister> {
                 colection.toLowerCase().contains('registro') &&
                     !colection.toLowerCase().contains('asambleapana')
             ? 'Valledupar'
-            : '';
+            : mainController.emailUser.toLowerCase().contains('edil')
+                ? 'Distrito de Cartagena de Indias'
+                : '';
   }
 }

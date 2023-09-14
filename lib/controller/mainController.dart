@@ -574,7 +574,9 @@ class MainController extends GetxController {
       response = 'Ya Existe';
       return response;
     } else {
-      colection = FirebaseFirestore.instance.collection('location');
+      colection = emailUser.contains('@edil.com')
+          ? FirebaseFirestore.instance.collection('locationCarta')
+          : FirebaseFirestore.instance.collection('location');
       colection.doc('puestos').set(
         {
           puesto.id.toString(): {
@@ -602,7 +604,9 @@ class MainController extends GetxController {
 
   Stream<List<Puesto>> getPuestos() {
     CollectionReference colection;
-    colection = FirebaseFirestore.instance.collection('location');
+    colection = emailUser.contains('@edil.com')
+        ? FirebaseFirestore.instance.collection('locationCarta')
+        : FirebaseFirestore.instance.collection('location');
     return colection.doc('puestos').snapshots().asyncMap((event) {
       List<Puesto> aux = [];
       Map<dynamic, dynamic> dataid = event.data() as Map<dynamic, dynamic>;

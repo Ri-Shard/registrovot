@@ -35,9 +35,12 @@ class _LeadersRegisterState extends State<LeadersRegister> {
 
   RxList<Leader> searchLeader = <Leader>[].obs;
   List<String> valledupar = ['Valledupar'];
+  List<String> cartagena = ['Distrito de Cartagena de Indias'];
+
   String? dropdownvalue;
 
   bool hasalcaldia = false;
+  bool hasCartagena = false;
 
   bool hascoordinador = false;
   bool update = false;
@@ -52,6 +55,9 @@ class _LeadersRegisterState extends State<LeadersRegister> {
             !colection.toLowerCase().contains('asambleapana')) {
       hasalcaldia = true;
       dropdownvalue = 'Valledupar';
+    } else if (mainController.emailUser.toLowerCase().contains('edil')) {
+      dropdownvalue = 'Distrito de Cartagena de Indias';
+      hasCartagena = true;
     } else {
       dropdownvalue = null;
     }
@@ -393,21 +399,36 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                                       ),
                                     ))
                                 .toList()
-                            : municipios
-                                .getMunicipios()
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item.nombre,
-                                      child: Text(
-                                        item.nombre!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
+                            : hasCartagena
+                                ? cartagena
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList()
+                                : municipios
+                                    .getMunicipios()
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item.nombre,
+                                          child: Text(
+                                            item.nombre!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
                         value: dropdownvalue,
                         onChanged: (value) {
                           setState(() {
