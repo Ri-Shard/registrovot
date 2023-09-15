@@ -836,36 +836,42 @@ class MainController extends GetxController {
           .value = 'Edad';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0))
-          .value = 'Municipio';
+          .value = 'Sexo';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0))
-          .value = 'Barrio';
+          .value = 'Segmento';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0))
-          .value = 'Direccion';
+          .value = 'Municipio';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0))
-          .value = 'Lider';
+          .value = 'Barrio';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 0))
-          .value = 'Coordinador';
+          .value = 'Direccion';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: 0))
-          .value = 'Encuesta';
+          .value = 'Lider';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0))
-          .value = 'Puesto de Votacion';
+          .value = 'Coordinador';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: 0))
-          .value = 'Mesa';
+          .value = 'Encuesta';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: 0))
-          .value = 'Estado';
+          .value = 'Puesto de Votacion';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: 0))
-          .value = 'Creador';
+          .value = 'Mesa';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 14, rowIndex: 0))
+          .value = 'Estado';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 15, rowIndex: 0))
+          .value = 'Creador';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 16, rowIndex: 0))
           .value = 'Editor';
       for (var row = 0; row < listVot.length; row++) {
         sheet
@@ -882,19 +888,26 @@ class MainController extends GetxController {
             .value = listVot[row].edad;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row + 1))
-            .value = listVot[row].municipio;
+            .value = listVot[row].sexo;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row + 1))
-            .value = listVot[row].barrio;
+            .value = listVot[row].segmento;
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: row + 1))
+            .value = listVot[row].municipio;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
+            .value = listVot[row].barrio;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
             .value = listVot[row].direccion;
         Leader? leader = getoneLeader(listVot[row].leaderID);
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row + 1))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
             .value = leader?.name ?? '';
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row + 1))
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
             .value = leader?.coordinador ?? '';
         String? encuesta;
         if (listVot[row].encuesta == true) {
@@ -929,25 +942,26 @@ class MainController extends GetxController {
           }
         }
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row + 1))
+            .cell(
+                CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
             .value = encuesta;
         Puesto? puesto = getonePuesto(listVot[row].puestoID);
 
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: row + 1))
             .value = puesto?.nombre ?? '';
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: row + 1))
             .value = listVot[row].mesa ?? '';
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 12, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 14, rowIndex: row + 1))
             .value = listVot[row].estado;
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 13, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 15, rowIndex: row + 1))
             .value = (listVot[row]
                 .responsable
                 ?.split(')')[0]
@@ -955,7 +969,7 @@ class MainController extends GetxController {
             "-";
         sheet
             .cell(
-                CellIndex.indexByColumnRow(columnIndex: 14, rowIndex: row + 1))
+                CellIndex.indexByColumnRow(columnIndex: 16, rowIndex: row + 1))
             .value = (listVot[row]
                 .responsable
                 ?.split(')')
