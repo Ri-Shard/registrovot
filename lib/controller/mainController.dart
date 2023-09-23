@@ -922,15 +922,15 @@ class MainController extends GetxController {
           if (listVot[row].encuesta == true) {
             encuesta = 'Si';
           } else {
-            encuesta = (listVot[row].encuesta == false ? 'No' : 'No contesto');
+            encuesta = (listVot[row].encuesta == false ? 'No' : 'No contesta');
           }
         } else {
           if (listVot[row].encuesta == 'Si') {
             encuesta = 'Si';
           } else if (listVot[row].encuesta == 'No') {
             encuesta = 'No';
-          } else if (listVot[row].encuesta == 'No contesto') {
-            encuesta = 'No contesto';
+          } else if (listVot[row].encuesta == 'No contesta') {
+            encuesta = 'No contesta';
           } else if (listVot[row].encuesta == 'Llamar mas tarde') {
             encuesta = 'Llamar mas tarde';
           } else if (listVot[row].encuesta == 'Apagado') {
@@ -939,8 +939,13 @@ class MainController extends GetxController {
             encuesta = 'Numero no activo';
           } else if (listVot[row].encuesta == 'Numero incorrecto') {
             encuesta = 'Numero incorrecto';
+          } else if (listVot[row].encuesta == 'Sin llamar') {
+            encuesta = 'Sin llamar';
+          } else if (listVot[row].encuesta == 'Rechazado') {
+            encuesta = 'Rechazado';
           }
         }
+
         sheet
             .cell(
                 CellIndex.indexByColumnRow(columnIndex: 11, rowIndex: row + 1))
