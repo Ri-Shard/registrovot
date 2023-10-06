@@ -32,7 +32,7 @@ class RoutesScreenState extends State<RoutesScreen> {
     //         onPressed: () async {
     //           String? excel = await ExcelToJson().convert();
     //           Map<String, dynamic> jsonObject = jsonDecode(excel!);
-    //           List hoja1 = jsonObject['Sheet1'];
+    //           List hoja1 = jsonObject['Respuestas de formulario 1'];
     //           List<Votante> listVot = [];
     //           for (var element in hoja1) {
     //             Votante votante = Votante(
@@ -48,7 +48,7 @@ class RoutesScreenState extends State<RoutesScreen> {
     //                     // element['Barrio']?.toString().trim() ??
     //                     "Sin Barrio",
     //                 estado: 'activo',
-    //                 encuesta: false,
+    //                 encuesta: 'Sin llamar',
     //                 sexo: element['Sexo'],
     //                 segmento: element['Segmento']);
 
