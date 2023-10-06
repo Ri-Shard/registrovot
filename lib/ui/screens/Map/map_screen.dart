@@ -918,14 +918,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.green,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 1')
+                          size > 800
+                              ? const Text('Comuna 1')
+                              : const Text(
+                                  'Comuna 1',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -934,14 +939,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.blue,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 2')
+                          size > 800
+                              ? const Text('Comuna 2')
+                              : const Text(
+                                  'Comuna 2',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -950,14 +960,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.orange,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 3')
+                          size > 800
+                              ? const Text('Comuna 3')
+                              : const Text(
+                                  'Comuna 3',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -966,14 +981,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.purple,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 4')
+                          size > 800
+                              ? const Text('Comuna 4')
+                              : const Text(
+                                  'Comuna 4',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -982,14 +1002,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.black,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 5')
+                          size > 800
+                              ? const Text('Comuna 5')
+                              : const Text(
+                                  'Comuna 5',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -998,14 +1023,19 @@ class MapScreenState extends State<MapScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 20,
-                            height: 20,
+                            width: size > 800 ? 20 : 10,
+                            height: size > 800 ? 20 : 10,
                             color: Colors.yellow,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text('Comuna 6')
+                          size > 800
+                              ? const Text('Comuna 6')
+                              : const Text(
+                                  'Comuna 6',
+                                  style: TextStyle(fontSize: 12),
+                                )
                         ],
                       ),
                     ],
