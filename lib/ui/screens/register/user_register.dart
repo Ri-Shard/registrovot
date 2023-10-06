@@ -340,21 +340,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                                     searchvotante[
                                                                             index]
                                                                         .id;
-                                                                filterBarrio.value = valuemunicipio
-                                                                            .text ==
-                                                                        'Valledupar'
-                                                                    ? staticfields
-                                                                        .getBarrios()
-                                                                    : staticfields
-                                                                        .getBarriosCarta();
-                                                                filterMunicipio
-                                                                        .value =
-                                                                    staticfields
-                                                                        .getMunicipios();
-                                                                encuesta =
-                                                                    searchvotante[
-                                                                            index]
-                                                                        .encuesta;
                                                                 valuemunicipio
                                                                     .text = mainController.emailUser.toLowerCase().contains('alcaldia') ||
                                                                         mainController
@@ -374,6 +359,21 @@ class _UserRegisterState extends State<UserRegister> {
                                                                         ? 'Distrito de Cartagena de Indias'
                                                                         : searchvotante[index]
                                                                             .municipio;
+                                                                filterBarrio.value = valuemunicipio
+                                                                            .text ==
+                                                                        'Distrito de Cartagena de Indias'
+                                                                    ? staticfields
+                                                                        .getBarriosCarta()
+                                                                    : staticfields
+                                                                        .getBarrios();
+                                                                filterMunicipio
+                                                                        .value =
+                                                                    staticfields
+                                                                        .getMunicipios();
+                                                                encuesta =
+                                                                    searchvotante[
+                                                                            index]
+                                                                        .encuesta;
 
                                                                 valueleader.text = filterLeader
                                                                     .firstWhere((element) =>
@@ -439,10 +439,14 @@ class _UserRegisterState extends State<UserRegister> {
                                                                             index]
                                                                         .mesa ??
                                                                     'Sin Mesa';
-                                                                if (searchvotante[
-                                                                            index]
-                                                                        .municipio !=
-                                                                    'Valledupar') {
+                                                                if (searchvotante[index]
+                                                                            .municipio !=
+                                                                        'Valledupar' &&
+                                                                    !mainController
+                                                                        .emailUser
+                                                                        .toLowerCase()
+                                                                        .contains(
+                                                                            'edil')) {
                                                                   valuebarrio
                                                                       .clear();
                                                                 } else {
