@@ -636,8 +636,8 @@ class MapScreenState extends State<MapScreen> {
       "municipio": "Distrito de Cartagena de Indias",
       "nombre": "COLISEO CUBIERTO BERNARDO CARABALLO",
       "direccion": "CRA 17 No 35-119",
-      "latitud": "10.577886269614199",
-      "longitud": "-75.46549055544025"
+      "latitud": "10.425257",
+      "longitud": "-75.536673"
     },
     {
       "municipio": "Distrito de Cartagena de Indias",
@@ -903,146 +903,150 @@ class MapScreenState extends State<MapScreen> {
                     ],
                   )
                 : const SizedBox(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: 115,
-                  height: 300,
-                  color: Colors.transparent,
-                  child: Column(
+            !mainController.emailUser.contains('edil')
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 1')
-                              : const Text(
-                                  'Comuna 1',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 2')
-                              : const Text(
-                                  'Comuna 2',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.orange,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 3')
-                              : const Text(
-                                  'Comuna 3',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.purple,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 4')
-                              : const Text(
-                                  'Comuna 4',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.black,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 5')
-                              : const Text(
-                                  'Comuna 5',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: size > 800 ? 20 : 10,
-                            height: size > 800 ? 20 : 10,
-                            color: Colors.yellow,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          size > 800
-                              ? const Text('Comuna 6')
-                              : const Text(
-                                  'Comuna 6',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                        ],
+                      Container(
+                        width: 115,
+                        height: 300,
+                        color: Colors.transparent,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.green,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 1')
+                                    : const Text(
+                                        'Comuna 1',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 2')
+                                    : const Text(
+                                        'Comuna 2',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.orange,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 3')
+                                    : const Text(
+                                        'Comuna 3',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.purple,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 4')
+                                    : const Text(
+                                        'Comuna 4',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.black,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 5')
+                                    : const Text(
+                                        'Comuna 5',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: size > 800 ? 20 : 10,
+                                  height: size > 800 ? 20 : 10,
+                                  color: Colors.yellow,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                size > 800
+                                    ? const Text('Comuna 6')
+                                    : const Text(
+                                        'Comuna 6',
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
+                  )
+                : const SizedBox(
+                    width: 20,
                   ),
-                ),
-              ],
-            ),
             const SizedBox(
               width: 20,
             ),

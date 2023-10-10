@@ -1621,7 +1621,10 @@ class _UserRegisterState extends State<UserRegister> {
                             segmento: segmento,
                             responsable: valueResponsable);
                         if (update) {
-                          if (valuemunicipio.text != 'Valledupar') {
+                          if (valuemunicipio.text != 'Valledupar' &&
+                              !mainController.emailUser
+                                  .toLowerCase()
+                                  .contains('edil')) {
                             votante.barrio = null;
                           }
                           votante.encuesta = encuesta;
