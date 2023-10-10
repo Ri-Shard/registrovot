@@ -43,16 +43,20 @@ class DownloadDBScreenState extends State<DownloadDBScreen> {
   void initState() {
     super.initState();
 
-    for (var barr in staticFields.getBarrios()) {
-      comunas.add(barr);
+    if (mainController.emailUser.contains('edil')) {
+      for (var barr in staticFields.getBarriosCarta()) {
+        comunas.add(barr);
+      }
+    } else {
+      for (var barr in staticFields.getBarrios()) {
+        comunas.add(barr);
+      }
     }
-
     for (var element in mainController.filterVotante) {
       if (!barrios.contains(element.barrio)) {
         barrios.add(element.barrio ?? '-');
       }
     }
-
     for (var barrio in barrios) {
       int cont = 0;
       List<Votante> listavVotantexBarrios = [];
