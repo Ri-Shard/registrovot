@@ -223,8 +223,13 @@ class _PlacesRegisterState extends State<PlacesRegister> {
                                                         });
                                                         Get.back();
                                                       },
-                                                      title: Text(
-                                                          "${searchPuesto[index].nombre} - ${searchPuesto[index].municipio} - Cesar "),
+                                                      title: mainController
+                                                              .emailUser
+                                                              .contains('edil')
+                                                          ? Text(
+                                                              "${searchPuesto[index].nombre} - ${searchPuesto[index].municipio} - Bolivar ")
+                                                          : Text(
+                                                              "${searchPuesto[index].nombre} - ${searchPuesto[index].municipio} - Cesar "),
                                                     );
                                                   })),
                                           Center(
