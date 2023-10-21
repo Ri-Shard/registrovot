@@ -101,6 +101,9 @@ class _LeadersRegisterState extends State<LeadersRegister> {
                                       child: Obx(() {
                                         return Column(
                                           children: [
+                                            const SizedBox(height: 10),
+                                            const Text(
+                                                'Verificar que el Lider que quiere crear No existe'),
                                             Container(
                                               padding: const EdgeInsets.all(20),
                                               child: TextField(

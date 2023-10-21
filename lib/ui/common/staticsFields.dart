@@ -3,6 +3,21 @@ class StaticFields {
     var listabarriosCarta = [
       {
         "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Localidad 2 - De la Virgen y Turística",
+        "comuna": "0"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Localidad 3 - Industrial y de la Bahia",
+        "comuna": "0"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
+        "barrio": "Municipios - Bolivar",
+        "comuna": "0"
+      },
+      {
+        "municipio": "Distrito de Cartagena de Indias",
         "barrio": "Buenos Aires",
         "comuna": "8"
       },
