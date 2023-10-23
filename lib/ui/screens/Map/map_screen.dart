@@ -843,12 +843,98 @@ class MapScreenState extends State<MapScreen> {
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> dataNombre = [];
   List<Map<String, dynamic>> dataNombrefilter = [];
+  List<Map<String, dynamic>> dataComuna = [];
 
   RxList<Votante> votanteAux = <Votante>[].obs;
+  List<String> barrios = [];
+  List<Barrio> comunas = [];
+  TextEditingController nombre = TextEditingController();
 
+  Map usuariosxBarrio = {};
+  Map<String, List<Votante>> usuariosxComuna = {};
+  List<Map<String, dynamic>> dataFilter = [];
+
+  List<Map<String, dynamic>> dataComunaaux = [];
+
+  StaticFields staticFields = StaticFields();
+  List<bool> fillPoly = [false, false, false, false, false, false];
   @override
   void initState() {
     super.initState();
+
+    if (mainController.emailUser.contains('edil')) {
+      for (var barr in staticFields.getBarriosCarta()) {
+        comunas.add(barr);
+      }
+    } else {
+      for (var barr in staticFields.getBarrios()) {
+        comunas.add(barr);
+      }
+    }
+    for (var element in mainController.filterVotante) {
+      if (!barrios.contains(element.barrio)) {
+        barrios.add(element.barrio ?? '-');
+      }
+    }
+    for (var barrio in barrios) {
+      int cont = 0;
+      List<Votante> listavVotantexBarrios = [];
+      for (var element in mainController.filterVotante) {
+        if (barrio == element.barrio) {
+          cont++;
+          listavVotantexBarrios.add(element);
+        }
+      }
+
+      // usuariosxBarrio[barrio] = cont;
+      usuariosxBarrio[barrio] = listavVotantexBarrios;
+    }
+    var sortedMap = Map.fromEntries(usuariosxBarrio.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length)));
+    // SplayTreeMap.from(
+    //     usuariosxBarrio,
+    //     (a, b) =>
+    //         usuariosxBarrio[b].length.compareTo(usuariosxBarrio[a].length));
+
+    sortedMap.forEach((key, value) {
+      data.add({'domain': key, 'measure': value});
+    });
+    dataFilter = data;
+    for (var dat in data) {
+      List<Votante> listavVotantexComunas = [];
+      for (var barriocomunas in comunas) {
+        if (dat['domain'] == barriocomunas.barrio) {
+          if (!usuariosxComuna.keys.contains(barriocomunas.comuna)) {
+            usuariosxComuna[barriocomunas.comuna!] = <Votante>[];
+            usuariosxComuna[barriocomunas.comuna]!.addAll(dat['measure']);
+          } else {
+            usuariosxComuna[barriocomunas.comuna]!.addAll(dat['measure']);
+          }
+        }
+      }
+    }
+    usuariosxComuna.forEach((key, value) {
+      dataComuna.add({'domain': 'C $key', 'measure': value});
+    });
+    dataComuna
+        .sort((a, b) => b['measure'].length.compareTo(a['measure'].length));
+    dataComuna.forEach((element) {
+      dataComunaaux.add(
+          {'domain': element['domain'], 'measure': element['measure'].length});
+    });
+    if (dataComunaaux.first['domain'] == 'C 1') {
+      fillPoly[0] = true;
+    } else if (dataComunaaux.first['domain'] == 'C 2') {
+      fillPoly[1] = true;
+    } else if (dataComunaaux.first['domain'] == 'C 3') {
+      fillPoly[2] = true;
+    } else if (dataComunaaux.first['domain'] == 'C 4') {
+      fillPoly[3] = true;
+    } else if (dataComunaaux.first['domain'] == 'C 5') {
+      fillPoly[4] = true;
+    } else if (dataComunaaux.first['domain'] == 'C 6') {
+      fillPoly[5] = true;
+    }
   }
 
   @override
@@ -1201,6 +1287,150 @@ class MapScreenState extends State<MapScreen> {
               // LatLng(10.494374, -73.267190),
               color: Colors.yellow,
               strokeWidth: 3,
+            ),
+          ],
+        ),
+        PolygonLayer(
+          polygons: [
+            Polygon(
+              points: [
+                // Comuna 1
+                const LatLng(10.481519, -73.241050),
+                const LatLng(10.480301, -73.239918),
+                const LatLng(10.479625, -73.238195),
+                const LatLng(10.478929, -73.237755),
+                const LatLng(10.476461, -73.236988),
+                const LatLng(10.475174, -73.235576),
+                const LatLng(10.470922, -73.233363),
+                const LatLng(10.469165, -73.235782),
+                const LatLng(10.465093, -73.232638),
+                const LatLng(10.463605, -73.252081),
+                const LatLng(10.465110, -73.252912),
+                const LatLng(10.461609, -73.253976),
+                const LatLng(10.470999, -73.257591),
+                const LatLng(10.481519, -73.241050),
+              ],
+              color: Colors.green.withOpacity(0.2),
+              isFilled: fillPoly[0],
+            ),
+            Polygon(
+              points: [
+                // Comuna 2
+                const LatLng(10.470918, -73.233346),
+                const LatLng(10.459102, -73.224516),
+                const LatLng(10.456619, -73.223652),
+                const LatLng(10.452662, -73.221509),
+                const LatLng(10.438714, -73.221102),
+                const LatLng(10.424648, -73.241456),
+                const LatLng(10.445414, -73.242495),
+                const LatLng(10.463603, -73.252076),
+                const LatLng(10.465122, -73.232669),
+                const LatLng(10.469142, -73.235756),
+                const LatLng(10.470918, -73.233346),
+              ],
+              color: Colors.blue.withOpacity(0.2),
+              isFilled: fillPoly[1],
+            ),
+            Polygon(
+              points: [
+                // Comuna 3
+                const LatLng(10.424694, -73.241474),
+                const LatLng(10.424181, -73.254761),
+                const LatLng(10.422308, -73.254698),
+                const LatLng(10.422097, -73.258614),
+                const LatLng(10.423949, -73.258662),
+                const LatLng(10.423959, -73.263425),
+                const LatLng(10.426413, -73.263468),
+                const LatLng(10.436595, -73.268570),
+                const LatLng(10.461822, -73.253849),
+                const LatLng(10.465087, -73.252916),
+                const LatLng(10.445083, -73.242385),
+                const LatLng(10.424694, -73.241474),
+              ],
+              color: Colors.orange.withOpacity(0.2),
+              isFilled: fillPoly[2],
+            ),
+            Polygon(
+              points: [
+                // Comuna 4
+                const LatLng(10.436584, -73.268549),
+                const LatLng(10.440029, -73.271708),
+                const LatLng(10.443142, -73.273753),
+                const LatLng(10.439934, -73.282464),
+                const LatLng(10.451292, -73.286830),
+
+                const LatLng(10.455502, -73.289121),
+                const LatLng(10.458878, -73.285328),
+                const LatLng(10.459664, -73.282265),
+                const LatLng(10.461131, -73.280360),
+                const LatLng(10.462466, -73.276863),
+                const LatLng(10.462365, -73.274728),
+                const LatLng(10.462197, -73.274384),
+                const LatLng(10.462302, -73.271535),
+                const LatLng(10.469155, -73.256885),
+
+                const LatLng(10.461585, -73.253956),
+                const LatLng(10.436584, -73.268549),
+              ],
+              color: Colors.purple.withOpacity(0.2),
+              isFilled: fillPoly[3],
+            ),
+            Polygon(
+              points: [
+                // Comuna 5
+                const LatLng(10.455502, -73.289131),
+                const LatLng(10.469698, -73.296744),
+                const LatLng(10.477811, -73.296904),
+                const LatLng(10.481588, -73.296324),
+                const LatLng(10.484394, -73.289587),
+                const LatLng(10.498299, -73.282894),
+                const LatLng(10.502012, -73.280124),
+                const LatLng(10.500978, -73.271390),
+                const LatLng(10.494374, -73.267190),
+                const LatLng(10.490434, -73.265180),
+                const LatLng(10.472768, -73.258302),
+                const LatLng(10.469155, -73.256885),
+                const LatLng(10.462302, -73.271535),
+                const LatLng(10.462197, -73.274384),
+                const LatLng(10.462365, -73.274728),
+                const LatLng(10.462466, -73.276863),
+                const LatLng(10.461131, -73.280360),
+                const LatLng(10.459664, -73.282265),
+                const LatLng(10.458878, -73.285328),
+                const LatLng(10.455502, -73.289131),
+              ],
+              color: Colors.black.withOpacity(0.2),
+              isFilled: fillPoly[4],
+            ),
+            Polygon(
+              points: [
+                // Comuna 6
+                const LatLng(10.501015, -73.271348),
+                const LatLng(10.502138, -73.267481),
+                const LatLng(10.502080, -73.266761),
+                const LatLng(10.501938, -73.266536),
+                const LatLng(10.500804, -73.265951),
+                const LatLng(10.499058, -73.263649),
+                const LatLng(10.498567, -73.261713),
+                const LatLng(10.497924, -73.260801),
+                const LatLng(10.497059, -73.260259),
+                const LatLng(10.496890, -73.260006),
+                const LatLng(10.494669, -73.258223),
+                const LatLng(10.490819, -73.257483),
+                const LatLng(10.486652, -73.250506),
+                const LatLng(10.485671, -73.249200),
+                const LatLng(10.484732, -73.248470),
+                const LatLng(10.483476, -73.246162),
+                const LatLng(10.482527, -73.242590),
+                const LatLng(10.481503, -73.241055),
+                const LatLng(10.471017, -73.257595),
+                const LatLng(10.490434, -73.265169),
+
+                const LatLng(10.494374, -73.267190),
+                const LatLng(10.501015, -73.271348),
+              ],
+              color: Colors.yellow.withOpacity(0.2),
+              isFilled: fillPoly[5],
             ),
           ],
         ),

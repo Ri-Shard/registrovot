@@ -12,6 +12,7 @@ import 'package:registrovot/ui/screens/getdata/consultarLideres_screen.dart';
 
 import '../../../controller/mainController.dart';
 import '../../../model/leader.dart';
+import '../../../model/puesto.dart';
 
 class RoutesScreen extends StatefulWidget {
   const RoutesScreen({super.key});
@@ -37,7 +38,7 @@ class RoutesScreenState extends State<RoutesScreen> {
   RxList<Votante> votanteAux = <Votante>[].obs;
   RxList<Votante> filterRoutes = <Votante>[].obs;
   RxList<Leader> leadersAux = <Leader>[].obs;
-
+  int contVehi = 0;
   void initState() {
     super.initState();
     votanteAux.value = mainController.filterVotante;
@@ -94,7 +95,9 @@ class RoutesScreenState extends State<RoutesScreen> {
     });
     // dataNombre.sort((a, b) => b['measure'].compareTo(a['measure']));
     dataNombrefilter = dataNombre;
-
+    dataNombrefilter.forEach((element) {
+      contVehi = (contVehi + (element['measure'] / 20)).toInt();
+    });
     mainController.update(['dropPuesto']);
   }
 
@@ -149,8 +152,85 @@ class RoutesScreenState extends State<RoutesScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 50),
-              child: Text(
-                  'Total Registros: ${mainController.filterVotante.length}'),
+              child: Column(
+                children: [
+                  Text(
+                      'Total Registros: ${mainController.filterVotante.length}'),
+                  Text(
+                    'Total estimado vehiculos:  ${contVehi}',
+                    style: TextStyle(color: Colors.pink),
+                  ),
+                  // TextButton(
+                  //     onPressed: () async {
+                  //       String? excel = await ExcelToJson().convert();
+                  //       Map<String, dynamic> jsonObject = jsonDecode(excel!);
+                  //       List hoja1 = jsonObject['Sheet1'];
+                  //       List<Votante> listVot = [];
+                  //       for (var element in hoja1) {
+                  //         Leader? leader = mainController
+                  //             .getoneLeaderName(element['Lider'].toString());
+                  //         Puesto? puesto = mainController.getonePuestoName(
+                  //             element['Puesto de Votacion'].toString());
+
+                  //         Votante votante = Votante(
+                  //             name: element['Nombre'].toString(),
+                  //             id: element['Cedula'].toString(),
+                  //             leaderID: leader!.id!,
+                  //             phone: element['Telefono']?.toString() ?? "",
+                  //             puestoID: puesto?.id ?? 'Sin Puesto',
+                  //             mesa: element['Mesa']?.toString() ?? "",
+                  //             direccion: element['Direccion'].toString(),
+                  //             edad: '',
+                  //             municipio: 'Valledupar',
+                  //             barrio: element['Barrio']?.toString().trim(),
+                  //             // "Sin Barrio",
+                  //             estado: element['Estado']?.toString(),
+                  //             encuesta: element['Encuesta']?.toString(),
+                  //             sexo: element['Sexo']?.toString(),
+                  //             responsable:
+                  //                 '${element['Creador'].toString()})${element['Editor'].toString()}',
+                  //             segmento: element['Segmento']?.toString());
+
+                  //         if (votante.id != 'Sin cedula') {
+                  //           bool hasPhone = false;
+                  //           bool ccrepeat = false;
+                  //           for (var e in listVot) {
+                  //             if (votante.id == e.id) {
+                  //               ccrepeat = true;
+                  //               break;
+                  //             }
+                  //             // if (votante.phone == e.phone) {
+                  //             //   hasPhone = true;
+                  //             //   break;
+                  //             // }
+                  //           }
+                  //           if (!ccrepeat && !hasPhone) {
+                  //             listVot.add(votante);
+                  //             hasPhone = false;
+                  //           }
+                  //         }
+                  //       }
+                  //       // List<Map<String, dynamic>> jsonList =
+                  //       //     listVot.map((votante) => votante.toJson()).toList();
+                  //       // String jsonString = json.encode(jsonList);
+                  //       // window.localStorage['data'] = jsonString;
+                  //       for (var e in listVot) {
+                  //         String ss =
+                  //             await mainController.addVotanteNoValidate(e);
+                  //         // String ss = await mainController.addVotante(e);
+                  //         print(ss);
+                  //       }
+                  //       // Acceder a los valores
+                  //       // String nombre = jsonObject['Hoja1'];
+
+                  //       // // Imprimir los valores
+                  //       // print('Nombre: $nombre');
+
+                  //       // print(excel);
+                  //     },
+                  //     child: Text('data'))
+                ],
+              ),
             ),
           ],
         ),
@@ -405,6 +485,18 @@ class RoutesScreenState extends State<RoutesScreen> {
             })
       ],
     );
+  }
+}
+
+Leader? searchNameLeader(String leaderID) {
+  Leader? leader;
+  mainController.filterLeader.forEach((element) {
+    if (element.id == leaderID) {
+      leader = element;
+    }
+  });
+  return leader;
+}
 
     // return const Center(child: Text('Routes Screen'));
     // return Column(
@@ -412,65 +504,7 @@ class RoutesScreenState extends State<RoutesScreen> {
     //     Center(
     //       child: ElevatedButton(
     //         child: const Text("PRESS TO UPLOAD EXCEL AND CONVERT TO JSON"),
-    //         onPressed: () async {
-    //           String? excel = await ExcelToJson().convert();
-    //           Map<String, dynamic> jsonObject = jsonDecode(excel!);
-    //           List hoja1 = jsonObject['Respuestas de formulario 1'];
-    //           List<Votante> listVot = [];
-    //           for (var element in hoja1) {
-    //             Votante votante = Votante(
-    //                 name: element['Nombre'].toString(),
-    //                 id: element['Cedula'].toString(),
-    //                 leaderID: '0000000',
-    //                 phone: element['Celular']?.toString() ?? "",
-    //                 puestoID: 'Sin Puesto',
-    //                 direccion: element['Direccion'].toString(),
-    //                 edad: '',
-    //                 municipio: 'Valledupar',
-    //                 barrio:
-    //                     // element['Barrio']?.toString().trim() ??
-    //                     "Sin Barrio",
-    //                 estado: 'activo',
-    //                 encuesta: 'Sin llamar',
-    //                 sexo: element['Sexo'],
-    //                 segmento: element['Segmento']);
 
-    //             if (votante.id != 'Sin cedula') {
-    //               bool hasPhone = false;
-    //               bool ccrepeat = false;
-    //               for (var e in listVot) {
-    //                 if (votante.id == e.id) {
-    //                   ccrepeat = true;
-    //                   break;
-    //                 }
-    //                 // if (votante.phone == e.phone) {
-    //                 //   hasPhone = true;
-    //                 //   break;
-    //                 // }
-    //               }
-    //               if (!ccrepeat && !hasPhone) {
-    //                 listVot.add(votante);
-    //                 hasPhone = false;
-    //               }
-    //             }
-    //           }
-    //           // List<Map<String, dynamic>> jsonList =
-    //           //     listVot.map((votante) => votante.toJson()).toList();
-    //           // String jsonString = json.encode(jsonList);
-    //           // window.localStorage['data'] = jsonString;
-    //           for (var e in listVot) {
-    //             String ss = await mainController.addVotante2(e);
-    //             // String ss = await mainController.addVotante(e);
-    //             print(ss);
-    //           }
-    //           // Acceder a los valores
-    //           // String nombre = jsonObject['Hoja1'];
-
-    //           // // Imprimir los valores
-    //           // print('Nombre: $nombre');
-
-    //           // print(excel);
-    //         },
     //       ),
     //     ),
     //     ElevatedButton(
@@ -513,15 +547,3 @@ class RoutesScreenState extends State<RoutesScreen> {
     //     ),
     //   ],
     // );
-  }
-}
-
-Leader? searchNameLeader(String leaderID) {
-  Leader? leader;
-  mainController.filterLeader.forEach((element) {
-    if (element.id == leaderID) {
-      leader = element;
-    }
-  });
-  return leader;
-}

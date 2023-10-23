@@ -338,6 +338,15 @@ class MainController extends GetxController {
     return leader;
   }
 
+  Leader? getoneLeaderName(String name) {
+    Leader? leader;
+    if (filterLeader.isNotEmpty) {
+      leader = filterLeader.firstWhereOrNull((element) => element.name == name);
+      return leader;
+    }
+    return leader;
+  }
+
   String? deleteLeaders(String id) {
     CollectionReference colection;
     colection = FirebaseFirestore.instance.collection(collection!);
@@ -565,6 +574,41 @@ class MainController extends GetxController {
     }
   }
 
+  Future<String> addVotanteNoValidate(Votante votante) async {
+    String response = '';
+    String dateNow =
+        '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}-${DateTime.now().hour}:${DateTime.now().minute}';
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child('$collection/${votante.id.toString()}');
+      await ref.set({
+        'id': votante.id.toString(),
+        'name': votante.name,
+        'phone': votante.phone,
+        'leaderID': votante.leaderID,
+        'puestoID': votante.puestoID,
+        'direccion': votante.direccion,
+        'edad': votante.edad,
+        'municipio': votante.municipio,
+        'barrio': votante.barrio,
+        'estado': votante.estado,
+        'encuesta': votante.encuesta,
+        'responsable': votante.responsable,
+        'mesa': votante.mesa,
+        'sexo': votante.sexo,
+        'segmento': votante.segmento,
+      });
+
+      response = "Usuario registrado";
+    } catch (e) {
+      // auxvot.add(votante);
+      response = "Error al agregar el Usuario: $e";
+    }
+
+    return response;
+  }
+
 //PUESTO METHODS
   Future<String?> addPuesto(Puesto puesto) async {
     String response = '';
@@ -631,6 +675,16 @@ class MainController extends GetxController {
     if (filterPuesto.isNotEmpty) {
       puesto =
           filterPuesto.firstWhereOrNull((element) => element.id == idPuesto);
+      return puesto;
+    }
+    return puesto;
+  }
+
+  Puesto? getonePuestoName(String name) {
+    Puesto? puesto;
+    if (filterPuesto.isNotEmpty) {
+      puesto =
+          filterPuesto.firstWhereOrNull((element) => element.nombre == name);
       return puesto;
     }
     return puesto;
