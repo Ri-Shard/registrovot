@@ -118,7 +118,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                 },
                 style: TextButton.styleFrom(
                   fixedSize: const Size(120, 40),
-                  backgroundColor: const Color(0xffff004e),
+                  backgroundColor: const Color(0xff01b9ff),
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 10,
@@ -127,7 +127,7 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
                 child: const SizedBox(
                   width: 200,
                   child: Text(
-                    'Descargar Informacion Lideres',
+                    'Descargar',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
