@@ -143,9 +143,53 @@ class ConsultarPuestosScreenState extends State<ConsultarPuestosScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 50),
-              child: Text(
-                  'Total Registros: ${mainController.filterVotante.length}'),
+              padding: const EdgeInsets.only(right: 50, top: 20),
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      RxMap<String?, List<Votante>> aux =
+                          <String, List<Votante>>{}.obs;
+                      int cont = 0;
+                      List<CustomPuesto> auxlist = [];
+
+                      for (var i = 0; i < dataNombrefilter.length; i++) {
+                        CustomPuesto auxcustom = CustomPuesto(
+                            name: dataNombrefilter[i]['domain'],
+                            cantLeaders: dataNombrefilter[i]['leader'],
+                            cantRegistros: dataNombrefilter[i]['measure']);
+                        auxlist.add(auxcustom);
+                      }
+                      mainController.exportPuestoToExcel(auxlist);
+                    },
+                    style: TextButton.styleFrom(
+                      fixedSize: const Size(120, 40),
+                      backgroundColor: const Color(0xff01b9ff),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 10,
+                      ),
+                    ),
+                    child: const SizedBox(
+                      width: 200,
+                      child: Text(
+                        'Descargar',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                      'Total Registros: ${mainController.filterVotante.length}'),
+                ],
+              ),
             ),
           ],
         ),

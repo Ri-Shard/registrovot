@@ -898,6 +898,38 @@ class MainController extends GetxController {
     }
   }
 
+  Future<void> exportPuestoToExcel(List<CustomPuesto> leadersDownload) async {
+    try {
+      final excel = Excel.createExcel();
+      final Sheet sheet = excel[excel.getDefaultSheet()!];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = 'Nombre del Puesto';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = 'Cantidad de Lideres por Puesto';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
+          .value = 'Cantidad de Registros por Puesto';
+
+      for (var row = 0; row < leadersDownload.length; row++) {
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row + 1))
+            .value = leadersDownload[row].name;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row + 1))
+            .value = leadersDownload[row].cantLeaders;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row + 1))
+            .value = leadersDownload[row].cantRegistros;
+      }
+
+      excel.save(fileName: "ReportePuestos.xlsx");
+    } catch (e) {
+      Get.back();
+    }
+  }
+
   Future<void> exportToExcel(List<Votante> listVot) async {
     try {
       final excel = Excel.createExcel();
@@ -1075,4 +1107,14 @@ class CustomLeader {
   int count;
 
   CustomLeader({required this.name, required this.count});
+}
+
+class CustomPuesto {
+  String name;
+  int cantLeaders;
+  int cantRegistros;
+  CustomPuesto(
+      {required this.name,
+      required this.cantLeaders,
+      required this.cantRegistros});
 }
