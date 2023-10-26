@@ -33,44 +33,112 @@ class ConsultarLideresScreenState extends State<ConsultarLideresScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
-          child: SizedBox(
-            width: localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
-            child: TextFormField(
-              enabled: true,
-              decoration: const InputDecoration(
-                labelText: 'Buscar',
-              ),
-              controller: nombre,
-              validator: (_) {
-                if (_ == null || _.isEmpty) {
-                  return "Debe llenar este campo";
-                }
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: SizedBox(
+                width: localwidth >= 800 ? localwidth * 0.2 : localwidth * 0.3,
+                child: TextFormField(
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Buscar',
+                  ),
+                  controller: nombre,
+                  validator: (_) {
+                    if (_ == null || _.isEmpty) {
+                      return "Debe llenar este campo";
+                    }
 
-                if (_.length > 10) {
-                  return "número no válido";
-                }
-                if (_.length < 7) {
-                  return "número no válido";
-                }
-              },
-              onChanged: (_) {
-                if (_.isEmpty) {
-                  leadersAux.value = mainController.filterLeader;
-                } else {
-                  leadersAux.value = mainController.filterLeader
-                      .where((p0) => p0
-                          .toJson()
-                          .toString()
-                          .toLowerCase()
-                          .contains(_.toLowerCase()))
-                      .toList();
-                }
-                mainController.update(['dropVotanteLeader']);
-              },
+                    if (_.length > 10) {
+                      return "número no válido";
+                    }
+                    if (_.length < 7) {
+                      return "número no válido";
+                    }
+                  },
+                  onChanged: (_) {
+                    if (_.isEmpty) {
+                      leadersAux.value = mainController.filterLeader;
+                    } else {
+                      leadersAux.value = mainController.filterLeader
+                          .where((p0) => p0
+                              .toJson()
+                              .toString()
+                              .toLowerCase()
+                              .contains(_.toLowerCase()))
+                          .toList();
+                    }
+                    mainController.update(['dropVotanteLeader']);
+                  },
+                ),
+              ),
             ),
-          ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: localwidth * 0.1),
+              child: TextButton(
+                onPressed: () {
+                  RxMap<String?, List<Votante>> aux =
+                      <String, List<Votante>>{}.obs;
+                  int cont = 0;
+
+                  for (Leader leader in leadersAux) {
+                    List<Votante> listVotantesAux = [];
+                    for (Votante votante in mainController.filterVotante) {
+                      if (leader.id == votante.leaderID) {
+                        listVotantesAux.add(votante);
+                      }
+                    }
+                    aux[leader.id] = listVotantesAux.toList();
+
+                    cont = 0;
+                  }
+                  var sortedByValueMap = Map.fromEntries(aux.entries.toList()
+                    ..sort((a, b) => b.value.length.compareTo(a.value.length)));
+                  List<CustomLeader> auxlist = [];
+
+                  for (var i = 0; i < sortedByValueMap.length; i++) {
+                    CustomLeader auxcustom = CustomLeader(
+                      name: mainController.filterLeader
+                          .firstWhere((element) =>
+                              element.id == sortedByValueMap.keys.elementAt(i))
+                          .name!,
+                      count: sortedByValueMap[mainController.filterLeader
+                                  .firstWhere((element) =>
+                                      element.id ==
+                                      sortedByValueMap.keys.elementAt(i))
+                                  .id!]
+                              ?.length ??
+                          0,
+                    );
+                    auxlist.add(auxcustom);
+                  }
+                  mainController.exportLeaderToExcel(auxlist);
+                },
+                style: TextButton.styleFrom(
+                  fixedSize: const Size(120, 40),
+                  backgroundColor: const Color(0xffff004e),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 10,
+                  ),
+                ),
+                child: const SizedBox(
+                  width: 200,
+                  child: Text(
+                    'Descargar Informacion Lideres',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         Padding(
           padding:

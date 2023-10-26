@@ -872,6 +872,32 @@ class MainController extends GetxController {
     return response;
   }
 
+  Future<void> exportLeaderToExcel(List<CustomLeader> leadersDownload) async {
+    try {
+      final excel = Excel.createExcel();
+      final Sheet sheet = excel[excel.getDefaultSheet()!];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = 'Nombre Lider o Responsable';
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = 'Cantidad de Registros';
+
+      for (var row = 0; row < leadersDownload.length; row++) {
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row + 1))
+            .value = leadersDownload[row].name;
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row + 1))
+            .value = leadersDownload[row].count;
+      }
+
+      excel.save(fileName: "ReporteLeaders.xlsx");
+    } catch (e) {
+      Get.back();
+    }
+  }
+
   Future<void> exportToExcel(List<Votante> listVot) async {
     try {
       final excel = Excel.createExcel();
@@ -1042,4 +1068,11 @@ class MainController extends GetxController {
       Get.back();
     }
   }
+}
+
+class CustomLeader {
+  String name;
+  int count;
+
+  CustomLeader({required this.name, required this.count});
 }
